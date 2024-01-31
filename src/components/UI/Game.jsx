@@ -19,7 +19,11 @@ export default function Game({ setGameDisplay }) {
   const [fullArticles, setFullArticles] = useState([]);
   const [processedWords, setProcessedWords] = useState([]);
   const [showAnswers, setShowAnswers] = useState(false);
-  const [guessPlacement, setGuessPlacement] = useState([]);
+  const [guessPlacement, setGuessPlacement] = useState(
+    fullArticles.map((article) =>
+      Array(article.title.split(/\s+/).length).fill(null)
+    )
+  );
   const [availableWords, setAvailableWords] = useState([]);
 
   useEffect(() => {
@@ -46,7 +50,11 @@ export default function Game({ setGameDisplay }) {
       setProcessedWords(shuffledWords);
       setAvailableWords(shuffledWords);
 
-      // Initialize guessPlacement with the correct number of blanks for each article
+      // Initialize guessPlacement with nulls for each word in each headline
+      const initialGuessPlacement = fetchedArticles.map((article) =>
+        Array(article.title.split(/\s+/).length).fill(null)
+      );
+      setGuessPlacement(initialGuessPlacement);
     };
 
     loadAndProcessArticles();
@@ -60,6 +68,47 @@ export default function Game({ setGameDisplay }) {
     setShowAnswers(true);
   };
 
+  const addWordToGuess = (selectedWord) => {
+    // Find the first empty position in the nested guessPlacement array
+    let emptyPositionIndex = -1;
+    let emptyArticleIndex = guessPlacement.findIndex(
+      (articleGuesses, index) => {
+        const positionIndex = articleGuesses.indexOf(null);
+        if (positionIndex !== -1) {
+          emptyPositionIndex = positionIndex;
+          return true; // Found an article with an empty position
+        }
+        return false; // Continue searching
+      }
+    );
+
+    if (emptyArticleIndex === -1) {
+      console.log("All blanks are filled.");
+      return; // Early return if all blanks are filled
+    }
+
+    // Create a new state with the selected word added
+    const newGuessPlacement = guessPlacement.map((articleGuesses, index) => {
+      if (index === emptyArticleIndex) {
+        const newArticleGuesses = [...articleGuesses];
+        newArticleGuesses[emptyPositionIndex] = selectedWord.word; // Assuming the word is a string
+        return newArticleGuesses;
+      }
+      return articleGuesses;
+    });
+
+    setGuessPlacement(newGuessPlacement);
+
+    // Now you need to mark the word as selected in availableWords and update the state
+    const newAvailableWords = availableWords.map((word) => {
+      if (word.id === selectedWord.id) {
+        return { ...word, selected: true };
+      }
+      return word;
+    });
+    setAvailableWords(newAvailableWords);
+  };
+
   return (
     <>
       <button
@@ -69,7 +118,7 @@ export default function Game({ setGameDisplay }) {
         Back to Home
       </button>
       <GuessArea fullArticles={fullArticles} guessPlacement={guessPlacement} />
-      <WordChoices words={availableWords} />
+      <WordChoices words={availableWords} onWordClick={addWordToGuess} />
       <button
         onClick={handleShowAnswers}
         className="p-2 px-12 text-lg bg-sky-900 hover:bg-sky-700 active:bg-sky-600 text-sky-100 rounded-xl"

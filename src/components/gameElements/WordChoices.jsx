@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const WordChoices = ({ words }) => {
+const WordChoices = ({ words, onWordClick }) => {
   const [displayWords, setDisplayWords] = useState([]);
   const [isSortedAZ, setIsSortedAZ] = useState(false);
 
@@ -17,11 +17,6 @@ const WordChoices = ({ words }) => {
     setIsSortedAZ(!isSortedAZ); // Toggle the sorting order
   };
 
-  // Function to handle word click
-  const clickWord = (word) => {
-    console.log(word);
-  };
-
   return (
     <div className="flex flex-col gap-2">
       <h1>Word Choices</h1>
@@ -34,7 +29,7 @@ const WordChoices = ({ words }) => {
       <div className="flex flex-wrap gap-2">
         {displayWords.map((word) => (
           <div
-            onClick={() => clickWord(word)}
+            onClick={() => !word.selected && onWordClick(word)}
             className={`p-2 bg-blue-200 rounded-xl ${
               word.selected ? "bg-gray-400" : ""
             }`}
