@@ -11,7 +11,6 @@ const Answers = ({ fullArticles, setShowAnswers }) => {
           <a className="font-semibold" href={fullArticles.url}>
             <h3 className="font-bold">{fullArticles.title}</h3>
           </a>
-          <p>{fullArticles.abstract}</p>
         </div>
       ))}
       <button

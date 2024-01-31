@@ -19,6 +19,8 @@ export default function Game({ setGameDisplay }) {
   const [fullArticles, setFullArticles] = useState([]);
   const [processedWords, setProcessedWords] = useState([]);
   const [showAnswers, setShowAnswers] = useState(false);
+  const [guessPlacement, setGuessPlacement] = useState([]);
+  const [availableWords, setAvailableWords] = useState([]);
 
   useEffect(() => {
     const loadAndProcessArticles = async () => {
@@ -35,10 +37,16 @@ export default function Game({ setGameDisplay }) {
           id: `${index}-${wordIdCounter++}`, // Unique ID for each word
           word: word,
           articleIndex: index, // Keep track of which article the word belongs to
+          selected: false, // Initial selected state is false
         }))
       );
 
-      setProcessedWords(shuffleArray(wordsWithIds)); // Shuffle the words after processing
+      // Shuffle and set the processed words
+      const shuffledWords = shuffleArray(wordsWithIds);
+      setProcessedWords(shuffledWords);
+      setAvailableWords(shuffledWords);
+
+      // Initialize guessPlacement with the correct number of blanks for each article
     };
 
     loadAndProcessArticles();
@@ -60,8 +68,8 @@ export default function Game({ setGameDisplay }) {
       >
         Back to Home
       </button>
-      <GuessArea fullArticles={fullArticles} />
-      <WordChoices words={processedWords} />
+      <GuessArea fullArticles={fullArticles} guessPlacement={guessPlacement} />
+      <WordChoices words={availableWords} />
       <button
         onClick={handleShowAnswers}
         className="p-2 px-12 text-lg bg-sky-900 hover:bg-sky-700 active:bg-sky-600 text-sky-100 rounded-xl"
