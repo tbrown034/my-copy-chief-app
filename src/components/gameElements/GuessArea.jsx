@@ -24,14 +24,28 @@ const GuessArea = ({
   };
 
   const clearGuesses = (articleIndex) => {
-    setGuessPlacement(
-      guessPlacement.map((guesses, index) => {
-        if (index === articleIndex) {
-          return Array(guesses.length).fill(null);
-        }
-        return guesses;
-      })
+    // Find the words that are currently guessed for this article
+    const currentlyGuessedWords = guessPlacement[articleIndex].filter(
+      (word) => word !== null
     );
+
+    // Clear the guesses for the specific headline
+    const newGuessPlacement = [...guessPlacement];
+    newGuessPlacement[articleIndex] = Array(
+      newGuessPlacement[articleIndex].length
+    ).fill(null);
+
+    // Reset the selected state for the words that were in the cleared guesses
+    const newAvailableWords = availableWords.map((word) => {
+      // If the word is in the list of currently guessed words, reset its selected state
+      if (currentlyGuessedWords.includes(word.word)) {
+        return { ...word, selected: false };
+      }
+      return word;
+    });
+
+    setGuessPlacement(newGuessPlacement);
+    setAvailableWords(newAvailableWords);
   };
 
   // Function to submit the guesses for checking
