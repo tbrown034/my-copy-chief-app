@@ -27,6 +27,7 @@ export default function Game({ setGameDisplay }) {
   const [availableWords, setAvailableWords] = useState([]);
   const [selectedGuess, setSelectedGuess] = useState(null); // null initially
   const [swapMoveCount, setSwapMoveCount] = useState(0);
+  const [guessResults, setGuessResults] = useState([]);
 
   useEffect(() => {
     const loadAndProcessArticles = async () => {
@@ -150,6 +151,33 @@ export default function Game({ setGameDisplay }) {
     }
   };
 
+  const submitGuesses = () => {
+    const correctHeadlines = fullArticles.map((article) =>
+      article.title.split(/\s+/)
+    );
+
+    // Calculate the guess results
+    const newGuessResults = guessPlacement.map((articleGuesses, articleIndex) =>
+      articleGuesses.map((guess, wordIndex) => {
+        if (guess === correctHeadlines[articleIndex][wordIndex]) {
+          return "green"; // Correct guess
+        }
+        const correctArticleIndex = correctHeadlines.findIndex((headline) =>
+          headline.includes(guess)
+        );
+        if (
+          correctArticleIndex !== -1 &&
+          correctHeadlines[correctArticleIndex][wordIndex] === guess
+        ) {
+          return "yellow"; // Right word, wrong headline
+        }
+        return "default"; // Incorrect guess
+      })
+    );
+
+    setGuessResults(newGuessResults); // Update the guess results state
+  };
+
   return (
     <>
       <GuessArea
@@ -160,6 +188,8 @@ export default function Game({ setGameDisplay }) {
         availableWords={availableWords}
         handleGuessClick={handleGuessClick}
         selectedGuess={selectedGuess}
+        submitGuesses={submitGuesses}
+        guessResults={guessResults}
       />
       <div className="swap-move-counter">Swaps/Moves: {swapMoveCount}</div>
       <WordChoices words={availableWords} onWordClick={addWordToGuess} />

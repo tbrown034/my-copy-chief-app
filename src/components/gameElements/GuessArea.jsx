@@ -6,6 +6,8 @@ const GuessArea = ({
   availableWords,
   handleGuessClick,
   selectedGuess,
+  submitGuesses,
+  guessResults,
 }) => {
   // Function to clear all guesses
   const clearAllGuesses = () => {
@@ -49,9 +51,10 @@ const GuessArea = ({
     setAvailableWords(newAvailableWords);
   };
 
-  // Function to submit the guesses for checking
-  const submitGuesses = () => {
-    // Here you would check the guesses against the actual headlines
+  const isEveryGuessFilled = () => {
+    return guessPlacement.every((headline) =>
+      headline.every((word) => word !== null)
+    );
   };
 
   return (
@@ -65,21 +68,28 @@ const GuessArea = ({
               Headline #{articleIndex + 1}: ({words.length} words)
             </h2>
             <div className="flex flex-wrap gap-2 mb-2">
-              {words.map((_, wordIndex) => (
-                <div
-                  key={wordIndex}
-                  className={`flex items-center justify-center h-12 p-2 text-lg font-bold text-blue-900 bg-white border-2 border-gray-400 rounded-lg min-w-20 ${
-                    selectedGuess?.articleIndex === articleIndex &&
-                    selectedGuess?.wordIndex === wordIndex
-                      ? "bg-red-100"
-                      : ""
-                  }`}
-                  onClick={() => handleGuessClick(articleIndex, wordIndex)}
-                >
-                  {guessPlacement[articleIndex] &&
-                    guessPlacement[articleIndex][wordIndex]}
-                </div>
-              ))}
+              {words.map((_, wordIndex) => {
+                const resultClass = guessResults[articleIndex]?.[wordIndex];
+                let bgColorClass = "bg-white"; // Default background color
+                if (resultClass === "green") bgColorClass = "bg-green-500"; // Correct guess
+                if (resultClass === "yellow") bgColorClass = "bg-yellow-500"; // Partially correct guess
+
+                return (
+                  <div
+                    key={wordIndex}
+                    className={`flex items-center justify-center h-12 p-2 text-lg font-bold text-blue-900 ${bgColorClass} border-2 border-gray-400 rounded-lg min-w-20 ${
+                      selectedGuess?.articleIndex === articleIndex &&
+                      selectedGuess?.wordIndex === wordIndex
+                        ? "bg-blue-100" // Highlight selected guess, if needed
+                        : ""
+                    }`}
+                    onClick={() => handleGuessClick(articleIndex, wordIndex)}
+                  >
+                    {guessPlacement[articleIndex] &&
+                      guessPlacement[articleIndex][wordIndex]}
+                  </div>
+                );
+              })}
             </div>
             <div className="flex gap-2">
               <button
@@ -87,12 +97,6 @@ const GuessArea = ({
                 className="p-2 px-12 text-lg bg-sky-900 hover:bg-sky-700 active:bg-sky-600 text-sky-100 rounded-xl"
               >
                 Clear
-              </button>
-              <button
-                onClick={submitGuesses}
-                className="p-2 px-12 text-lg bg-sky-900 hover:bg-sky-700 active:bg-sky-600 text-sky-100 rounded-xl"
-              >
-                Submit
               </button>
             </div>
           </div>
@@ -104,6 +108,17 @@ const GuessArea = ({
         className="p-2 px-12 text-lg bg-sky-900 hover:bg-sky-700 active:bg-sky-600 text-sky-100 rounded-xl"
       >
         Clear All Headlines
+      </button>
+      <button
+        onClick={submitGuesses}
+        disabled={!isEveryGuessFilled()}
+        className={`p-2 px-12 text-lg ${
+          isEveryGuessFilled()
+            ? "bg-sky-900 hover:bg-sky-700 active:bg-sky-600"
+            : "bg-gray-400"
+        } text-sky-100 rounded-xl`}
+      >
+        Submit
       </button>
     </div>
   );
