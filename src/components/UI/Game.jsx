@@ -28,6 +28,7 @@ export default function Game({ setGameDisplay }) {
   const [selectedGuess, setSelectedGuess] = useState(null); // null initially
   const [swapMoveCount, setSwapMoveCount] = useState(0);
   const [guessResults, setGuessResults] = useState([]);
+  const [hasWon, setHasWon] = useState(false);
 
   useEffect(() => {
     const loadAndProcessArticles = async () => {
@@ -155,27 +156,30 @@ export default function Game({ setGameDisplay }) {
     const correctHeadlines = fullArticles.map((article) =>
       article.title.split(/\s+/)
     );
+    let win = true; // Assume win until proven otherwise
 
-    // Calculate the guess results
     const newGuessResults = guessPlacement.map((articleGuesses, articleIndex) =>
       articleGuesses.map((guess, wordIndex) => {
         if (guess === correctHeadlines[articleIndex][wordIndex]) {
           return "green"; // Correct guess
+        } else {
+          win = false; // Any incorrect guess negates the win
+          const correctArticleIndex = correctHeadlines.findIndex((headline) =>
+            headline.includes(guess)
+          );
+          if (
+            correctArticleIndex !== -1 &&
+            correctHeadlines[correctArticleIndex][wordIndex] === guess
+          ) {
+            return "yellow"; // Right word, wrong headline
+          }
+          return "default"; // Incorrect guess
         }
-        const correctArticleIndex = correctHeadlines.findIndex((headline) =>
-          headline.includes(guess)
-        );
-        if (
-          correctArticleIndex !== -1 &&
-          correctHeadlines[correctArticleIndex][wordIndex] === guess
-        ) {
-          return "yellow"; // Right word, wrong headline
-        }
-        return "default"; // Incorrect guess
       })
     );
 
-    setGuessResults(newGuessResults); // Update the guess results state
+    setGuessResults(newGuessResults);
+    setHasWon(win);
   };
 
   return (
@@ -190,6 +194,7 @@ export default function Game({ setGameDisplay }) {
         selectedGuess={selectedGuess}
         submitGuesses={submitGuesses}
         guessResults={guessResults}
+        hasWon={hasWon}
       />
       <div className="swap-move-counter">Swaps/Moves: {swapMoveCount}</div>
       <WordChoices words={availableWords} onWordClick={addWordToGuess} />

@@ -8,6 +8,7 @@ const GuessArea = ({
   selectedGuess,
   submitGuesses,
   guessResults,
+  hasWon,
 }) => {
   // Function to clear all guesses
   const clearAllGuesses = () => {
@@ -60,6 +61,13 @@ const GuessArea = ({
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-lg font-bold">Headline Guesses</h1>
+      {hasWon && (
+        <div className="win-message">
+          <p className="p-4 mb-4 text-2xl text-center text-green-700 bg-green-200 rounded-lg">
+            Congratulations! You've guessed all headlines correctly!
+          </p>
+        </div>
+      )}
       {fullArticles.map((article, articleIndex) => {
         const words = article.title.split(/\s+/);
         return (
