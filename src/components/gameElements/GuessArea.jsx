@@ -3,21 +3,33 @@ const GuessArea = ({
   guessPlacement,
   setGuessPlacement,
   addWordToGuess,
+  setAvailableWords,
+  availableWords,
 }) => {
   // Function to clear all guesses
   const clearAllGuesses = () => {
-    setGuessPlacement(
-      fullArticles.map((article) =>
-        Array(article.title.split(/\s+/).length).fill(null)
-      )
+    // Clear all guesses
+    const newGuessPlacement = guessPlacement.map((guesses) =>
+      Array(guesses.length).fill(null)
     );
+
+    // Reset the selected state for all words
+    const newAvailableWords = availableWords.map((word) => ({
+      ...word,
+      selected: false,
+    }));
+
+    setGuessPlacement(newGuessPlacement);
+    setAvailableWords(newAvailableWords);
   };
 
-  // Function to clear guesses for a specific headline
-  const clearGuesses = (headlineIndex) => {
+  const clearGuesses = (articleIndex) => {
     setGuessPlacement(
-      guessPlacement.map((guess, index) => {
-        return index === headlineIndex ? Array(guess.length).fill(null) : guess;
+      guessPlacement.map((guesses, index) => {
+        if (index === articleIndex) {
+          return Array(guesses.length).fill(null);
+        }
+        return guesses;
       })
     );
   };
@@ -28,7 +40,7 @@ const GuessArea = ({
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4">
       <h1 className="text-lg font-bold">Headline Guesses</h1>
       {fullArticles.map((article, articleIndex) => {
         const words = article.title.split(/\s+/);
@@ -41,7 +53,7 @@ const GuessArea = ({
               {words.map((_, wordIndex) => (
                 <div
                   key={wordIndex}
-                  className="w-20 h-12 bg-white border-2 border-gray-400 rounded-lg"
+                  className="flex items-center justify-center h-12 p-2 text-lg font-bold text-blue-900 bg-white border-2 border-gray-400 rounded-lg min-w-20"
                   onClick={() => addWordToGuess(articleIndex, wordIndex)}
                 >
                   {guessPlacement[articleIndex] &&

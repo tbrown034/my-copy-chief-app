@@ -111,20 +111,27 @@ export default function Game({ setGameDisplay }) {
 
   return (
     <>
+      <GuessArea
+        fullArticles={fullArticles}
+        guessPlacement={guessPlacement}
+        setGuessPlacement={setGuessPlacement}
+        setAvailableWords={setAvailableWords}
+        availableWords={availableWords}
+      />
+      <WordChoices words={availableWords} onWordClick={addWordToGuess} />
       <button
         onClick={handleClick}
         className="p-2 px-12 text-lg bg-sky-900 hover:bg-sky-700 active:bg-sky-600 text-sky-100 rounded-xl"
       >
         Back to Home
       </button>
-      <GuessArea fullArticles={fullArticles} guessPlacement={guessPlacement} />
-      <WordChoices words={availableWords} onWordClick={addWordToGuess} />
       <button
         onClick={handleShowAnswers}
         className="p-2 px-12 text-lg bg-sky-900 hover:bg-sky-700 active:bg-sky-600 text-sky-100 rounded-xl"
       >
         Show Answers
       </button>
+
       {!showAnswers ? (
         ""
       ) : (

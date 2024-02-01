@@ -18,19 +18,21 @@ const WordChoices = ({ words, onWordClick }) => {
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <h1>Word Choices</h1>
-      <button
-        onClick={toggleSort}
-        className="p-2 px-12 text-lg bg-sky-900 hover:bg-sky-700 active:bg-sky-600 text-sky-100 rounded-xl"
-      >
-        Sort {isSortedAZ ? "Z-A ↓" : "A-Z ↑"}
-      </button>
+    <div className="flex flex-col gap-4 mt-10 border-t-2 border-black border-dotted">
+      <h1 className="mt-10 text-lg font-bold">Word Choices</h1>
+      <div>
+        <button
+          onClick={toggleSort}
+          className="p-2 px-12 text-lg bg-sky-900 hover:bg-sky-700 active:bg-sky-600 text-sky-100 rounded-xl"
+        >
+          Sort {isSortedAZ ? "Z-A ↓" : "A-Z ↑"}
+        </button>
+      </div>
       <div className="flex flex-wrap gap-2">
         {displayWords.map((word) => (
           <div
             onClick={() => !word.selected && onWordClick(word)}
-            className={`p-2 bg-blue-200 rounded-xl ${
+            className={`p-2 bg-blue-200 rounded-xl hover:cursor-pointer ${
               word.selected ? "bg-gray-400" : ""
             }`}
             key={word.id}
