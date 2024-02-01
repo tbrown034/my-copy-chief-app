@@ -2,9 +2,10 @@ const GuessArea = ({
   fullArticles,
   guessPlacement,
   setGuessPlacement,
-  addWordToGuess,
   setAvailableWords,
   availableWords,
+  handleGuessClick,
+  selectedGuess,
 }) => {
   // Function to clear all guesses
   const clearAllGuesses = () => {
@@ -67,8 +68,13 @@ const GuessArea = ({
               {words.map((_, wordIndex) => (
                 <div
                   key={wordIndex}
-                  className="flex items-center justify-center h-12 p-2 text-lg font-bold text-blue-900 bg-white border-2 border-gray-400 rounded-lg min-w-20"
-                  onClick={() => addWordToGuess(articleIndex, wordIndex)}
+                  className={`flex items-center justify-center h-12 p-2 text-lg font-bold text-blue-900 bg-white border-2 border-gray-400 rounded-lg min-w-20 ${
+                    selectedGuess?.articleIndex === articleIndex &&
+                    selectedGuess?.wordIndex === wordIndex
+                      ? "bg-red-100"
+                      : ""
+                  }`}
+                  onClick={() => handleGuessClick(articleIndex, wordIndex)}
                 >
                   {guessPlacement[articleIndex] &&
                     guessPlacement[articleIndex][wordIndex]}

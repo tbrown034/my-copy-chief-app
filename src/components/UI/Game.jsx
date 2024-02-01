@@ -25,6 +25,8 @@ export default function Game({ setGameDisplay }) {
     )
   );
   const [availableWords, setAvailableWords] = useState([]);
+  const [selectedGuess, setSelectedGuess] = useState(null); // null initially
+  const [swapMoveCount, setSwapMoveCount] = useState(0);
 
   useEffect(() => {
     const loadAndProcessArticles = async () => {
@@ -109,6 +111,45 @@ export default function Game({ setGameDisplay }) {
     setAvailableWords(newAvailableWords);
   };
 
+  const handleGuessClick = (articleIndex, wordIndex) => {
+    if (selectedGuess) {
+      // Swap or move logic
+      const newGuessPlacement = [...guessPlacement];
+
+      if (!newGuessPlacement[articleIndex][wordIndex]) {
+        // Move
+        newGuessPlacement[articleIndex][wordIndex] =
+          newGuessPlacement[selectedGuess.articleIndex][
+            selectedGuess.wordIndex
+          ];
+        newGuessPlacement[selectedGuess.articleIndex][selectedGuess.wordIndex] =
+          null;
+      } else {
+        // Swap
+        [
+          newGuessPlacement[articleIndex][wordIndex],
+          newGuessPlacement[selectedGuess.articleIndex][
+            selectedGuess.wordIndex
+          ],
+        ] = [
+          newGuessPlacement[selectedGuess.articleIndex][
+            selectedGuess.wordIndex
+          ],
+          newGuessPlacement[articleIndex][wordIndex],
+        ];
+      }
+
+      setGuessPlacement(newGuessPlacement);
+      setSelectedGuess(null); // Reset selected guess
+
+      // Increment the swap/move counter
+      setSwapMoveCount((prevCount) => prevCount + 1);
+    } else {
+      // Set the clicked guess as selected
+      setSelectedGuess({ articleIndex, wordIndex });
+    }
+  };
+
   return (
     <>
       <GuessArea
@@ -117,7 +158,10 @@ export default function Game({ setGameDisplay }) {
         setGuessPlacement={setGuessPlacement}
         setAvailableWords={setAvailableWords}
         availableWords={availableWords}
+        handleGuessClick={handleGuessClick}
+        selectedGuess={selectedGuess}
       />
+      <div className="swap-move-counter">Swaps/Moves: {swapMoveCount}</div>
       <WordChoices words={availableWords} onWordClick={addWordToGuess} />
       <button
         onClick={handleClick}
