@@ -117,6 +117,7 @@ export default function Game({ setGameDisplay }) {
     if (selectedGuess) {
       // Swap or move logic
       const newGuessPlacement = [...guessPlacement];
+      let newGuessResults = [...guessResults]; // Make a copy of the guess results
 
       if (!newGuessPlacement[articleIndex][wordIndex]) {
         // Move
@@ -126,22 +127,37 @@ export default function Game({ setGameDisplay }) {
           ];
         newGuessPlacement[selectedGuess.articleIndex][selectedGuess.wordIndex] =
           null;
+
+        // Reset guess results for moved positions
+        newGuessResults[selectedGuess.articleIndex] = [
+          ...newGuessResults[selectedGuess.articleIndex],
+        ];
+        newGuessResults[articleIndex] = [...newGuessResults[articleIndex]];
+        newGuessResults[selectedGuess.articleIndex][selectedGuess.wordIndex] =
+          "default"; // Resetting the original position
+        newGuessResults[articleIndex][wordIndex] = "default"; // Resetting the target position, if you wish to clear feedback immediately
       } else {
         // Swap
-        [
-          newGuessPlacement[articleIndex][wordIndex],
+        let temp = newGuessPlacement[articleIndex][wordIndex];
+        newGuessPlacement[articleIndex][wordIndex] =
           newGuessPlacement[selectedGuess.articleIndex][
             selectedGuess.wordIndex
-          ],
-        ] = [
-          newGuessPlacement[selectedGuess.articleIndex][
-            selectedGuess.wordIndex
-          ],
-          newGuessPlacement[articleIndex][wordIndex],
+          ];
+        newGuessPlacement[selectedGuess.articleIndex][selectedGuess.wordIndex] =
+          temp;
+
+        // Reset guess results for swapped positions
+        newGuessResults[selectedGuess.articleIndex] = [
+          ...newGuessResults[selectedGuess.articleIndex],
         ];
+        newGuessResults[articleIndex] = [...newGuessResults[articleIndex]];
+        newGuessResults[selectedGuess.articleIndex][selectedGuess.wordIndex] =
+          "default";
+        newGuessResults[articleIndex][wordIndex] = "default";
       }
 
       setGuessPlacement(newGuessPlacement);
+      setGuessResults(newGuessResults); // Update the guess results state with the new results
       setSelectedGuess(null); // Reset selected guess
 
       // Increment the swap/move counter
