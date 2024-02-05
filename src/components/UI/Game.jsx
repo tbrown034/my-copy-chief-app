@@ -194,6 +194,7 @@ export default function Game({ setGameDisplay }) {
         selectedGuess={selectedGuess}
         submitGuesses={submitGuesses}
         guessResults={guessResults}
+        setGuessResults={setGuessResults}
         hasWon={hasWon}
       />
       <div className="swap-move-counter">Swaps/Moves: {swapMoveCount}</div>

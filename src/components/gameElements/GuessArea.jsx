@@ -11,6 +11,7 @@ const GuessArea = ({
   submitGuesses,
   guessResults,
   hasWon,
+  setGuessResults,
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
@@ -29,6 +30,10 @@ const GuessArea = ({
 
     setGuessPlacement(newGuessPlacement);
     setAvailableWords(newAvailableWords);
+    const resetGuessResults = newGuessPlacement.map(
+      (articleGuesses) => Array(articleGuesses.length).fill(null) // Or whatever your default state is
+    );
+    setGuessResults(resetGuessResults);
   };
 
   const clearGuesses = (articleIndex) => {
@@ -54,6 +59,12 @@ const GuessArea = ({
 
     setGuessPlacement(newGuessPlacement);
     setAvailableWords(newAvailableWords);
+    // Also reset guess results for this specific headline
+    const newGuessResults = [...guessResults];
+    newGuessResults[articleIndex] = Array(
+      newGuessPlacement[articleIndex].length
+    ).fill(null); // Reset guess results for the cleared headline
+    setGuessResults(newGuessResults);
   };
 
   const isEveryGuessFilled = () => {
