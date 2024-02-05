@@ -44,4 +44,4 @@ Please ensure your code adheres to the project's coding standards and include an
 
 ## License
 
-This project is created by [Your Name]. It is proprietary and not open source. No permission is granted for reuse, modification, or distribution.
+This project is created by Trevor Brown. It is proprietary and not open source. No permission is granted for reuse, modification, or distribution.

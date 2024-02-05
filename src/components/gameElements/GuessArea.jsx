@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const GuessArea = ({
   fullArticles,
   guessPlacement,
@@ -10,6 +12,8 @@ const GuessArea = ({
   guessResults,
   hasWon,
 }) => {
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+
   // Function to clear all guesses
   const clearAllGuesses = () => {
     // Clear all guesses
@@ -70,6 +74,7 @@ const GuessArea = ({
       )}
       {fullArticles.map((article, articleIndex) => {
         const words = article.title.split(/\s+/);
+
         return (
           <div key={articleIndex} className="flex flex-col gap-2">
             <h2 className="font-bold">
@@ -82,19 +87,38 @@ const GuessArea = ({
                 if (resultClass === "green") bgColorClass = "bg-green-500"; // Correct guess
                 if (resultClass === "yellow") bgColorClass = "bg-yellow-500"; // Partially correct guess
 
+                // Highlight logic for selected word
+                const isSelected =
+                  selectedGuess &&
+                  selectedGuess.articleIndex === articleIndex &&
+                  selectedGuess.wordIndex === wordIndex;
+                if (isSelected) bgColorClass = "bg-blue-200"; // Apply selected word highlight
+
+                // Hover logic: Apply different highlight if any word is selected
+                const isHovered =
+                  `${articleIndex}-${wordIndex}` === hoveredIndex;
+                if (selectedGuess && isHovered) {
+                  // Only apply hover highlight if a word is selected
+                  bgColorClass = "bg-blue-100";
+                }
                 return (
                   <div
                     key={wordIndex}
-                    className={`flex items-center justify-center h-12 p-2 text-lg font-bold text-blue-900 ${bgColorClass} border-2 border-gray-400 rounded-lg min-w-20 ${
+                    className={`flex items-center justify-center h-12 p-2 text-lg font-bold text-blue-900 ${bgColorClass} border-2 border-gray-400 rounded-lg min-w-20  cursor-pointer ${
                       selectedGuess?.articleIndex === articleIndex &&
                       selectedGuess?.wordIndex === wordIndex
                         ? "bg-blue-100" // Highlight selected guess, if needed
                         : ""
                     }`}
                     onClick={() => handleGuessClick(articleIndex, wordIndex)}
+                    onMouseEnter={() =>
+                      selectedGuess
+                        ? setHoveredIndex(`${articleIndex}-${wordIndex}`)
+                        : null
+                    }
+                    onMouseLeave={() => setHoveredIndex(null)}
                   >
-                    {guessPlacement[articleIndex] &&
-                      guessPlacement[articleIndex][wordIndex]}
+                    {guessPlacement[articleIndex][wordIndex]}
                   </div>
                 );
               })}
