@@ -3,14 +3,7 @@ import { fetchArticles } from "../../utils/apiFetch";
 import Answers from "../gameElements/Answers";
 import WordChoices from "../gameElements/WordChoices";
 import GuessArea from "../gameElements/GuessArea";
-
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
+import { shuffleArray } from "../../utils/shuffleArray";
 
 export default function Game({ setGameDisplay }) {
   const API_KEY = import.meta.env.VITE_NYT_API_KEY;
