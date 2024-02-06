@@ -32,8 +32,8 @@ const WordChoices = ({ words, onWordClick }) => {
         {displayWords.map((word) => (
           <div
             onClick={() => !word.selected && onWordClick(word)}
-            className={`p-2 bg-slate-800 text-xl text-white  rounded-xl hover:cursor-pointer ${
-              word.selected ? "bg-gray-400" : ""
+            className={`p-2 text-xl text-white  rounded-xl hover:cursor-pointer ${
+              word.selected ? "bg-gray-400" : "bg-slate-900"
             }`}
             key={word.id}
           >

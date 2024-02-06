@@ -103,7 +103,7 @@ const GuessArea = ({
                   selectedGuess &&
                   selectedGuess.articleIndex === articleIndex &&
                   selectedGuess.wordIndex === wordIndex;
-                if (isSelected) bgColorClass = "bg-blue-200"; // Apply selected word highlight
+                if (isSelected) bgColorClass = "bg-blue-300"; // Apply selected word highlight
 
                 // Hover logic: Apply different highlight if any word is selected
                 const isHovered =

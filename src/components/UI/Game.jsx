@@ -114,57 +114,46 @@ export default function Game({ setGameDisplay }) {
   };
 
   const handleGuessClick = (articleIndex, wordIndex) => {
+    const word = guessPlacement[articleIndex][wordIndex];
+
+    // If there is a selected guess, handle the swap or move.
     if (selectedGuess) {
-      // Swap or move logic
       const newGuessPlacement = [...guessPlacement];
-      let newGuessResults = [...guessResults]; // Make a copy of the guess results
 
-      if (!newGuessPlacement[articleIndex][wordIndex]) {
-        // Move
-        newGuessPlacement[articleIndex][wordIndex] =
+      // Determine if the current click is for a swap or to move into an empty spot.
+      if (
+        word !== null ||
+        selectedGuess.articleIndex !== articleIndex ||
+        selectedGuess.wordIndex !== wordIndex
+      ) {
+        // Perform the swap or move.
+        const selectedWord =
           newGuessPlacement[selectedGuess.articleIndex][
             selectedGuess.wordIndex
           ];
         newGuessPlacement[selectedGuess.articleIndex][selectedGuess.wordIndex] =
-          null;
+          word; // This could be null if moving to an empty spot.
+        newGuessPlacement[articleIndex][wordIndex] = selectedWord;
 
-        // Reset guess results for moved positions
-        newGuessResults[selectedGuess.articleIndex] = [
-          ...newGuessResults[selectedGuess.articleIndex],
-        ];
-        newGuessResults[articleIndex] = [...newGuessResults[articleIndex]];
-        newGuessResults[selectedGuess.articleIndex][selectedGuess.wordIndex] =
-          "default"; // Resetting the original position
-        newGuessResults[articleIndex][wordIndex] = "default"; // Resetting the target position, if you wish to clear feedback immediately
+        // After the swap, reset the selected guess.
+        setSelectedGuess(null);
       } else {
-        // Swap
-        let temp = newGuessPlacement[articleIndex][wordIndex];
-        newGuessPlacement[articleIndex][wordIndex] =
-          newGuessPlacement[selectedGuess.articleIndex][
-            selectedGuess.wordIndex
-          ];
-        newGuessPlacement[selectedGuess.articleIndex][selectedGuess.wordIndex] =
-          temp;
-
-        // Reset guess results for swapped positions
-        newGuessResults[selectedGuess.articleIndex] = [
-          ...newGuessResults[selectedGuess.articleIndex],
-        ];
-        newGuessResults[articleIndex] = [...newGuessResults[articleIndex]];
-        newGuessResults[selectedGuess.articleIndex][selectedGuess.wordIndex] =
-          "default";
-        newGuessResults[articleIndex][wordIndex] = "default";
+        // If the selected guess is clicked again, deselect it.
+        setSelectedGuess(null);
+        return;
       }
 
+      // Update the guess placements after the swap or move.
       setGuessPlacement(newGuessPlacement);
-      setGuessResults(newGuessResults); // Update the guess results state with the new results
-      setSelectedGuess(null); // Reset selected guess
 
-      // Increment the swap/move counter
-      setSwapMoveCount((prevCount) => prevCount + 1);
+      // Optionally, update any related state like guess results or move counters here.
+      // For example, resetting guess results or incrementing a move counter if you're tracking moves.
     } else {
-      // Set the clicked guess as selected
-      setSelectedGuess({ articleIndex, wordIndex });
+      // If no guess is currently selected and the spot clicked is not empty, select the word.
+      if (word !== null) {
+        setSelectedGuess({ articleIndex, wordIndex });
+      }
+      // If the spot is empty, do nothing (prevent selecting an empty spot).
     }
   };
 
