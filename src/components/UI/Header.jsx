@@ -12,12 +12,15 @@ export default function Header({ darkMode, setDarkMode }) {
           <span>Chief</span>
         </div>
       </div>
-      <button
-        onClick={handleClick}
-        className="p-2 text-xs text-white bg-sky-800 hover:bg-sky-700 active:bg-sky-600 rounded-xl"
-      >
-        Light/Dark Mode
-      </button>
+      <div className="flex items-center justify-center gap-2">
+        <i class="fa-regular fa-circle-question text-2xl"></i>
+        <button
+          onClick={handleClick}
+          className="p-2 text-xs text-white bg-sky-800 hover:bg-sky-700 active:bg-sky-600 rounded-xl"
+        >
+          Light/Dark Mode
+        </button>
+      </div>
     </div>
   );
 }
