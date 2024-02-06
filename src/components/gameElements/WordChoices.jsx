@@ -6,8 +6,14 @@ const WordChoices = ({ words, onWordClick }) => {
 
   // Effect to update displayWords when words prop changes
   useEffect(() => {
-    setDisplayWords(words);
-  }, [words]);
+    if (isSortedAZ) {
+      const sorted = [...words].sort((a, b) => a.word.localeCompare(b.word));
+      setDisplayWords(sorted);
+    } else {
+      // Assuming 'words' is already in the randomized order you desire when not sorted
+      setDisplayWords(words);
+    }
+  }, [words, isSortedAZ]); // Depend on both 'words' and 'isSortedAZ'
 
   const toggleSort = () => {
     const sorted = [...displayWords].sort((a, b) =>
