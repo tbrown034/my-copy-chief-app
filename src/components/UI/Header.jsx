@@ -24,7 +24,7 @@ export default function Header({
         </div>
       </div>
       <div className="flex items-center justify-center gap-2">
-        <i class="fa-regular fa-circle-question text-2xl"></i>
+        <i className="text-2xl fa-regular fa-circle-question"></i>
         <button
           onClick={handleClick}
           className="p-2 text-xs text-white bg-sky-800 hover:bg-sky-700 active:bg-sky-600 rounded-xl"

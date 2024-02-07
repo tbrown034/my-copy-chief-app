@@ -10,6 +10,12 @@ import Home from "./components/UI/Home";
 function App() {
   const [gameDisplay, setGameDisplay] = useState(false);
   const [isDarkMode, setDarkMode] = useDarkMode(); // Use the custom hook
+  const [gameMode, setGameMode] = useState(null); // 'latest' or 'popular'
+
+  const startGame = (mode) => {
+    setGameMode(mode); // Set the selected game mode
+    setGameDisplay(true); // Show the game component
+  };
 
   return (
     <div
@@ -24,9 +30,9 @@ function App() {
         setGameDisplay={setGameDisplay}
       />
       {!gameDisplay ? (
-        <Home setGameDisplay={setGameDisplay} />
+        <Home setGameDisplay={setGameDisplay} startGame={startGame} />
       ) : (
-        <Game setGameDisplay={setGameDisplay} />
+        <Game setGameDisplay={setGameDisplay} gameMode={gameMode} />
       )}
       <Footer />
     </div>

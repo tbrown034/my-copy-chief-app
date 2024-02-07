@@ -1,53 +1,54 @@
 import { useState, useEffect } from "react";
-import { fetchArticles } from "../../utils/apiFetch";
+import { fetchMostPopular, fetchArticles } from "../../utils/apiFetch";
 import Answers from "../gameElements/Answers";
 import WordChoices from "../gameElements/WordChoices";
 import GuessArea from "../gameElements/GuessArea";
 import { shuffleArray } from "../../utils/shuffleArray";
 
-export default function Game({ setGameDisplay }) {
+export default function Game({ setGameDisplay, gameMode }) {
   const API_KEY = import.meta.env.VITE_NYT_API_KEY;
   const numOfNewsArticles = 2;
-  const section = "home";
+  const section = "home"; // Note: This is used for the 'latest' mode
   const [fullArticles, setFullArticles] = useState([]);
   const [processedWords, setProcessedWords] = useState([]);
   const [showAnswers, setShowAnswers] = useState(false);
-  const [guessPlacement, setGuessPlacement] = useState(
-    fullArticles.map((article) =>
-      Array(article.title.split(/\s+/).length).fill(null)
-    )
-  );
+  const [guessPlacement, setGuessPlacement] = useState([]);
   const [availableWords, setAvailableWords] = useState([]);
-  const [selectedGuess, setSelectedGuess] = useState(null); // null initially
+  const [selectedGuess, setSelectedGuess] = useState(null);
   const [swapMoveCount, setSwapMoveCount] = useState(0);
   const [guessResults, setGuessResults] = useState([]);
   const [hasWon, setHasWon] = useState(false);
 
   useEffect(() => {
     const loadAndProcessArticles = async () => {
-      const fetchedArticles = await fetchArticles(
-        numOfNewsArticles,
-        section,
-        API_KEY
-      );
+      let fetchedArticles = []; // Initialize here to use later in the logic
+
+      if (gameMode === "popular") {
+        fetchedArticles = await fetchMostPopular(numOfNewsArticles, API_KEY);
+      } else if (gameMode === "latest") {
+        fetchedArticles = await fetchArticles(
+          numOfNewsArticles,
+          section,
+          API_KEY
+        );
+      }
+
       setFullArticles(fetchedArticles);
 
       let wordIdCounter = 0;
       const wordsWithIds = fetchedArticles.flatMap((article, index) =>
         article.title.split(/\s+/).map((word) => ({
-          id: `${index}-${wordIdCounter++}`, // Unique ID for each word
+          id: `${index}-${wordIdCounter++}`,
           word: word,
-          articleIndex: index, // Keep track of which article the word belongs to
-          selected: false, // Initial selected state is false
+          articleIndex: index,
+          selected: false,
         }))
       );
 
-      // Shuffle and set the processed words
       const shuffledWords = shuffleArray(wordsWithIds);
       setProcessedWords(shuffledWords);
       setAvailableWords(shuffledWords);
 
-      // Initialize guessPlacement with nulls for each word in each headline
       const initialGuessPlacement = fetchedArticles.map((article) =>
         Array(article.title.split(/\s+/).length).fill(null)
       );
@@ -55,7 +56,7 @@ export default function Game({ setGameDisplay }) {
     };
 
     loadAndProcessArticles();
-  }, [API_KEY, numOfNewsArticles, section]);
+  }, [API_KEY, gameMode, numOfNewsArticles, section]);
 
   const handleClick = () => {
     setGameDisplay(false);

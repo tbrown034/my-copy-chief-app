@@ -1,6 +1,6 @@
 import CurrentDate from "./CurrentDate";
 
-export default function Home({ setGameDisplay }) {
+export default function Home({ setGameDisplay, startGame }) {
   const handleClick = () => {
     setGameDisplay(true);
   };
@@ -11,12 +11,26 @@ export default function Home({ setGameDisplay }) {
         <i className="p-2 text-6xl text-white bg-sky-800 fa-regular fa-newspaper rounded-2xl"></i>
         <h1 className="text-4xl font-bold font">CopyChief 3.0</h1>
         <h2 className="text-xl ">A Wordle-inspired headline guessing game.</h2>
-        <button
+        <div className="flex gap-2">
+          <button
+            className="p-2 px-12 text-lg bg-sky-900 hover:bg-sky-700 active:bg-sky-600 text-sky-100 rounded-xl"
+            onClick={() => startGame("latest")}
+          >
+            Latest News
+          </button>
+          <button
+            className="p-2 px-12 text-lg bg-sky-900 hover:bg-sky-700 active:bg-sky-600 text-sky-100 rounded-xl"
+            onClick={() => startGame("popular")}
+          >
+            Most Popular
+          </button>
+        </div>
+        {/* <button
           onClick={handleClick}
           className="p-2 px-12 text-lg bg-sky-900 hover:bg-sky-700 active:bg-sky-600 text-sky-100 rounded-xl"
         >
           Play
-        </button>
+        </button> */}
         <CurrentDate />
         <p>
           Created by{" "}
