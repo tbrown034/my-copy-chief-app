@@ -91,6 +91,10 @@ const GuessArea = ({
             <h2 className="font-bold">
               Headline #{articleIndex + 1}: ({words.length} words)
             </h2>
+            <p> {article.created_date}</p>
+            <p> {article.section}</p>
+            <p> {article.subsection}</p>
+
             <div className="flex flex-wrap gap-2 mb-2">
               {words.map((_, wordIndex) => {
                 const resultClass = guessResults[articleIndex]?.[wordIndex];
