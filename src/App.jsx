@@ -17,7 +17,12 @@ function App() {
         isDarkMode ? "dark:bg-zinc-700 dark:text-slate-200" : "bg-zinc-200"
       }`}
     >
-      <Header darkMode={isDarkMode} setDarkMode={setDarkMode} />
+      <Header
+        darkMode={isDarkMode}
+        setDarkMode={setDarkMode}
+        gameDisplay={gameDisplay}
+        setGameDisplay={setGameDisplay}
+      />
       {!gameDisplay ? (
         <Home setGameDisplay={setGameDisplay} />
       ) : (
