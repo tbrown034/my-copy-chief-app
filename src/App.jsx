@@ -20,7 +20,7 @@ function App() {
   return (
     <div
       className={`flex flex-col min-h-screen gap-4 p-4 ${
-        isDarkMode ? "dark:bg-zinc-700 dark:text-slate-200" : "bg-zinc-200"
+        isDarkMode ? "dark:bg-black dark:text-white" : ""
       }`}
     >
       <Header

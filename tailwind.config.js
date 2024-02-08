@@ -4,7 +4,18 @@ export default {
   darkMode: "class", // Enable class-based dark mode
 
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        abril: ['"Abril Fatface"', "cursive"],
+        bangers: ["Bangers", "cursive"],
+        crimson: ['"Crimson Text"', "serif"],
+        zillaSlab: ["zilla slab", "serif"],
+
+        poppins: ["Poppins", "sans-serif"],
+        oxygen: ["Oxygen", "sans-serif"],
+        // Continue for other fonts
+      },
+    },
   },
   plugins: [],
 };
