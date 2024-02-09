@@ -17,7 +17,7 @@ export default function Header({
   };
 
   return (
-    <div className="flex justify-between p-2 border-b-2 border-opacity-20 border-b-black">
+    <div className="flex justify-between p-2 border-b-2 border-opacity-20 border-b-black dark:border-b-white dark:border-opacity-20">
       <div className="flex items-center gap-2 text-4xl ">
         <a
           onClick={backToHome}

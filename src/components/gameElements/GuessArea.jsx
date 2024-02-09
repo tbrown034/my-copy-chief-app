@@ -75,7 +75,6 @@ const GuessArea = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-lg font-bold">Headline Guesses</h1>
       {hasWon && (
         <div className="win-message">
           <p className="p-4 mb-4 text-2xl text-center text-green-700 bg-green-200 rounded-lg">
@@ -98,7 +97,7 @@ const GuessArea = ({
             <div className="flex flex-wrap gap-2 mb-2">
               {words.map((_, wordIndex) => {
                 const resultClass = guessResults[articleIndex]?.[wordIndex];
-                let bgColorClass = "bg-white"; // Default background color
+                let bgColorClass = ""; // Default background color
                 if (resultClass === "green") bgColorClass = "bg-green-500"; // Correct guess
                 if (resultClass === "yellow") bgColorClass = "bg-yellow-500"; // Partially correct guess
 
@@ -138,35 +137,39 @@ const GuessArea = ({
                 );
               })}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 py-8 ">
               <button
                 onClick={() => clearGuesses(articleIndex)}
-                className="p-2 px-12 text-lg bg-sky-900 hover:bg-sky-700 active:bg-sky-600 text-sky-100 rounded-xl"
+                className="p-2 px-10 text-xl text-white bg-black rounded-xl hover:bg-slate-700 focus:ring-2 focus:ring-slate-500 focus:outline-none dark:bg-white dark:text-black dark:hover:bg-slate-300 dark:focus:bg-slate-200 dark:active:bg-slate-400 active:bg-slate-800"
               >
                 Clear
+              </button>
+              <button className="p-2 px-10 text-xl text-black bg-white border-4 rounded-xl border-neutral-500 hover:bg-slate-200 active:bg-slate-300 focus:ring-2 focus:ring-neutral-500 focus:outline-none dark:text-white dark:bg-black dark:border-neutral-400 dark:hover:bg-slate-800 dark:active:bg-slate-700 dark:focus:bg-slate-600">
+                Hint
               </button>
             </div>
           </div>
         );
       })}
-
-      <button
-        onClick={clearAllGuesses}
-        className="p-2 px-12 text-lg bg-sky-900 hover:bg-sky-700 active:bg-sky-600 text-sky-100 rounded-xl"
-      >
-        Clear All Headlines
-      </button>
-      <button
-        onClick={submitGuesses}
-        disabled={!isEveryGuessFilled()}
-        className={`p-2 px-12 text-lg ${
-          isEveryGuessFilled()
-            ? "bg-sky-900 hover:bg-sky-700 active:bg-sky-600"
-            : "bg-gray-400"
-        } text-sky-100 rounded-xl`}
-      >
-        Submit
-      </button>
+      <div className="flex justify-center gap-2 py-8 ">
+        <button
+          onClick={clearAllGuesses}
+          className="p-2 px-10 text-xl text-white bg-black rounded-xl hover:bg-slate-700 focus:ring-2 focus:ring-slate-500 focus:outline-none dark:bg-white dark:text-black dark:hover:bg-slate-300 dark:focus:bg-slate-200 dark:active:bg-slate-400 active:bg-slate-800"
+        >
+          Clear All Headlines
+        </button>
+        <button
+          onClick={submitGuesses}
+          disabled={!isEveryGuessFilled()}
+          className={`p-2 px-10 text-xl text-black bg-white border-4 rounded-xl border-neutral-500 hover:bg-slate-200 active:bg-slate-300 focus:ring-2 focus:ring-neutral-500 focus:outline-none dark:text-white dark:bg-black dark:border-neutral-400 dark:hover:bg-slate-800 dark:active:bg-slate-700 dark:focus:bg-slate-60 ${
+            isEveryGuessFilled()
+              ? "bg-sky-900 hover:bg-sky-700 active:bg-sky-600"
+              : ""
+          } text-sky-100 rounded-xl`}
+        >
+          Submit
+        </button>
+      </div>
     </div>
   );
 };

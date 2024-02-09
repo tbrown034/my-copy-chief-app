@@ -5,7 +5,7 @@ const Answers = ({ fullArticles, setShowAnswers }) => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-8">
       {fullArticles.map((fullArticles, index) => (
         <div key={index}>
           <a className="font-semibold" href={fullArticles.url}>
@@ -13,12 +13,14 @@ const Answers = ({ fullArticles, setShowAnswers }) => {
           </a>
         </div>
       ))}
-      <button
-        onClick={handleClick}
-        className="p-2 px-12 text-lg bg-sky-900 hover:bg-sky-700 active:bg-sky-600 text-sky-100 rounded-xl"
-      >
-        Back to Game
-      </button>
+      <div>
+        <button
+          onClick={handleClick}
+          className="p-2 px-10 text-xl text-white bg-black rounded-xl hover:bg-slate-700 focus:ring-2 focus:ring-slate-500 focus:outline-none dark:bg-white dark:text-black dark:hover:bg-slate-300 dark:focus:bg-slate-200 dark:active:bg-slate-400 active:bg-slate-800"
+        >
+          Back to Game
+        </button>
+      </div>
     </div>
   );
 };

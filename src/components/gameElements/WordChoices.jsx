@@ -25,22 +25,23 @@ const WordChoices = ({ words, onWordClick }) => {
 
   return (
     <div className="flex flex-col gap-4 mt-10 border-t-2 border-black border-dotted">
-      <h1 className="mt-10 text-lg font-bold">Word Choices</h1>
       <div>
         <button
           onClick={toggleSort}
-          className="p-2 px-12 text-lg bg-sky-900 hover:bg-sky-700 active:bg-sky-600 text-sky-100 rounded-xl"
+          className="p-2 text-xl text-white bg-black rounded-xl hover:bg-slate-700 focus:ring-2 focus:ring-slate-500 focus:outline-none dark:bg-white dark:text-black dark:hover:bg-slate-300 dark:focus:bg-slate-200 dark:active:bg-slate-400 active:bg-slate-800"
         >
           Sort {isSortedAZ ? "Z-A ↓" : "A-Z ↑"}
         </button>
       </div>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap justify-center gap-2 font-semibold ">
         {displayWords.map((word) => (
           <div
             onClick={() => !word.selected && onWordClick(word)}
-            className={`p-2 text-xl text-white  rounded-xl hover:cursor-pointer ${
-              word.selected ? "bg-gray-400" : "bg-slate-900"
-            }`}
+            className={`p-4 text-xl  rounded-xl hover:cursor-pointer ${
+              word.selected
+                ? "bg-gray-400 dark:bg-gray-300 dark:text-gray-500  hover:cursor-not-allowed "
+                : "bg-gray-200 dark:bg-zinc-500"
+            } hover:bg-gray-300 dark:hover:bg-gray-600 dark:active:bg-gray-700 `}
             key={word.id}
           >
             {word.word}
