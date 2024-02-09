@@ -197,17 +197,24 @@ export default function Game({ setGameDisplay, gameMode }) {
         hasWon={hasWon}
       />
       <div className="swap-move-counter">Swaps/Moves: {swapMoveCount}</div>
-      <WordChoices words={availableWords} onWordClick={addWordToGuess} />
+      <WordChoices
+        words={availableWords}
+        onWordClick={addWordToGuess}
+        guessPlacement={guessPlacement}
+        setGuessPlacement={setGuessPlacement}
+        availableWords={availableWords}
+        setAvailableWords={setAvailableWords}
+      />
       <div className="flex justify-center gap-2 py-8 ">
         <button
           onClick={handleClick}
-          className="p-2 px-10 text-xl text-white bg-black rounded-xl hover:bg-slate-700 focus:ring-2 focus:ring-slate-500 focus:outline-none dark:bg-white dark:text-black dark:hover:bg-slate-300 dark:focus:bg-slate-200 dark:active:bg-slate-400 active:bg-slate-800"
+          className="p-2 px-10 text-xl text-white bg-black rounded-xl hover:bg-slate-700 dark:bg-white dark:text-black dark:hover:bg-slate-300 dark:active:bg-slate-400 active:bg-slate-800"
         >
           Back to Home
         </button>
         <button
           onClick={handleShowAnswers}
-          className="p-2 px-10 text-xl text-black bg-white border-4 rounded-xl border-neutral-500 hover:bg-slate-200 active:bg-slate-300 focus:ring-2 focus:ring-neutral-500 focus:outline-none dark:text-white dark:bg-black dark:border-neutral-400 dark:hover:bg-slate-800 dark:active:bg-slate-700 dark:focus:bg-slate-600"
+          className="p-2 px-10 text-xl text-black bg-white border-2 rounded-xl border-neutral-500 hover:bg-slate-100 active:bg-slate-300 dark:text-white dark:bg-black dark:border-neutral-400 dark:hover:bg-slate-800 dark:active:bg-slate-700 "
         >
           Show Answers
         </button>
