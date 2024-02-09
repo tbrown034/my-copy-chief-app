@@ -24,11 +24,11 @@ const WordChoices = ({ words, onWordClick }) => {
   };
 
   return (
-    <div className="flex flex-col gap-4 mt-10 border-t-2 border-black border-dotted">
+    <div className="flex flex-col gap-4 mt-10">
       <div>
         <button
           onClick={toggleSort}
-          className="p-2 text-xl text-white bg-black rounded-xl hover:bg-slate-700 focus:ring-2 focus:ring-slate-500 focus:outline-none dark:bg-white dark:text-black dark:hover:bg-slate-300 dark:focus:bg-slate-200 dark:active:bg-slate-400 active:bg-slate-800"
+          className="p-2 text-lg text-white bg-black rounded-xl hover:bg-slate-700 focus:ring-2 focus:ring-slate-500 focus:outline-none dark:bg-white dark:text-black dark:hover:bg-slate-300 dark:focus:bg-slate-200 dark:active:bg-slate-400 active:bg-slate-800"
         >
           Sort {isSortedAZ ? "Z-A ↓" : "A-Z ↑"}
         </button>

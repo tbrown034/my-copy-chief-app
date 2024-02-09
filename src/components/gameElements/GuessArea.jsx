@@ -74,7 +74,7 @@ const GuessArea = ({
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="">
       {hasWon && (
         <div className="win-message">
           <p className="p-4 mb-4 text-2xl text-center text-green-700 bg-green-200 rounded-lg">
@@ -86,14 +86,10 @@ const GuessArea = ({
         const words = article.title.split(/\s+/);
 
         return (
-          <div key={articleIndex} className="flex flex-col gap-2">
-            <h2 className="font-bold">
-              Headline #{articleIndex + 1}: ({words.length} words)
-            </h2>
-            <p> {article.created_date}</p>
-            <p> {article.section}</p>
-            <p> {article.subsection}</p>
-
+          <div
+            key={articleIndex}
+            className="flex flex-col items-center justify-center gap-2"
+          >
             <div className="flex flex-wrap gap-2 mb-2">
               {words.map((_, wordIndex) => {
                 const resultClass = guessResults[articleIndex]?.[wordIndex];
@@ -106,22 +102,22 @@ const GuessArea = ({
                   selectedGuess &&
                   selectedGuess.articleIndex === articleIndex &&
                   selectedGuess.wordIndex === wordIndex;
-                if (isSelected) bgColorClass = "bg-blue-300"; // Apply selected word highlight
+                if (isSelected) bgColorClass = "bg-gray-300 dark:bg-gray-700"; // Apply selected word highlight
 
                 // Hover logic: Apply different highlight if any word is selected
                 const isHovered =
                   `${articleIndex}-${wordIndex}` === hoveredIndex;
                 if (selectedGuess && isHovered) {
                   // Only apply hover highlight if a word is selected
-                  bgColorClass = "bg-blue-100";
+                  bgColorClass = "bg-gray-200 dark:bg-gray-700";
                 }
                 return (
                   <div
                     key={wordIndex}
-                    className={`flex items-center justify-center h-12 p-2 text-lg font-bold text-blue-900 ${bgColorClass} border-2 border-gray-400 rounded-lg min-w-20  cursor-pointer ${
+                    className={`flex items-center justify-center h-20 p-2 text-lg font-bold  ${bgColorClass} border-2 border-gray-400 rounded-lg min-w-20  cursor-pointer ${
                       selectedGuess?.articleIndex === articleIndex &&
                       selectedGuess?.wordIndex === wordIndex
-                        ? "bg-blue-100" // Highlight selected guess, if needed
+                        ? "bg-gray-100" // Highlight selected guess, if needed
                         : ""
                     }`}
                     onClick={() => handleGuessClick(articleIndex, wordIndex)}
@@ -138,15 +134,12 @@ const GuessArea = ({
               })}
             </div>
             <div className="flex gap-2 py-8 ">
-              <button
+              {/* <button
                 onClick={() => clearGuesses(articleIndex)}
-                className="p-2 px-10 text-xl text-white bg-black rounded-xl hover:bg-slate-700 focus:ring-2 focus:ring-slate-500 focus:outline-none dark:bg-white dark:text-black dark:hover:bg-slate-300 dark:focus:bg-slate-200 dark:active:bg-slate-400 active:bg-slate-800"
+                className="p-2 px-8 text-xl text-white bg-black rounded-xl hover:bg-slate-700 focus:ring-2 focus:ring-slate-500 focus:outline-none dark:bg-white dark:text-black dark:hover:bg-slate-300 dark:focus:bg-slate-200 dark:active:bg-slate-400 active:bg-slate-800"
               >
                 Clear
-              </button>
-              <button className="p-2 px-10 text-xl text-black bg-white border-4 rounded-xl border-neutral-500 hover:bg-slate-200 active:bg-slate-300 focus:ring-2 focus:ring-neutral-500 focus:outline-none dark:text-white dark:bg-black dark:border-neutral-400 dark:hover:bg-slate-800 dark:active:bg-slate-700 dark:focus:bg-slate-600">
-                Hint
-              </button>
+              </button> */}
             </div>
           </div>
         );
@@ -161,11 +154,12 @@ const GuessArea = ({
         <button
           onClick={submitGuesses}
           disabled={!isEveryGuessFilled()}
-          className={`p-2 px-10 text-xl text-black bg-white border-4 rounded-xl border-neutral-500 hover:bg-slate-200 active:bg-slate-300 focus:ring-2 focus:ring-neutral-500 focus:outline-none dark:text-white dark:bg-black dark:border-neutral-400 dark:hover:bg-slate-800 dark:active:bg-slate-700 dark:focus:bg-slate-60 ${
-            isEveryGuessFilled()
-              ? "bg-sky-900 hover:bg-sky-700 active:bg-sky-600"
-              : ""
-          } text-sky-100 rounded-xl`}
+          className={`p-2 px-10 text-xl rounded-xl focus:outline-none transition duration-150 ease-in-out border-2
+    ${
+      isEveryGuessFilled()
+        ? "border-black hover:bg-gray-200 active:bg-gray-300 focus:ring-gray-500 dark:border-white dark:bg-black dark:text-white dark:hover:bg-gray-700 dark:active:bg-gray-600"
+        : "bg-gray-300 text-gray-500 border-gray-300 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400 dark:border-gray-700"
+    }`}
         >
           Submit
         </button>
