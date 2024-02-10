@@ -60,17 +60,18 @@ const WordChoices = ({
       <div className="flex gap-2">
         <button
           onClick={toggleSort}
-          className="p-2 text-lg text-white bg-black rounded-xl hover:bg-slate-700 dark:bg-white dark:text-black dark:hover:bg-slate-300 dark:active:bg-slate-400 active:bg-slate-800"
+          className="p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:focus:ring-white"
         >
           Sort {isSortedAZ ? "Z-A ↓" : "A-Z ↑"}
         </button>
         <button
           onClick={fillRandomGuesses}
-          className="p-2 text-lg text-black bg-white border-2 rounded-xl border-neutral-500 hover:bg-slate-100 active:bg-slate-300 dark:text-white dark:bg-black dark:border-neutral-400 dark:hover:bg-slate-800 dark:active:bg-slate-700"
+          className="p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:focus:ring-white"
         >
-          Random Gueses
+          Random Guesses
         </button>
       </div>
+
       <div className="flex flex-wrap justify-center gap-2 font-semibold ">
         {displayWords.map((word) => (
           <div

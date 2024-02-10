@@ -86,14 +86,14 @@ const GuessArea = ({
           <div className="flex flex-col gap-12 p-4 px-8">
             {fullArticles.map((article, articleIndex) => (
               <div key={articleIndex} className="">
-                <div className="flex flex-wrap gap-2 mb-2">
+                <div className="flex flex-wrap gap-2">
                   {article.title.split(/\s+/).map((_, wordIndex) => {
                     const resultClass = guessResults[articleIndex]?.[wordIndex];
                     let bgColorClass =
                       resultClass === "green"
-                        ? "bg-green-500"
+                        ? " bg-green-500 dark:bg-green-600"
                         : resultClass === "yellow"
-                        ? "bg-yellow-500"
+                        ? "bg-yellow-400 dark:bg-yellow-500"
                         : "";
                     const isSelected =
                       selectedGuess?.articleIndex === articleIndex &&
@@ -127,24 +127,24 @@ const GuessArea = ({
           <div className="flex justify-center gap-2 py-8">
             <button
               onClick={clearAllGuesses}
-              className="p-2 px-10 text-xl text-white bg-black rounded-xl hover:bg-slate-700 dark:bg-white dark:text-black dark:hover:bg-slate-300"
+              className="p-2 px-10 text-xl bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:focus:ring-white"
             >
               Clear All Headlines
             </button>
             <button
               onClick={submitGuesses}
               disabled={!isEveryGuessFilled()}
-              className={`p-2 px-10 text-xl rounded-xl transition duration-150 ease-in-out border-2 ${
+              className={`p-2 px-10 text-xl rounded-xl transition duration-150 ease-in-out shadow-sm ${
                 isEveryGuessFilled()
-                  ? "border-black hover:bg-gray-700 active:bg-gray-800  dark:border-white"
-                  : "bg-gray-300 text-gray-500 border-gray-300 cursor-not-allowed dark:bg-gray-700"
+                  ? "border border-black bg-transparent hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:active:bg-gray-800 dark:focus:ring-white"
+                  : "bg-gray-300 text-gray-500 border-gray-300 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400"
               }`}
             >
               Submit
             </button>
             <button
               onClick={solvePuzzle}
-              className="p-2 px-10 text-xl text-white bg-gray-500 rounded-xl hover:bg-gray-700 dark:bg-gray-500 dark:text-white dark:hover:bg-green-600"
+              className="p-2 px-10 text-xl bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:focus:ring-white"
             >
               Solve
             </button>
