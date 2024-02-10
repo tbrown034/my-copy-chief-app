@@ -10,6 +10,7 @@ const WordChoices = ({
 }) => {
   const [displayWords, setDisplayWords] = useState([]);
   const [isSortedAZ, setIsSortedAZ] = useState(false);
+  const [articleWins, setArticleWins] = useState([]);
 
   // Effect to update displayWords when words prop changes
   useEffect(() => {

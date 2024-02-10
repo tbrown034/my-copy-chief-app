@@ -17,7 +17,6 @@ const GuessArea = ({
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
-  // Function to clear all guesses
   const clearAllGuesses = () => {
     const resetState = guessPlacement.map((guesses) =>
       Array(guesses.length).fill(null)
@@ -54,10 +53,9 @@ const GuessArea = ({
 
   const solvePuzzle = () => {
     const newGuessPlacement = fullArticles.map(
-      (article) => article.title.split(/\s+/) // Assuming titles are split correctly for your use case
+      (article) => article.title.split(/\s+/) //
     );
 
-    // Mark all words as selected since we're solving the puzzle
     const newAvailableWords = availableWords.map((word) => ({
       ...word,
       selected: true,
@@ -65,7 +63,7 @@ const GuessArea = ({
 
     setGuessPlacement(newGuessPlacement);
     setAvailableWords(newAvailableWords);
-    // Optionally, set guess results to all correct, if needed
+
     const newGuessResults = newGuessPlacement.map(
       (articleGuesses) => articleGuesses.map(() => "green") // Assuming "green" indicates correct
     );
@@ -124,7 +122,7 @@ const GuessArea = ({
               </div>
             ))}
           </div>
-          <div className="flex justify-center gap-2 py-8">
+          <div className="flex flex-wrap justify-center gap-2 py-8">
             <button
               onClick={clearAllGuesses}
               className="p-2 px-10 text-xl bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:focus:ring-white"

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchMostPopular, fetchArticles } from "../../utils/apiFetch";
+import { fetchMostPopular } from "../../utils/apiFetch";
 import WordChoices from "../gameElements/WordChoices";
 import GuessArea from "../gameElements/GuessArea";
 import { shuffleArray } from "../../utils/shuffleArray";
@@ -16,20 +16,14 @@ export default function Game({ setGameDisplay, gameMode }) {
   const [selectedGuess, setSelectedGuess] = useState(null);
   const [guessResults, setGuessResults] = useState([]);
   const [hasWon, setHasWon] = useState(false);
+  const [articleWins, setArticleWins] = useState(
+    new Array(fullArticles.length).fill(false)
+  );
 
   useEffect(() => {
     const loadAndProcessArticles = async () => {
       let fetchedArticles = []; // Initialize here to use later in the logic
-
-      if (gameMode === "popular") {
-        fetchedArticles = await fetchMostPopular(numOfNewsArticles, API_KEY);
-      } else if (gameMode === "latest") {
-        fetchedArticles = await fetchArticles(
-          numOfNewsArticles,
-          section,
-          API_KEY
-        );
-      }
+      fetchedArticles = await fetchMostPopular(numOfNewsArticles, API_KEY);
 
       setFullArticles(fetchedArticles);
 
@@ -104,44 +98,33 @@ export default function Game({ setGameDisplay, gameMode }) {
   const handleGuessClick = (articleIndex, wordIndex) => {
     const word = guessPlacement[articleIndex][wordIndex];
 
-    // If there is a selected guess, handle the swap or move.
     if (selectedGuess) {
       const newGuessPlacement = [...guessPlacement];
 
-      // Determine if the current click is for a swap or to move into an empty spot.
       if (
         word !== null ||
         selectedGuess.articleIndex !== articleIndex ||
         selectedGuess.wordIndex !== wordIndex
       ) {
-        // Perform the swap or move.
         const selectedWord =
           newGuessPlacement[selectedGuess.articleIndex][
             selectedGuess.wordIndex
           ];
         newGuessPlacement[selectedGuess.articleIndex][selectedGuess.wordIndex] =
-          word; // This could be null if moving to an empty spot.
+          word;
         newGuessPlacement[articleIndex][wordIndex] = selectedWord;
 
-        // After the swap, reset the selected guess.
         setSelectedGuess(null);
       } else {
-        // If the selected guess is clicked again, deselect it.
         setSelectedGuess(null);
         return;
       }
 
-      // Update the guess placements after the swap or move.
       setGuessPlacement(newGuessPlacement);
-
-      // Optionally, update any related state like guess results or move counters here.
-      // For example, resetting guess results or incrementing a move counter if you're tracking moves.
     } else {
-      // If no guess is currently selected and the spot clicked is not empty, select the word.
       if (word !== null) {
         setSelectedGuess({ articleIndex, wordIndex });
       }
-      // If the spot is empty, do nothing (prevent selecting an empty spot).
     }
   };
 
@@ -149,30 +132,27 @@ export default function Game({ setGameDisplay, gameMode }) {
     const correctHeadlines = fullArticles.map((article) =>
       article.title.split(/\s+/)
     );
-    let win = true; // Assume win until proven otherwise
+    let newArticleWins = [...articleWins];
 
-    const newGuessResults = guessPlacement.map((articleGuesses, articleIndex) =>
-      articleGuesses.map((guess, wordIndex) => {
-        if (guess === correctHeadlines[articleIndex][wordIndex]) {
-          return "green"; // Correct guess
-        } else {
-          win = false; // Any incorrect guess negates the win
-          const correctArticleIndex = correctHeadlines.findIndex((headline) =>
-            headline.includes(guess)
-          );
-          if (
-            correctArticleIndex !== -1 &&
-            correctHeadlines[correctArticleIndex][wordIndex] === guess
-          ) {
-            return "yellow"; // Right word, wrong headline
+    const newGuessResults = guessPlacement.map(
+      (articleGuesses, articleIndex) => {
+        let articleCorrect = true;
+        const articleGuessResults = articleGuesses.map((guess, wordIndex) => {
+          if (guess !== correctHeadlines[articleIndex][wordIndex]) {
+            articleCorrect = false;
+            return "default";
           }
-          return "default"; // Incorrect guess
-        }
-      })
+          return "green";
+        });
+
+        newArticleWins[articleIndex] = articleCorrect;
+        return articleGuessResults;
+      }
     );
 
     setGuessResults(newGuessResults);
-    setHasWon(win);
+    setArticleWins(newArticleWins);
+    setHasWon(newArticleWins.every((win) => win)); // Check if all articles are correctly guessed
   };
 
   return (

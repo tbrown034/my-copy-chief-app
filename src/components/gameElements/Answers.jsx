@@ -4,33 +4,61 @@ const Answers = ({ fullArticles, setShowAnswers }) => {
     setShowAnswers(false);
   };
 
+  // Helper function to extract image URL
+  const getImageUrl = (mediaArray) => {
+    if (
+      mediaArray.length > 0 &&
+      mediaArray[0]["media-metadata"] &&
+      mediaArray[0]["media-metadata"].length > 0
+    ) {
+      // Find a 'medium' sized image for better mobile display if available
+      const mediumImage =
+        mediaArray[0]["media-metadata"].find(
+          (m) => m.format === "mediumThreeByTwo210"
+        ) || mediaArray[0]["media-metadata"][0];
+      return mediumImage.url;
+    }
+    return ""; // Return a default image URL or an empty string if no image is found
+  };
+
   return (
-    <div className="flex flex-col gap-8">
-      <div className="text-xl font-semibold">Congratulations!! You Won. </div>
-      {fullArticles.map((fullArticles, index) => (
-        <div className="flex flex-col gap-2" key={index}>
-          {/* Assuming multimedia is an array and we're interested in the first image */}
-          {fullArticles.multimedia && fullArticles.multimedia.length > 0 && (
+    <div className="flex flex-col items-center px-4 py-8">
+      <h2 className="mb-4 text-3xl font-semibold text-center">
+        Congratulations!
+      </h2>
+      <p className="mb-8 text-lg text-center">
+        You've guessed today's headlines correctly. Here's what's making the
+        news:
+      </p>
+      {fullArticles.map((article, index) => (
+        <div
+          className="w-full max-w-md p-4 mb-6 bg-white rounded-lg shadow-md"
+          key={index}
+        >
+          {article.media && article.media.length > 0 && (
             <img
-              src={fullArticles.multimedia[0].url} // Access the URL of the first multimedia item
-              alt={fullArticles.multimedia[0].caption || "Article image"} // Provide an alt using the caption if available
-              className="rounded-lg "
+              src={getImageUrl(article.media)}
+              alt={article.title || "Article image"}
+              className="mb-4 rounded-lg"
             />
           )}
-          <a className="text-xl font-bold" href={fullArticles.url}>
-            {fullArticles.title}
+          <a
+            href={article.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xl font-bold hover:underline"
+          >
+            {article.title}
           </a>
-          <p>{fullArticles.abstract}</p>
+          <p className="mt-2 text-gray-700">{article.abstract}</p>
         </div>
       ))}
-      <div>
-        <button
-          onClick={handleClick}
-          className="p-2 px-10 text-xl text-white bg-black rounded-xl hover:bg-slate-700 focus:ring-2 focus:ring-slate-500 focus:outline-none dark:bg-white dark:text-black dark:hover:bg-slate-300 dark:focus:bg-slate-200 dark:active:bg-slate-400 active:bg-slate-800"
-        >
-          Play Again
-        </button>
-      </div>
+      <button
+        onClick={handleClick}
+        className="p-2 px-10 mt-8 text-xl text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-300 focus:outline-none"
+      >
+        Play Again
+      </button>
     </div>
   );
 };
