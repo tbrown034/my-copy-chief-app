@@ -3,6 +3,7 @@ import { fetchMostPopular } from "../../utils/apiFetch";
 import WordChoices from "../gameElements/WordChoices";
 import GuessArea from "../gameElements/GuessArea";
 import { shuffleArray } from "../../utils/shuffleArray";
+import Answers from "../gameElements/Answers";
 
 export default function Game({ setGameDisplay, gameMode }) {
   const API_KEY = import.meta.env.VITE_NYT_API_KEY;
@@ -153,6 +154,11 @@ export default function Game({ setGameDisplay, gameMode }) {
     setGuessResults(newGuessResults);
     setArticleWins(newArticleWins);
     setHasWon(newArticleWins.every((win) => win)); // Check if all articles are correctly guessed
+  };
+
+  const playAgain = () => {
+    setGameDisplay(false); // Go back to the home screen
+    // Reset the game state here if necessary
   };
 
   return (

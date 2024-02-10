@@ -77,13 +77,15 @@ const GuessArea = ({
           <Answers
             setShowAnswers={setShowAnswers}
             fullArticles={fullArticles}
+            guessResults={guessResults}
           />
         </div>
       ) : (
         <div className="flex flex-col items-center gap-4">
           <div className="flex flex-col gap-12 p-4 px-8">
             {fullArticles.map((article, articleIndex) => (
-              <div key={articleIndex} className="">
+              <div key={articleIndex}>
+                <div></div>
                 <div className="flex flex-wrap gap-2">
                   {article.title.split(/\s+/).map((_, wordIndex) => {
                     const resultClass = guessResults[articleIndex]?.[wordIndex];

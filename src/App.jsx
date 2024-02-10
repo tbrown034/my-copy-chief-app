@@ -1,6 +1,5 @@
 // src/App.js
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDarkMode } from "./hooks/useDarkMode";
 import Footer from "./components/UI/Footer";
 import Header from "./components/UI/Header";
@@ -10,12 +9,6 @@ import Home from "./components/UI/Home";
 function App() {
   const [gameDisplay, setGameDisplay] = useState(false);
   const [isDarkMode, setDarkMode] = useDarkMode(); // Use the custom hook
-  const [gameMode, setGameMode] = useState(null); // 'latest' or 'popular'
-
-  const startGame = (mode) => {
-    setGameMode(mode); // Set the selected game mode
-    setGameDisplay(true); // Show the game component
-  };
 
   return (
     <div
@@ -30,9 +23,9 @@ function App() {
         setGameDisplay={setGameDisplay}
       />
       {!gameDisplay ? (
-        <Home setGameDisplay={setGameDisplay} startGame={startGame} />
+        <Home setGameDisplay={setGameDisplay} />
       ) : (
-        <Game setGameDisplay={setGameDisplay} gameMode={gameMode} />
+        <Game setGameDisplay={setGameDisplay} />
       )}
       <Footer />
     </div>
