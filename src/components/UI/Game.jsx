@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { fetchMostPopular, fetchArticles } from "../../utils/apiFetch";
-import Answers from "../gameElements/Answers";
 import WordChoices from "../gameElements/WordChoices";
 import GuessArea from "../gameElements/GuessArea";
 import { shuffleArray } from "../../utils/shuffleArray";
@@ -15,7 +14,6 @@ export default function Game({ setGameDisplay, gameMode }) {
   const [guessPlacement, setGuessPlacement] = useState([]);
   const [availableWords, setAvailableWords] = useState([]);
   const [selectedGuess, setSelectedGuess] = useState(null);
-  const [swapMoveCount, setSwapMoveCount] = useState(0);
   const [guessResults, setGuessResults] = useState([]);
   const [hasWon, setHasWon] = useState(false);
 
@@ -60,10 +58,6 @@ export default function Game({ setGameDisplay, gameMode }) {
 
   const handleClick = () => {
     setGameDisplay(false);
-  };
-
-  const handleShowAnswers = () => {
-    setShowAnswers(true);
   };
 
   const addWordToGuess = (selectedWord) => {
@@ -195,8 +189,8 @@ export default function Game({ setGameDisplay, gameMode }) {
         guessResults={guessResults}
         setGuessResults={setGuessResults}
         hasWon={hasWon}
+        setShowAnswers={setShowAnswers}
       />
-      <div className="swap-move-counter">Swaps/Moves: {swapMoveCount}</div>
       <WordChoices
         words={availableWords}
         onWordClick={addWordToGuess}
@@ -212,19 +206,7 @@ export default function Game({ setGameDisplay, gameMode }) {
         >
           Back to Home
         </button>
-        <button
-          onClick={handleShowAnswers}
-          className="p-2 px-10 text-xl text-black bg-white border-2 rounded-xl border-neutral-500 hover:bg-slate-100 active:bg-slate-300 dark:text-white dark:bg-black dark:border-neutral-400 dark:hover:bg-slate-800 dark:active:bg-slate-700 "
-        >
-          Show Answers
-        </button>
       </div>
-
-      {!showAnswers ? (
-        ""
-      ) : (
-        <Answers setShowAnswers={setShowAnswers} fullArticles={fullArticles} />
-      )}
     </>
   );
 }
