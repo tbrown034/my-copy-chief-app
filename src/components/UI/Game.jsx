@@ -3,7 +3,8 @@ import { fetchMostPopular } from "../../utils/apiFetch";
 import WordChoices from "../gameElements/WordChoices";
 import GuessArea from "../gameElements/GuessArea";
 import { shuffleArray } from "../../utils/shuffleArray";
-import Answers from "../gameElements/Answers";
+import WinDisplay from "../gameElements/WinDisplay";
+import Article from "./Article";
 
 export default function Game({ setGameDisplay, gameMode }) {
   const API_KEY = import.meta.env.VITE_NYT_API_KEY;
@@ -50,10 +51,6 @@ export default function Game({ setGameDisplay, gameMode }) {
 
     loadAndProcessArticles();
   }, [API_KEY, gameMode, numOfNewsArticles, section]);
-
-  const handleClick = () => {
-    setGameDisplay(false);
-  };
 
   const addWordToGuess = (selectedWord) => {
     // Find the first empty position in the nested guessPlacement array
@@ -150,49 +147,79 @@ export default function Game({ setGameDisplay, gameMode }) {
         return articleGuessResults;
       }
     );
-
+    checkArticleWins();
     setGuessResults(newGuessResults);
     setArticleWins(newArticleWins);
     setHasWon(newArticleWins.every((win) => win)); // Check if all articles are correctly guessed
   };
 
-  const playAgain = () => {
+  const checkArticleWins = () => {
+    const newArticleWins = fullArticles.map((article, index) => {
+      const correctHeadline = article.title.split(/\s+/);
+      const guessedHeadline = guessPlacement[index];
+      return correctHeadline.every(
+        (word, wordIndex) => guessedHeadline[wordIndex] === word
+      );
+    });
+
+    setArticleWins(newArticleWins);
+    setHasWon(newArticleWins.every(Boolean)); // Update hasWon based on all articles being correctly guessed
+  };
+
+  const resetGame = () => {
     setGameDisplay(false); // Go back to the home screen
     // Reset the game state here if necessary
   };
 
   return (
-    <>
-      <GuessArea
-        fullArticles={fullArticles}
-        guessPlacement={guessPlacement}
-        setGuessPlacement={setGuessPlacement}
-        setAvailableWords={setAvailableWords}
-        availableWords={availableWords}
-        handleGuessClick={handleGuessClick}
-        selectedGuess={selectedGuess}
-        submitGuesses={submitGuesses}
-        guessResults={guessResults}
-        setGuessResults={setGuessResults}
-        hasWon={hasWon}
-        setShowAnswers={setShowAnswers}
-      />
-      <WordChoices
-        words={availableWords}
-        onWordClick={addWordToGuess}
-        guessPlacement={guessPlacement}
-        setGuessPlacement={setGuessPlacement}
-        availableWords={availableWords}
-        setAvailableWords={setAvailableWords}
-      />
-      <div className="flex justify-center gap-2 py-8 ">
+    <div>
+      {hasWon ? (
+        <WinDisplay fullArticles={fullArticles} />
+      ) : (
+        <>
+          <div>
+            {fullArticles.map(
+              (article, index) =>
+                articleWins[index] && (
+                  // Render individual Article component for won articles
+                  <Article key={index} article={article} />
+                )
+            )}
+          </div>
+          <GuessArea
+            fullArticles={fullArticles}
+            guessPlacement={guessPlacement}
+            setGuessPlacement={setGuessPlacement}
+            setAvailableWords={setAvailableWords}
+            availableWords={availableWords}
+            handleGuessClick={handleGuessClick}
+            selectedGuess={selectedGuess}
+            submitGuesses={submitGuesses}
+            guessResults={guessResults}
+            articleWins={articleWins}
+            setGuessResults={setGuessResults}
+            hasWon={hasWon}
+            setShowAnswers={setShowAnswers}
+          />
+          <WordChoices
+            words={availableWords}
+            onWordClick={addWordToGuess}
+            guessPlacement={guessPlacement}
+            setGuessPlacement={setGuessPlacement}
+            availableWords={availableWords}
+            setAvailableWords={setAvailableWords}
+          />
+        </>
+      )}
+
+      <div className="flex justify-center gap-2 py-8">
         <button
-          onClick={handleClick}
-          className="p-2 px-10 text-xl text-white bg-black rounded-xl hover:bg-slate-700 dark:bg-white dark:text-black dark:hover:bg-slate-300 dark:active:bg-slate-400 active:bg-slate-800"
+          onClick={resetGame}
+          className="p-2 px-10 mt-8 text-xl text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-300 focus:outline-none"
         >
-          Back to Home
+          Main Menu
         </button>
       </div>
-    </>
+    </div>
   );
 }
