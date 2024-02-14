@@ -1,5 +1,4 @@
 const WinDisplay = ({ fullArticles }) => {
-  // Helper function to extract image URL
   const getImageUrl = (mediaArray) => {
     if (
       mediaArray.length > 0 &&
@@ -12,9 +11,8 @@ const WinDisplay = ({ fullArticles }) => {
         ) || mediaArray[0]["media-metadata"][0];
       return mediumImage.url;
     }
-    return ""; // Return a default image URL or an empty string if no image is found
+    return "";
   };
-
   return (
     <div className="flex flex-col items-center gap-8 px-4 py-8">
       <div className="text-center">
@@ -26,7 +24,7 @@ const WinDisplay = ({ fullArticles }) => {
       {fullArticles.map((article, index) => (
         <div
           className="w-3/4 p-4 rounded-lg shadow-md bg-slate-100"
-          key={index} // Ensure a unique key for each article
+          key={index}
         >
           {article.media && article.media.length > 0 && (
             <img

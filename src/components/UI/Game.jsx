@@ -47,6 +47,7 @@ export default function Game({ setGameDisplay, gameMode }) {
         Array(article.title.split(/\s+/).length).fill(null)
       );
       setGuessPlacement(initialGuessPlacement);
+      setArticleWins(new Array(fetchedArticles.length).fill(false));
     };
 
     loadAndProcessArticles();
@@ -130,41 +131,48 @@ export default function Game({ setGameDisplay, gameMode }) {
     const correctHeadlines = fullArticles.map((article) =>
       article.title.split(/\s+/)
     );
-    let newArticleWins = [...articleWins];
 
-    const newGuessResults = guessPlacement.map(
-      (articleGuesses, articleIndex) => {
-        let articleCorrect = true;
-        const articleGuessResults = articleGuesses.map((guess, wordIndex) => {
-          if (guess !== correctHeadlines[articleIndex][wordIndex]) {
-            articleCorrect = false;
-            return "default";
-          }
-          return "green";
-        });
+    // This will hold the results of each guess, whether it's correct or not.
+    let newGuessResults = [];
 
-        newArticleWins[articleIndex] = articleCorrect;
-        return articleGuessResults;
-      }
-    );
-    checkArticleWins();
-    setGuessResults(newGuessResults);
-    setArticleWins(newArticleWins);
-    setHasWon(newArticleWins.every((win) => win)); // Check if all articles are correctly guessed
-  };
-
-  const checkArticleWins = () => {
-    const newArticleWins = fullArticles.map((article, index) => {
-      const correctHeadline = article.title.split(/\s+/);
+    // This will hold the win status for each article.
+    let newArticleWins = fullArticles.map((article, index) => {
+      const correctHeadline = correctHeadlines[index];
       const guessedHeadline = guessPlacement[index];
-      return correctHeadline.every(
+
+      // Check if the guessed headline matches the correct headline.
+      const isCorrect = correctHeadline.every(
         (word, wordIndex) => guessedHeadline[wordIndex] === word
       );
+
+      // Update the guess results for each word in the headline.
+      const articleGuessResults = guessedHeadline.map((guess, wordIndex) =>
+        guess === correctHeadline[wordIndex] ? "green" : "default"
+      );
+
+      newGuessResults.push(articleGuessResults);
+
+      // Return the win status for this article.
+      return isCorrect;
     });
 
+    // Update the state with the new results.
+    setGuessResults(newGuessResults);
     setArticleWins(newArticleWins);
-    setHasWon(newArticleWins.every(Boolean)); // Update hasWon based on all articles being correctly guessed
+
+    // Check if all articles are correctly guessed.
+    const hasWonAll = newArticleWins.every(Boolean);
+    setHasWon(hasWonAll);
   };
+
+  // Function to update article win status
+  const updateArticleWinStatus = (articleIndex, isCorrect) => {
+    const updatedWins = [...articleWins];
+    updatedWins[articleIndex] = isCorrect;
+    setArticleWins(updatedWins);
+  };
+
+  const solvedHeadlinesCount = articleWins.filter(Boolean).length;
 
   const resetGame = () => {
     setGameDisplay(false); // Go back to the home screen
@@ -177,15 +185,6 @@ export default function Game({ setGameDisplay, gameMode }) {
         <WinDisplay fullArticles={fullArticles} />
       ) : (
         <>
-          <div>
-            {fullArticles.map(
-              (article, index) =>
-                articleWins[index] && (
-                  // Render individual Article component for won articles
-                  <Article key={index} article={article} />
-                )
-            )}
-          </div>
           <GuessArea
             fullArticles={fullArticles}
             guessPlacement={guessPlacement}
@@ -198,7 +197,9 @@ export default function Game({ setGameDisplay, gameMode }) {
             guessResults={guessResults}
             articleWins={articleWins}
             setGuessResults={setGuessResults}
+            setArticleWins={setArticleWins}
             hasWon={hasWon}
+            onCorrectGuess={() => updateArticleWinStatus(index, true)}
             setShowAnswers={setShowAnswers}
           />
           <WordChoices

@@ -5,7 +5,6 @@ import Footer from "./components/UI/Footer";
 import Header from "./components/UI/Header";
 import Game from "./components/UI/Game";
 import Home from "./components/UI/Home";
-
 function App() {
   const [gameDisplay, setGameDisplay] = useState(false);
   const [isDarkMode, setDarkMode] = useDarkMode(); // Use the custom hook

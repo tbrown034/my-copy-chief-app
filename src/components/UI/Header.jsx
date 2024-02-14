@@ -1,5 +1,4 @@
 import Toggle from "./Toggle";
-
 export default function Header({
   darkMode,
   setDarkMode,
@@ -9,13 +8,11 @@ export default function Header({
   const toggleTheme = () => {
     setDarkMode(!darkMode);
   };
-
   const backToHome = () => {
     if (gameDisplay) {
       setGameDisplay(!gameDisplay);
     }
   };
-
   return (
     <div className="flex justify-between p-2 pb-6 border-b-2 border-opacity-20 border-b-black dark:border-b-white dark:border-opacity-20">
       <a
@@ -23,7 +20,6 @@ export default function Header({
         className="flex items-center gap-2 text-2xl font-bold font-zillaSlab hover:cursor-pointer "
       >
         <i className="p-2 fa-regular fa-newspaper rounded-2xl"></i>
-
         <div className="">CopyChief</div>
       </a>
       <div className="flex items-center justify-center gap-2 text-2xl">

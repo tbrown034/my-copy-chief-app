@@ -2,7 +2,7 @@ import React from "react";
 import CurrentDate from "./CurrentDate";
 
 export default function Home({ setGameDisplay }) {
-  const handleClick = () => {
+  const playGame = () => {
     setGameDisplay(true); // We can start the game directly without specifying the mode
   };
 
@@ -15,7 +15,7 @@ export default function Home({ setGameDisplay }) {
         <div className="py-8">
           <button
             className="p-2 px-10 text-xl bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 dark:border-white dark:hover:bg-gray-700 dark:focus:ring-white"
-            onClick={handleClick}
+            onClick={playGame}
           >
             Play Game
           </button>

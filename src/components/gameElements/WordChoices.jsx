@@ -10,19 +10,14 @@ const WordChoices = ({
 }) => {
   const [displayWords, setDisplayWords] = useState([]);
   const [isSortedAZ, setIsSortedAZ] = useState(false);
-  const [articleWins, setArticleWins] = useState([]);
-
-  // Effect to update displayWords when words prop changes
   useEffect(() => {
     if (isSortedAZ) {
       const sorted = [...words].sort((a, b) => a.word.localeCompare(b.word));
       setDisplayWords(sorted);
     } else {
-      // Assuming 'words' is already in the randomized order you desire when not sorted
       setDisplayWords(words);
     }
-  }, [words, isSortedAZ]); // Depend on both 'words' and 'isSortedAZ'
-
+  }, [words, isSortedAZ]);
   const toggleSort = () => {
     const sorted = [...displayWords].sort((a, b) =>
       isSortedAZ ? b.word.localeCompare(a.word) : a.word.localeCompare(b.word)
@@ -30,7 +25,6 @@ const WordChoices = ({
     setDisplayWords(sorted);
     setIsSortedAZ(!isSortedAZ); // Toggle the sorting order
   };
-
   const fillRandomGuesses = () => {
     const newGuessPlacement = [...guessPlacement]; // Clone to avoid direct state mutation
     const remainingWords = availableWords.filter((word) => !word.selected); // Filter out already selected words
@@ -72,7 +66,6 @@ const WordChoices = ({
           Random Guesses
         </button>
       </div>
-
       <div className="flex flex-wrap justify-center gap-2 font-semibold ">
         {displayWords.map((word) => (
           <div

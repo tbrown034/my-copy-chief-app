@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { Switch } from "@headlessui/react";
-
 export default function MyToggle({ toggleTheme }) {
   const [enabled, setEnabled] = useState(false);
-
   return (
     <Switch
       checked={enabled}
