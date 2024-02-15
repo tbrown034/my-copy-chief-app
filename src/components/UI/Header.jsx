@@ -1,10 +1,13 @@
 import Toggle from "./Toggle";
+import HowTo from "./HowTo";
+import { useState } from "react";
 export default function Header({
   darkMode,
   setDarkMode,
   setGameDisplay,
   gameDisplay,
 }) {
+  const [showInstructions, setShowInstructions] = useState(false);
   const toggleTheme = () => {
     setDarkMode(!darkMode);
   };
@@ -12,6 +15,10 @@ export default function Header({
     if (gameDisplay) {
       setGameDisplay(!gameDisplay);
     }
+  };
+
+  const toggleInstructions = () => {
+    setShowInstructions(!showInstructions);
   };
   return (
     <div className="flex justify-between p-2 pb-6 border-b-2 border-opacity-20 border-b-black dark:border-b-white dark:border-opacity-20">
@@ -23,7 +30,11 @@ export default function Header({
         <div className="">CopyChief</div>
       </a>
       <div className="flex items-center justify-center gap-2 text-2xl">
-        <i className="fa-regular fa-circle-question"></i>
+        <button onClick={toggleInstructions}>
+          {" "}
+          <i className="fa-regular fa-circle-question"></i>
+        </button>
+
         <i className="fa-solid fa-gear"></i>
 
         <Toggle

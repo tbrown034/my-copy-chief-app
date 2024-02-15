@@ -4,11 +4,10 @@ import WordChoices from "../gameElements/WordChoices";
 import GuessArea from "../gameElements/GuessArea";
 import { shuffleArray } from "../../utils/shuffleArray";
 import WinDisplay from "../gameElements/WinDisplay";
-import Article from "./Article";
+import HowTo from "./HowTo";
 
 export default function Game({ setGameDisplay, gameMode }) {
   const API_KEY = import.meta.env.VITE_NYT_API_KEY;
-  const numOfNewsArticles = 2;
   const section = "home"; // Note: This is used for the 'latest' mode
   const [fullArticles, setFullArticles] = useState([]);
   const [processedWords, setProcessedWords] = useState([]);
@@ -21,6 +20,7 @@ export default function Game({ setGameDisplay, gameMode }) {
   const [articleWins, setArticleWins] = useState(
     new Array(fullArticles.length).fill(false)
   );
+  const [numOfNewsArticles, setnumOfNewsArticles] = useState(2);
 
   useEffect(() => {
     const loadAndProcessArticles = async () => {
@@ -172,7 +172,9 @@ export default function Game({ setGameDisplay, gameMode }) {
     setArticleWins(updatedWins);
   };
 
-  const solvedHeadlinesCount = articleWins.filter(Boolean).length;
+  const chooseNumOfheadlines = (number) => {
+    setnumOfNewsArticles(number);
+  };
 
   const resetGame = () => {
     setGameDisplay(false); // Go back to the home screen
@@ -185,6 +187,11 @@ export default function Game({ setGameDisplay, gameMode }) {
         <WinDisplay fullArticles={fullArticles} />
       ) : (
         <>
+          <HowTo
+            chooseNumOfheadlines={chooseNumOfheadlines}
+            numOfNewsArticles={numOfNewsArticles}
+            setnumOfNewsArticles={setnumOfNewsArticles}
+          />
           <GuessArea
             fullArticles={fullArticles}
             guessPlacement={guessPlacement}
@@ -216,7 +223,7 @@ export default function Game({ setGameDisplay, gameMode }) {
       <div className="flex justify-center gap-2 py-8">
         <button
           onClick={resetGame}
-          className="p-2 px-10 mt-8 text-xl text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-300 focus:outline-none"
+          className="p-2 px-10 text-xl bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 dark:border-white dark:hover:bg-gray-700 dark:focus:ring-white"
         >
           Main Menu
         </button>
