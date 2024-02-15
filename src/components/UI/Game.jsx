@@ -4,9 +4,8 @@ import WordChoices from "../gameElements/WordChoices";
 import GuessArea from "../gameElements/GuessArea";
 import { shuffleArray } from "../../utils/shuffleArray";
 import WinDisplay from "../gameElements/WinDisplay";
-import HowTo from "./HowTo";
 
-export default function Game({ setGameDisplay, gameMode }) {
+export default function Game({ setGameDisplay, gameMode, numOfNewsArticles }) {
   const API_KEY = import.meta.env.VITE_NYT_API_KEY;
   const section = "home"; // Note: This is used for the 'latest' mode
   const [fullArticles, setFullArticles] = useState([]);
@@ -20,7 +19,6 @@ export default function Game({ setGameDisplay, gameMode }) {
   const [articleWins, setArticleWins] = useState(
     new Array(fullArticles.length).fill(false)
   );
-  const [numOfNewsArticles, setnumOfNewsArticles] = useState(2);
 
   useEffect(() => {
     const loadAndProcessArticles = async () => {
@@ -172,10 +170,6 @@ export default function Game({ setGameDisplay, gameMode }) {
     setArticleWins(updatedWins);
   };
 
-  const chooseNumOfheadlines = (number) => {
-    setnumOfNewsArticles(number);
-  };
-
   const resetGame = () => {
     setGameDisplay(false); // Go back to the home screen
     // Reset the game state here if necessary
@@ -187,11 +181,6 @@ export default function Game({ setGameDisplay, gameMode }) {
         <WinDisplay fullArticles={fullArticles} />
       ) : (
         <>
-          <HowTo
-            chooseNumOfheadlines={chooseNumOfheadlines}
-            numOfNewsArticles={numOfNewsArticles}
-            setnumOfNewsArticles={setnumOfNewsArticles}
-          />
           <GuessArea
             fullArticles={fullArticles}
             guessPlacement={guessPlacement}

@@ -1,9 +1,10 @@
 import React from "react";
 import CurrentDate from "./CurrentDate";
 
-export default function Home({ setGameDisplay }) {
+export default function Home({ setGameDisplay, toggleHowTo }) {
   const playGame = () => {
-    setGameDisplay(true); // We can start the game directly without specifying the mode
+    setGameDisplay(true);
+    toggleHowTo(); // We can start the game directly without specifying the mode
   };
 
   return (
