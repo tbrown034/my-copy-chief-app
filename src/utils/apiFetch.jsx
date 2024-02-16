@@ -1,14 +1,17 @@
-export const fetchMostPopular = async (numOfArticles, API_KEY) => {
+// Assuming this function is in your frontend React component or a utility file
+
+// util/apiFetch
+export const fetchMostPopular = async (numOfArticles) => {
   try {
-    // Update the URL to fetch the most popular articles from the past day
-    const url = `https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=${API_KEY}`;
-    const response = await fetch(url);
+    // Make a request to your backend endpoint
+    const response = await fetch(
+      `http://localhost:3000/articles?num=${numOfArticles}`
+    );
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
-    // Slice the results to get the number of articles you want
-    return data.results.slice(0, numOfArticles);
+    return data; // This should be the sliced array of articles returned by your backend
   } catch (error) {
     console.error("Error fetching data", error);
     return []; // Return an empty array in case of an error

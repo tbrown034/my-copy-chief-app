@@ -1,3 +1,5 @@
+//game.jsx
+
 import { useState, useEffect } from "react";
 import { fetchMostPopular } from "../../utils/apiFetch";
 import WordChoices from "../gameElements/WordChoices";
@@ -5,7 +7,7 @@ import GuessArea from "../gameElements/GuessArea";
 import { shuffleArray } from "../../utils/shuffleArray";
 import WinDisplay from "../gameElements/WinDisplay";
 
-export default function Game({ setGameDisplay, difficulty, numOfHeadlines }) {
+export default function Game({ setGameDisplay, numOfHeadlines }) {
   const API_KEY = import.meta.env.VITE_NYT_API_KEY;
   const [fullArticles, setFullArticles] = useState([]);
   const [processedWords, setProcessedWords] = useState([]);
@@ -15,7 +17,6 @@ export default function Game({ setGameDisplay, difficulty, numOfHeadlines }) {
   const [selectedGuess, setSelectedGuess] = useState(null);
   const [guessResults, setGuessResults] = useState([]);
   const [hasWon, setHasWon] = useState(false);
-  const [articles, setArticles] = useState([]);
 
   const [articleWins, setArticleWins] = useState(
     new Array(fullArticles.length).fill(false)
@@ -24,7 +25,7 @@ export default function Game({ setGameDisplay, difficulty, numOfHeadlines }) {
   useEffect(() => {
     const loadAndProcessArticles = async () => {
       let fetchedArticles = []; // Initialize here to use later in the logic
-      fetchedArticles = await fetchMostPopular(numOfHeadlines, API_KEY);
+      fetchedArticles = await fetchMostPopular(numOfHeadlines);
 
       setFullArticles(fetchedArticles);
 
@@ -50,7 +51,7 @@ export default function Game({ setGameDisplay, difficulty, numOfHeadlines }) {
     };
 
     loadAndProcessArticles();
-  }, [API_KEY, numOfHeadlines]);
+  }, [numOfHeadlines]);
 
   const addWordToGuess = (selectedWord) => {
     // Find the first empty position in the nested guessPlacement array
