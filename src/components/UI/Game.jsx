@@ -5,9 +5,8 @@ import GuessArea from "../gameElements/GuessArea";
 import { shuffleArray } from "../../utils/shuffleArray";
 import WinDisplay from "../gameElements/WinDisplay";
 
-export default function Game({ setGameDisplay, gameMode, numOfNewsArticles }) {
+export default function Game({ setGameDisplay, difficulty, numOfHeadlines }) {
   const API_KEY = import.meta.env.VITE_NYT_API_KEY;
-  const section = "home"; // Note: This is used for the 'latest' mode
   const [fullArticles, setFullArticles] = useState([]);
   const [processedWords, setProcessedWords] = useState([]);
   const [showAnswers, setShowAnswers] = useState(false);
@@ -16,6 +15,8 @@ export default function Game({ setGameDisplay, gameMode, numOfNewsArticles }) {
   const [selectedGuess, setSelectedGuess] = useState(null);
   const [guessResults, setGuessResults] = useState([]);
   const [hasWon, setHasWon] = useState(false);
+  const [articles, setArticles] = useState([]);
+
   const [articleWins, setArticleWins] = useState(
     new Array(fullArticles.length).fill(false)
   );
@@ -23,7 +24,7 @@ export default function Game({ setGameDisplay, gameMode, numOfNewsArticles }) {
   useEffect(() => {
     const loadAndProcessArticles = async () => {
       let fetchedArticles = []; // Initialize here to use later in the logic
-      fetchedArticles = await fetchMostPopular(numOfNewsArticles, API_KEY);
+      fetchedArticles = await fetchMostPopular(numOfHeadlines, API_KEY);
 
       setFullArticles(fetchedArticles);
 
@@ -49,7 +50,7 @@ export default function Game({ setGameDisplay, gameMode, numOfNewsArticles }) {
     };
 
     loadAndProcessArticles();
-  }, [API_KEY, gameMode, numOfNewsArticles, section]);
+  }, [API_KEY, numOfHeadlines]);
 
   const addWordToGuess = (selectedWord) => {
     // Find the first empty position in the nested guessPlacement array
@@ -212,7 +213,7 @@ export default function Game({ setGameDisplay, gameMode, numOfNewsArticles }) {
       <div className="flex justify-center gap-2 py-8">
         <button
           onClick={resetGame}
-          className="p-2 px-10 text-xl bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 dark:border-white dark:hover:bg-gray-700 dark:focus:ring-white"
+          className="p-2 px-10 text-xl bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700 "
         >
           Main Menu
         </button>
