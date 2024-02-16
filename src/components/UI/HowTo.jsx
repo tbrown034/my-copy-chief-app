@@ -1,22 +1,30 @@
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, Transition, RadioGroup } from "@headlessui/react";
 import { Fragment, useState } from "react";
 
-export default function HowTo({ chooseNumOfheadlines, toggleHowTo }) {
+export default function HowTo({
+  toggleHowTo,
+  changeSection,
+  changeDifficulty,
+  difficulty,
+  section,
+  difficultyOptions,
+  sectionOptions,
+}) {
   const [isOpen, setIsOpen] = useState(true);
-  const [isDifficultyDisplay, setisDifficultyDisplay] = useState(false);
+  const [overlay, setOverlay] = useState(null);
 
   function closeModal() {
-    toggleHowTo();
+    setOverlay(null); // Close overlay
+    toggleHowTo(); // If you want to close the entire modal
   }
 
-  const changeDifficulty = () => {
-    setisDifficultyDisplay(true);
-  };
+  function openDifficultyOverlay() {
+    setOverlay("difficulty");
+  }
 
-  const chooseDifficulty = (number) => {
-    chooseNumOfheadlines(number);
-    closeModal();
-  };
+  function openSectionOverlay() {
+    setOverlay("section");
+  }
 
   return (
     <>
@@ -45,7 +53,7 @@ export default function HowTo({ chooseNumOfheadlines, toggleHowTo }) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="flex flex-col h-full max-w-xl gap-8 p-6 my-20 overflow-hidden text-left transition-all transform bg-white shadow-xl dark:bg-gray-800 dark:text-white rounded-2xl">
+                <Dialog.Panel className="flex flex-col h-full max-w-xl gap-8 p-4 my-20 overflow-hidden text-left transition-all transform bg-white shadow-xl dark:bg-gray-800 dark:text-white rounded-2xl">
                   <div>
                     <Dialog.Title className="text-2xl font-bold">
                       How To Play
@@ -80,7 +88,7 @@ export default function HowTo({ chooseNumOfheadlines, toggleHowTo }) {
                       <p className="text-xl">See Below for a few exapmples.</p>
                     </div>
 
-                    <div className="flex gap-6">
+                    <div className="flex justify-center gap-4 p-2">
                       <div className="flex gap-2">
                         <div className="flex flex-wrap items-center justify-center h-20 p-2 font-bold border-2 border-gray-400 rounded-lg ">
                           Dewey
@@ -98,7 +106,7 @@ export default function HowTo({ chooseNumOfheadlines, toggleHowTo }) {
                         </div>
                       </div>
                     </div>
-                    <div className="flex gap-6">
+                    <div className="flex justify-center gap-4 p-2">
                       <div className="flex gap-2 ">
                         <div className="flex flex-wrap items-center justify-center h-20 p-2 font-bold bg-green-500 border-2 border-gray-400 rounded-lg black:bg-green-600 ">
                           Truman
@@ -117,61 +125,39 @@ export default function HowTo({ chooseNumOfheadlines, toggleHowTo }) {
                       </div>
                     </div>
                   </div>
-                  {!isDifficultyDisplay ? (
+                  {!overlay ? (
                     <div className="flex gap-4 mt-4">
                       <button
                         type="button"
-                        className="p-2 px-4 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                        className="p-2 px-4 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
                         onClick={closeModal}
                       >
                         Got it, thanks!
                       </button>
                       <button
-                        onClick={changeDifficulty}
-                        className="p-2 px-4 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700 "
+                        onClick={openDifficultyOverlay}
+                        className="p-2 px-4 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700 "
                       >
                         Change Difficulty
                       </button>
+                      <button
+                        onClick={openSectionOverlay}
+                        className="p-2 px-4 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700 "
+                      >
+                        Change Section
+                      </button>
                     </div>
-                  ) : (
-                    <div className="flex flex-col grid-cols-2 gap-4 mt-4 lg:grid">
-                      <div>
-                        <button
-                          onClick={() => chooseDifficulty(1)}
-                          className="flex flex-col p-2 px-10 text-xl bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700 "
-                        >
-                          <p>Easy</p>
-                          <p className="text-sm">(1 Headline)</p>
-                        </button>
-                      </div>
-                      <div>
-                        <button
-                          onClick={() => chooseDifficulty(2)}
-                          className="flex flex-col p-2 px-10 text-xl bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700 "
-                        >
-                          <p>Medium (Default)</p>
-                          <p className="text-sm">(2 Headlines)</p>
-                        </button>
-                      </div>
-                      <div>
-                        <button
-                          onClick={() => chooseDifficulty(3)}
-                          className="flex flex-col p-2 px-10 text-xl bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700 "
-                        >
-                          <p>Hard</p>
-                          <p className="text-sm">(3 Headlines)</p>
-                        </button>
-                      </div>
-                      <div>
-                        <button
-                          onClick={() => chooseDifficulty(4)}
-                          className="flex flex-col p-2 px-10 text-xl bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700 "
-                        >
-                          <p>Very Hard </p>
-                          <p className="text-sm">(4 Headlines)</p>
-                        </button>
-                      </div>
-                    </div>
+                  ) : null}
+                  {overlay === "difficulty" && (
+                    <RadioGroup value={difficulty} onChange={changeDifficulty}>
+                      // Your RadioGroup for difficulty options
+                    </RadioGroup>
+                  )}
+
+                  {overlay === "section" && (
+                    <RadioGroup value={section} onChange={changeSection}>
+                      // Your RadioGroup for section options
+                    </RadioGroup>
                   )}
                 </Dialog.Panel>
               </Transition.Child>

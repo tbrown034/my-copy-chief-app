@@ -57,39 +57,43 @@ const GuessArea = ({
               {articleWins[articleIndex] ? (
                 <Article article={article} />
               ) : (
-                <div className="flex flex-wrap gap-2">
-                  {article.title.split(/\s+/).map((_, wordIndex) => {
-                    const resultClass = guessResults[articleIndex]?.[wordIndex];
-                    let bgColorClass =
-                      resultClass === "green"
-                        ? " bg-green-500 dark:bg-green-600"
-                        : resultClass === "yellow"
-                        ? "bg-yellow-400 dark:bg-yellow-500"
-                        : "";
-                    const isSelected =
-                      selectedGuess?.articleIndex === articleIndex &&
-                      selectedGuess?.wordIndex === wordIndex;
-                    const isHovered =
-                      `${articleIndex}-${wordIndex}` === hoveredIndex;
-                    if (isSelected || (selectedGuess && isHovered)) {
-                      bgColorClass = "bg-gray-300 dark:bg-gray-700";
-                    }
-                    return (
-                      <div
-                        key={wordIndex}
-                        className={`h-20 p-2 text-lg flex justify-center items-center font-bold border-2 border-gray-400 rounded-lg min-w-20 cursor-pointer ${bgColorClass}`}
-                        onClick={() =>
-                          handleGuessClick(articleIndex, wordIndex)
-                        }
-                        onMouseEnter={() =>
-                          setHoveredIndex(`${articleIndex}-${wordIndex}`)
-                        }
-                        onMouseLeave={() => setHoveredIndex(null)}
-                      >
-                        {guessPlacement[articleIndex][wordIndex]}
-                      </div>
-                    );
-                  })}
+                <div className="flex flex-col gap-2">
+                  <p>Headline {articleIndex + 1}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {article.title.split(/\s+/).map((_, wordIndex) => {
+                      const resultClass =
+                        guessResults[articleIndex]?.[wordIndex];
+                      let bgColorClass =
+                        resultClass === "green"
+                          ? " bg-green-500 dark:bg-green-600"
+                          : resultClass === "yellow"
+                          ? "bg-yellow-400 dark:bg-yellow-500"
+                          : "";
+                      const isSelected =
+                        selectedGuess?.articleIndex === articleIndex &&
+                        selectedGuess?.wordIndex === wordIndex;
+                      const isHovered =
+                        `${articleIndex}-${wordIndex}` === hoveredIndex;
+                      if (isSelected || (selectedGuess && isHovered)) {
+                        bgColorClass = "bg-gray-300 dark:bg-gray-700";
+                      }
+                      return (
+                        <div
+                          key={wordIndex}
+                          className={`h-20 p-2 text-lg flex justify-center items-center font-bold border-2 border-gray-400 rounded-lg min-w-20 cursor-pointer ${bgColorClass}`}
+                          onClick={() =>
+                            handleGuessClick(articleIndex, wordIndex)
+                          }
+                          onMouseEnter={() =>
+                            setHoveredIndex(`${articleIndex}-${wordIndex}`)
+                          }
+                          onMouseLeave={() => setHoveredIndex(null)}
+                        >
+                          {guessPlacement[articleIndex][wordIndex]}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               )}
             </div>

@@ -1,24 +1,35 @@
 import React, { useState } from "react";
-import { useDarkMode } from "./hooks/useDarkMode";
-import Footer from "./components/UI/Footer";
 import Header from "./components/UI/Header";
-import Game from "./components/UI/Game";
 import Home from "./components/UI/Home";
+import Game from "./components/UI/Game";
+import Footer from "./components/UI/Footer";
 import HowTo from "./components/UI/HowTo";
+import { useDarkMode } from "./hooks/useDarkMode";
 
 function App() {
   const [gameDisplay, setGameDisplay] = useState(false);
-  const [isDarkMode, setDarkMode] = useDarkMode(); // Use the custom hook
+  const [isDarkMode, setDarkMode] = useDarkMode();
   const [showHowTo, setShowHowTo] = useState(false);
-  const [numOfNewsArticles, setnumOfNewsArticles] = useState();
+  const [difficulty, setDifficulty] = useState("2");
+  const [section, setSection] = useState(2);
 
-  const toggleHowTo = () => {
-    setShowHowTo((prev) => !prev); // Use functional update for guaranteed current state
-  };
+  const difficultyOptions = [
+    { name: "Easy", value: "1" },
+    { name: "Medium (Default)", value: "2" },
+    { name: "Hard", value: "3" },
+    { name: "Very Hard", value: "4" },
+  ];
 
-  const chooseNumOfheadlines = (num) => {
-    setnumOfNewsArticles(num);
-  };
+  const sectionOptions = [
+    { name: "Home", value: "home" },
+    { name: "Sports", value: "sports" },
+    { name: "Arts", value: "arts" },
+    { name: "Opinion", value: "opinion" },
+  ];
+
+  const toggleHowTo = () => setShowHowTo((prev) => !prev);
+  const changeSection = (value) => setSection(value);
+  const changeDifficulty = (value) => setDifficulty(value);
 
   return (
     <div
@@ -31,30 +42,37 @@ function App() {
         setDarkMode={setDarkMode}
         gameDisplay={gameDisplay}
         setGameDisplay={setGameDisplay}
-        toggleHowTo={toggleHowTo} // Pass the handler to the Header
+        toggleHowTo={toggleHowTo}
+        changeDifficulty={changeDifficulty}
+        changeSection={changeSection}
+        difficulty={difficulty}
+        section={section}
       />
       {!gameDisplay ? (
         <Home
           toggleHowTo={toggleHowTo}
-          numOfNewsArticles
+          difficulty={difficulty}
           setGameDisplay={setGameDisplay}
         />
       ) : (
         <Game
           toggleHowTo={toggleHowTo}
           setGameDisplay={setGameDisplay}
-          numOfNewsArticles={numOfNewsArticles}
+          difficulty={difficulty}
         />
       )}
       <Footer />
       {showHowTo && (
         <HowTo
-          chooseNumOfheadlines={chooseNumOfheadlines}
           toggleHowTo={toggleHowTo}
-          numOfNewsArticles={numOfNewsArticles}
+          changeSection={changeSection}
+          changeDifficulty={changeDifficulty}
+          difficulty={difficulty}
+          section={section}
+          difficultyOptions={difficultyOptions}
+          sectionOptions={sectionOptions}
         />
-      )}{" "}
-      // Moved outside the main div and conditionally rendered
+      )}
     </div>
   );
 }
