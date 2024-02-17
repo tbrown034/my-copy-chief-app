@@ -1,3 +1,4 @@
+//frontend React component or a utility file
 // util/apiFetch.js
 export const fetchMostPopular = async (numOfArticles) => {
   const API_BASE_URL = import.meta.env.PROD

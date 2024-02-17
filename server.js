@@ -1,17 +1,11 @@
 import express from "express";
 import cors from "cors";
 import fetch from "node-fetch";
-import path from "path";
-import { fileURLToPath } from "url";
+
 import "dotenv/config";
 
 const app = express();
 app.use(cors());
-
-// Serve static files
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.use(express.static(path.join(__dirname, "build")));
 
 // Route to fetch articles
 app.get("/articles", async (req, res) => {
@@ -30,11 +24,6 @@ app.get("/articles", async (req, res) => {
     console.error("Error fetching data", error);
     res.status(500).json({ message: "Error fetching articles" });
   }
-});
-
-// SPA routing fallback
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 const PORT = process.env.PORT || 3000; // Listen on environment-specified port or default to 3000
