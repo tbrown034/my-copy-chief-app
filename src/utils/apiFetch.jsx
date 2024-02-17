@@ -1,10 +1,8 @@
-//frontend React component or a utility file
-// util/apiFetch.js
 export const fetchMostPopular = async (numOfArticles) => {
   const API_BASE_URL = import.meta.env.PROD
-    ? import.meta.env.VITE_BACKEND_URL
-    : "http://localhost:3000";
-
+    ? import.meta.env.VITE_BACKEND_PRO_URL // Updated to use the correct environment variable
+    : import.meta.env.VITE_BACKEND_DEV_URL; // Ensure this is correctly defined for development
+  console.log("base url", API_BASE_URL);
   try {
     const response = await fetch(
       `${API_BASE_URL}/articles?num=${numOfArticles}`
