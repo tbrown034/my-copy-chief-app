@@ -1,9 +1,10 @@
-//frontend React component or a utility file
-// util/apiFetch.js
+// Assumes this file is located under src/utils/ or a similar directory
+
 export const fetchMostPopular = async (numOfArticles) => {
+  // Dynamically determine API base URL based on environment
   const API_BASE_URL = import.meta.env.PROD
-    ? import.meta.env.VITE_BACKEND_URL
-    : "http://localhost:3000";
+    ? import.meta.env.VITE_BACKEND_URL // Use production backend URL if in production
+    : "http://localhost:3000"; // Use local server for development
 
   try {
     const response = await fetch(
@@ -13,9 +14,9 @@ export const fetchMostPopular = async (numOfArticles) => {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
-    return data;
+    return data; // Return fetched data
   } catch (error) {
     console.error("Error fetching data", error);
-    return [];
+    return []; // Return empty array in case of error
   }
 };
