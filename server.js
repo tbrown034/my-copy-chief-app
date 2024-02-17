@@ -8,9 +8,9 @@ import "dotenv/config";
 const app = express();
 app.use(cors());
 
+// New code to serve static files
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 app.use(express.static(path.join(__dirname, "build")));
 
 app.get("/articles", async (req, res) => {
@@ -31,10 +31,9 @@ app.get("/articles", async (req, res) => {
   }
 });
 
-// Serve any other route to index.html
+// New code for SPA routing
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
-
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server IS running on port ${PORT}`));
