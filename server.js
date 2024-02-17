@@ -1,4 +1,5 @@
 // server.js (backend)
+import path from "path";
 
 import express from "express";
 import cors from "cors";
@@ -9,7 +10,7 @@ const app = express();
 app.use(cors());
 
 app.get("/articles", async (req, res) => {
-  const numOfArticles = req.query.num || 2; // Example: Allow specifying number of articles through query params
+  const numOfArticles = req.query.num || 2;
   const API_KEY = process.env.NYT_API_KEY;
 
   try {
@@ -19,7 +20,6 @@ app.get("/articles", async (req, res) => {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
-    // Slice the results to get the number of articles requested
     res.json(data.results.slice(0, numOfArticles));
   } catch (error) {
     console.error("Error fetching data", error);
@@ -27,5 +27,14 @@ app.get("/articles", async (req, res) => {
   }
 });
 
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, "build")));
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/build/index.html"));
+});
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server IS running on port ${PORT}`));
