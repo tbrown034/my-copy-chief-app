@@ -1,7 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
-import HowToBullets from "../UI/HowToBullets";
-import HowToExamples from "../UI/HowToExamples";
+import HowToBullets from "./HowToBullets";
+import HowToExamples from "./HowToExamples";
 
 export default function HowTo({
   toggleHowTo,

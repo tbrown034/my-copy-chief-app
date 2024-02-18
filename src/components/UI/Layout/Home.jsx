@@ -1,5 +1,5 @@
 import React from "react";
-import CurrentDate from "./CurrentDate";
+import CurrentDate from "../Shared/CurrentDate";
 
 export default function Home({ setGameDisplay, toggleHowTo }) {
   const playGame = () => {

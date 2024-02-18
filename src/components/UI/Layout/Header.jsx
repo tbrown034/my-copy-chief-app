@@ -1,6 +1,5 @@
-import Toggle from "./Toggle";
-import HowTo from "./HowTo";
-import { useState } from "react";
+import Toggle from "../Shared/Toggle";
+
 export default function Header({
   darkMode,
   setDarkMode,

@@ -1,11 +1,11 @@
 //game.jsx
 
 import { useState, useEffect } from "react";
-import { fetchMostPopular } from "../../utils/apiFetch";
-import WordChoices from "../gameElements/WordChoices";
-import GuessArea from "../gameElements/GuessArea";
-import { shuffleArray } from "../../utils/shuffleArray";
-import WinDisplay from "../gameElements/WinDisplay";
+import { fetchMostPopular } from "../../../utils/apiFetch";
+import WordChoices from "../../gameElements/WordChoices";
+import GuessArea from "../../gameElements/GuessArea";
+import { shuffleArray } from "../../../utils/shuffleArray";
+import WinDisplay from "./WinDisplay";
 
 export default function Game({ setGameDisplay, numOfHeadlines }) {
   const API_KEY = import.meta.env.VITE_NYT_API_KEY;

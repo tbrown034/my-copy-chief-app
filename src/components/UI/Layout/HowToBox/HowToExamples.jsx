@@ -45,7 +45,7 @@ const HowToExamples = () => {
           </div>
         </div>
       </div>
-      <p className="mt-4  opacity-55">Word Choices</p>
+      <p className="mt-4 opacity-55">Word Choices</p>
       <div className="">
         <WordExample />
       </div>

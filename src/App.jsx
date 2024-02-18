@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import Header from "./components/UI/Header";
-import Home from "./components/UI/Home";
-import Game from "./components/UI/Game";
-import Footer from "./components/UI/Footer";
-import HowTo from "./components/UI/HowTo";
+import Header from "./components/UI/Layout/Header";
+import Home from "./components/UI/Layout/Home";
+import Game from "./components/UI/Layout/Game";
+import Footer from "./components/UI/Layout/Footer";
+import HowTo from "./components/UI/Layout/HowToBox/HowTo";
 import { useDarkMode } from "./hooks/useDarkMode";
 
 function App() {
