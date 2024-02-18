@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Article from "../UI/Shared/Article";
 import ConfirmSolveBox from "../UI/Shared/ConfirmSolveBox";
+import Hints from "../UI/Shared/HInts";
 
 const GuessArea = ({
   fullArticles,
@@ -15,7 +16,6 @@ const GuessArea = ({
   setGuessResults,
   articleWins,
   guessCounter,
-  setGuessCounter,
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -83,34 +83,16 @@ const GuessArea = ({
               {articleWins[articleIndex] ? (
                 <Article article={article} />
               ) : (
-                <div className="flex flex-col gap-4">
-                  <p className="text-lg font-semibold underline underline-offset-auto ">
-                    Headline {articleIndex + 1}
-                  </p>
-                  <div className="flex gap-2">
-                    <div className="flex">
-                      <p className="p-2 text-black border-2 border-black dark:border-white dark:text-white dark:border-2 rounded-xl">
-                        Hints:
-                      </p>
-                    </div>
-                    <div className="flex">
-                      <p className="p-2 text-white bg-gray-800 dark:text-black dark:bg-white rounded-xl">
-                        {article.section}{" "}
-                      </p>
-                    </div>
-                    <div className="flex">
-                      <p className="p-2 text-white bg-gray-800 dark:text-black dark:bg-white rounded-xl">
-                        {formatDate(article.published_date)}
-                      </p>
-                    </div>
-                    {article.geo_facet[0] && (
-                      <div className="flex">
-                        <p className="p-2 text-white bg-gray-800 dark:text-black dark:bg-white rounded-xl">
-                          {article.geo_facet[0]}
-                        </p>
-                      </div>
-                    )}
+                <div className="flex flex-col gap-2">
+                  <div className="flex flex-col justify-center">
+                    <p className="font-sans text-lg font-semibold">
+                      Headline {articleIndex + 1}
+                    </p>
+                    <p className="font-serif opacity-80 ">
+                      Published {formatDate(article.published_date)}
+                    </p>
                   </div>
+                  <Hints article={article} />
                   <div className="flex flex-wrap gap-2">
                     {article.title.split(/\s+/).map((_, wordIndex) => {
                       const resultClass =
