@@ -69,26 +69,43 @@ const GuessArea = ({
     setIsOpen(true);
   };
 
+  const formatDate = (dateString) => {
+    const options = { month: "short", day: "numeric" };
+    return new Date(dateString).toLocaleDateString("en-US", options);
+  };
+
   return (
     <>
       <div className="flex flex-col gap-8">
-        <div className="flex flex-col gap-2 font-bold">
-          <div className="">
-            {articleWins.filter(Boolean).length} of {fullArticles.length}{" "}
-            Headlines Correctly Guessed
-          </div>
-          <div>Number of Guesses: {guessCounter} </div>
-        </div>
-
         <div className="flex flex-col gap-4">
           {fullArticles.map((article, articleIndex) => (
             <div key={articleIndex}>
-              {/* Check if the article has been guessed correctly and display the Article component */}
               {articleWins[articleIndex] ? (
                 <Article article={article} />
               ) : (
-                <div className="flex flex-col gap-2">
-                  <p className="font-semibold ">Headline {articleIndex + 1}</p>
+                <div className="flex flex-col gap-4">
+                  <p className="text-lg font-semibold underline underline-offset-auto ">
+                    Headline {articleIndex + 1}
+                  </p>
+                  <div className="flex gap-2">
+                    <div className="flex">
+                      <p className="p-2 text-white bg-gray-800 dark:text-black dark:bg-white rounded-xl">
+                        {article.section}{" "}
+                      </p>
+                    </div>
+                    <div className="flex">
+                      <p className="p-2 text-white bg-gray-800 dark:text-black dark:bg-white rounded-xl">
+                        {formatDate(article.published_date)}
+                      </p>
+                    </div>
+                    {article.geo_facet[0] && (
+                      <div className="flex">
+                        <p className="p-2 text-white bg-gray-800 dark:text-black dark:bg-white rounded-xl">
+                          {article.geo_facet[0]}
+                        </p>
+                      </div>
+                    )}
+                  </div>
                   <div className="flex flex-wrap gap-2">
                     {article.title.split(/\s+/).map((_, wordIndex) => {
                       const resultClass =
@@ -161,6 +178,21 @@ const GuessArea = ({
           >
             Show Solution
           </button>
+        </div>
+
+        <div className="flex flex-col gap-2 p-4 m-4 text-xl font-semibold border-2 border-black dark:border-white rounded-xl ">
+          <div className="flex items-center justify-around gap-2">
+            <p>Correct Guesses:</p>
+            <p className="p-2 text-white bg-black rounded-xl dark:bg-white dark:text-black">
+              {articleWins.filter(Boolean).length} of {fullArticles.length}
+            </p>
+          </div>
+          <div className="flex items-center justify-around gap-2">
+            <p>Number of Guesses:</p>
+            <p className="p-2 px-4 m-2 text-white bg-black dark:bg-white dark:text-black rounded-xl ">
+              {guessCounter}
+            </p>
+          </div>
         </div>
       </div>
     </>
