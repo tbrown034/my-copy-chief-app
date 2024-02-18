@@ -2,18 +2,26 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import HowToBullets from "./HowToBullets";
 import HowToExamples from "./HowToExamples";
+import SettingsBox from "../../Shared/SettingsBox";
 
-export default function HowTo({
-  toggleHowTo,
-  setNumOfHeadlines, // Function passed from App to update the number of headlines
-}) {
+export default function HowTo({ toggleHowTo, setNumOfHeadlines }) {
   const [isOpen, setIsOpen] = useState(true);
-  const [showDifficultyOptions, setShowDifficultyOptions] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   function handleDifficultyChange(value) {
     setNumOfHeadlines(value); // Apply the selected difficulty
     toggleHowTo(); // Close the modal and start the game
-    setShowDifficultyOptions(false); // Hide difficulty options
+    setShowSettings(false); // Hide difficulty options
+  }
+
+  function handleDurationChange(value) {
+    setDuration(value); // Apply the selected duration
+    setShowSettings(false); // Hide settings options
+    toggleHowTo(); // Close the modal and start the game
+  }
+
+  function displaySettings() {
+    setShowSettings((prev) => !prev);
   }
 
   return (
@@ -53,43 +61,38 @@ export default function HowTo({
                   </Dialog.Title>
                   <HowToBullets />
                   <HowToExamples />
-                  <div className="flex gap-2 mt-8">
+
+                  <div className="flex justify-center gap-2 mt-6 ">
+                    <button
+                      onClick={displaySettings}
+                      className="p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                    >
+                      Settings{" "}
+                    </button>
                     <button
                       onClick={() => toggleHowTo()}
                       className="p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
                     >
-                      Got it, thanks!
-                    </button>
-                    <button
-                      onClick={() =>
-                        setShowDifficultyOptions(!showDifficultyOptions)
-                      }
-                      className="p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
-                    >
-                      Change Difficulty
+                      About
                     </button>
                   </div>
-                  {showDifficultyOptions && (
+                  {showSettings && (
                     <div className="flex">
-                      <div className="flex flex-col mt-4">
-                        {[
-                          { label: "Easy (1 Headline)", value: 1 },
-                          { label: "Medium (2 Headlines)", value: 2 },
-                          { label: "Hard (3 Headlines)", value: 3 },
-                        ].map((difficulty) => (
-                          <button
-                            key={difficulty.value}
-                            onClick={() =>
-                              handleDifficultyChange(difficulty.value)
-                            }
-                            className="p-2 my-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
-                          >
-                            {difficulty.label}
-                          </button>
-                        ))}
-                      </div>
+                      <SettingsBox
+                        handleDifficultyChange={handleDifficultyChange}
+                        handleDurationChange={handleDurationChange}
+                      />
                     </div>
                   )}
+                  <div className="flex justify-center">
+                    {" "}
+                    <button
+                      onClick={() => toggleHowTo()}
+                      className="p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                    >
+                      OK, Let's Play!
+                    </button>
+                  </div>
                 </Dialog.Panel>
               </Transition.Child>
             </div>

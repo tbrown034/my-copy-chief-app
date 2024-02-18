@@ -10,6 +10,7 @@ function App() {
   const [gameDisplay, setGameDisplay] = useState(false);
   const [isDarkMode, setDarkMode] = useDarkMode();
   const [showHowTo, setShowHowTo] = useState(false);
+  const [duration, setDuration] = useState(1); // Defaulting to 1 day for example
 
   const [numOfHeadlines, setNumOfHeadlines] = useState(2);
 
@@ -39,6 +40,7 @@ function App() {
       <Footer />
       {showHowTo && (
         <HowTo
+          setDuration={setDuration}
           toggleHowTo={toggleHowTo}
           handleSetNumOfHeadlines={handleSetNumOfHeadlines}
           setNumOfHeadlines={setNumOfHeadlines}

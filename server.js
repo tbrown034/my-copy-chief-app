@@ -12,10 +12,12 @@ app.use(cors());
 // Route to fetch articles
 app.get("/articles", async (req, res) => {
   const numOfArticles = req.query.num || 2; // Default to 2 articles if no number specified
+  const duration = req.query.duration || 1; // Default to 1 day if no duration specified
+
   const API_KEY = process.env.NYT_API_KEY; // Use NYT API key from environment variables
 
   try {
-    const url = `https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=${API_KEY}`;
+    const url = `https://api.nytimes.com/svc/mostpopular/v2/viewed/${duration}.json?api-key=${API_KEY}`;
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
