@@ -26,14 +26,14 @@ const ConfirmSolveBox = ({ isOpen, setIsOpen, confirmSolve }) => {
           <div className="flex justify-center gap-4 mt-6">
             <button
               type="button"
-              className="p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700"
+              className="p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:text-white"
               onClick={confirmSolve}
             >
               Reveal
             </button>
             <button
               type="button"
-              className="p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 "
+              className="p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:text-white "
               onClick={() => setIsOpen(false)}
             >
               Cancel

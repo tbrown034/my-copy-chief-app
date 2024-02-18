@@ -89,6 +89,11 @@ const GuessArea = ({
                   </p>
                   <div className="flex gap-2">
                     <div className="flex">
+                      <p className="p-2 text-black border-2 border-black dark:border-white dark:text-white dark:border-2 rounded-xl">
+                        Hints:
+                      </p>
+                    </div>
+                    <div className="flex">
                       <p className="p-2 text-white bg-gray-800 dark:text-black dark:bg-white rounded-xl">
                         {article.section}{" "}
                       </p>
