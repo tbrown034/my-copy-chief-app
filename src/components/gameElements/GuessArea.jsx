@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Article from "../UI/Article";
+import ConfirmSolveBox from "../UI/ConfirmSolveBox";
 
 const GuessArea = ({
   fullArticles,
@@ -15,6 +16,8 @@ const GuessArea = ({
   articleWins,
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+
   const clearAllGuesses = () => {
     const resetState = guessPlacement.map((guesses) =>
       Array(guesses.length).fill(null)
@@ -27,6 +30,7 @@ const GuessArea = ({
   };
   const isEveryGuessFilled = () =>
     guessPlacement.every((headline) => headline.every(Boolean));
+
   const solvePuzzle = () => {
     const newGuessPlacement = fullArticles.map(
       (article) => article.title.split(/\s+/) //
@@ -43,14 +47,25 @@ const GuessArea = ({
     );
     setGuessResults(newGuessResults);
   };
+
+  const confirmSolve = () => {
+    solvePuzzle();
+    // Logic to instantly solve the puzzle
+    setIsOpen(false); // Close the modal upon confirmation
+  };
+
+  const handleInstantSolve = () => {
+    setIsOpen(true);
+  };
+
   return (
     <>
-      <div className="flex flex-col items-center gap-4">
-        <div>
-          {articleWins.filter(Boolean).length}/{fullArticles.length} Headlines
-          Correctly Guessed
+      <div className="flex flex-col gap-8">
+        <div className="font-bold">
+          {articleWins.filter(Boolean).length} of {fullArticles.length}{" "}
+          Headlines Correctly Guessed
         </div>
-        <div className="flex flex-col gap-12 p-4 px-8">
+        <div className="flex flex-col gap-4">
           {fullArticles.map((article, articleIndex) => (
             <div key={articleIndex}>
               {/* Check if the article has been guessed correctly and display the Article component */}
@@ -58,7 +73,7 @@ const GuessArea = ({
                 <Article article={article} />
               ) : (
                 <div className="flex flex-col gap-2">
-                  <p>Headline {articleIndex + 1}</p>
+                  <p className="font-semibold ">Headline {articleIndex + 1}</p>
                   <div className="flex flex-wrap gap-2">
                     {article.title.split(/\s+/).map((_, wordIndex) => {
                       const resultClass =
@@ -80,7 +95,7 @@ const GuessArea = ({
                       return (
                         <div
                           key={wordIndex}
-                          className={`h-20 p-2 text-lg flex justify-center items-center font-bold border-2 border-gray-400 rounded-lg min-w-20 cursor-pointer ${bgColorClass}`}
+                          className={`h-10 p-2 flex justify-center items-center font-bold border-2 border-gray-400 rounded-lg min-w-12 cursor-pointer ${bgColorClass}`}
                           onClick={() =>
                             handleGuessClick(articleIndex, wordIndex)
                           }
@@ -99,29 +114,36 @@ const GuessArea = ({
             </div>
           ))}
         </div>
-        <div className="flex flex-wrap justify-center gap-2 py-8">
+        <div className="flex flex-wrap justify-center gap-2 ">
+          {isOpen && (
+            <ConfirmSolveBox
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              confirmSolve={confirmSolve}
+            />
+          )}
           <button
             onClick={clearAllGuesses}
-            className="p-2 px-10 text-xl bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:focus:ring-white"
+            className="p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:focus:ring-white"
           >
-            Clear All Headlines
+            Clear Guesses
+          </button>
+          <button
+            onClick={handleInstantSolve}
+            className="p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:focus:ring-white"
+          >
+            Show Solution
           </button>
           <button
             onClick={submitGuesses}
             disabled={!isEveryGuessFilled()}
-            className={`p-2 px-10 text-xl rounded-xl transition duration-150 ease-in-out shadow-sm ${
+            className={`p-2  text-lg rounded-xl transition duration-150 ease-in-out shadow-sm ${
               isEveryGuessFilled()
                 ? "border border-black bg-transparent hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:active:bg-gray-800 dark:focus:ring-white"
                 : "bg-gray-300 text-gray-500 border-gray-300 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400"
             }`}
           >
-            Submit
-          </button>
-          <button
-            onClick={solvePuzzle}
-            className="p-2 px-10 text-xl bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:focus:ring-white"
-          >
-            Solve
+            Enter Guesses
           </button>
         </div>
       </div>

@@ -10,9 +10,6 @@ export default function HowTo({
   const [isOpen, setIsOpen] = useState(true);
   const [showDifficultyOptions, setShowDifficultyOptions] = useState(false);
 
-  // No longer need selectedDifficulty state here since we will directly use button clicks to set difficulty
-
-  // Apply the selected difficulty and start the game immediately upon button click
   function handleDifficultyChange(value) {
     setNumOfHeadlines(value); // Apply the selected difficulty
     toggleHowTo(); // Close the modal and start the game
@@ -40,7 +37,7 @@ export default function HowTo({
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex items-center justify-center min-h-full p-4 text-center">
+            <div className="flex items-center justify-center min-h-full p-8 text-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -50,13 +47,13 @@ export default function HowTo({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="flex flex-col h-full max-w-xl gap-8 p-4 overflow-hidden text-left transition-all transform bg-white shadow-xl dark:bg-gray-800 dark:text-white rounded-2xl">
+                <Dialog.Panel className="flex flex-col gap-4 p-4 overflow-hidden text-left transition-all transform bg-white shadow-xl dark:bg-gray-800 dark:text-white rounded-2xl">
                   <Dialog.Title className="text-2xl font-bold">
                     How To Play
                   </Dialog.Title>
                   <HowToBullets />
                   <HowToExamples />
-                  <div className="mt-4">
+                  <div className="flex gap-2 mt-8">
                     <button
                       onClick={() => toggleHowTo()}
                       className="p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
@@ -67,28 +64,30 @@ export default function HowTo({
                       onClick={() =>
                         setShowDifficultyOptions(!showDifficultyOptions)
                       }
-                      className="p-2 ml-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                      className="p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
                     >
                       Change Difficulty
                     </button>
                   </div>
                   {showDifficultyOptions && (
-                    <div className="flex flex-col mt-4">
-                      {[
-                        { label: "Easy (1 Headline)", value: 1 },
-                        { label: "Medium (2 Headlines)", value: 2 },
-                        { label: "Hard (3 Headlines)", value: 3 },
-                      ].map((difficulty) => (
-                        <button
-                          key={difficulty.value}
-                          onClick={() =>
-                            handleDifficultyChange(difficulty.value)
-                          }
-                          className="p-2 my-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
-                        >
-                          {difficulty.label}
-                        </button>
-                      ))}
+                    <div className="flex">
+                      <div className="flex flex-col mt-4">
+                        {[
+                          { label: "Easy (1 Headline)", value: 1 },
+                          { label: "Medium (2 Headlines)", value: 2 },
+                          { label: "Hard (3 Headlines)", value: 3 },
+                        ].map((difficulty) => (
+                          <button
+                            key={difficulty.value}
+                            onClick={() =>
+                              handleDifficultyChange(difficulty.value)
+                            }
+                            className="p-2 my-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                          >
+                            {difficulty.label}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </Dialog.Panel>

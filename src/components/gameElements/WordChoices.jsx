@@ -51,17 +51,17 @@ const WordChoices = ({
   };
 
   return (
-    <div className="flex flex-col gap-4 mt-10">
+    <div className="flex flex-col gap-4 mt-6">
       <div className="flex gap-2">
         <button
           onClick={toggleSort}
-          className="p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:focus:ring-white"
+          className="p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 "
         >
           Sort {isSortedAZ ? "Z-A ↓" : "A-Z ↑"}
         </button>
         <button
           onClick={fillRandomGuesses}
-          className="p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:focus:ring-white"
+          className="p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 "
         >
           Random Guesses
         </button>
@@ -70,7 +70,7 @@ const WordChoices = ({
         {displayWords.map((word) => (
           <div
             onClick={() => !word.selected && onWordClick(word)}
-            className={`p-4 text-xl  rounded-xl hover:cursor-pointer ${
+            className={`p-2 text-lg  rounded-xl hover:cursor-pointer ${
               word.selected
                 ? "bg-gray-400 dark:bg-gray-300 dark:text-gray-500  hover:cursor-not-allowed "
                 : "bg-gray-200 dark:bg-zinc-500"

@@ -182,7 +182,7 @@ export default function Game({ setGameDisplay, numOfHeadlines }) {
       {hasWon ? (
         <WinDisplay fullArticles={fullArticles} />
       ) : (
-        <>
+        <div className="flex flex-col gap-8">
           <GuessArea
             fullArticles={fullArticles}
             guessPlacement={guessPlacement}
@@ -208,7 +208,7 @@ export default function Game({ setGameDisplay, numOfHeadlines }) {
             availableWords={availableWords}
             setAvailableWords={setAvailableWords}
           />
-        </>
+        </div>
       )}
 
       <div className="flex justify-center gap-2 py-8">

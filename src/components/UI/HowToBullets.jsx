@@ -2,21 +2,19 @@ const HowToBullets = () => {
   return (
     <ul className="flex flex-col gap-2 list-disc list-inside ">
       <li>
-        Make a selection from the list of words at the bottom to fill in your
-        guesses.
+        <b>Select Words:</b> Click on words from the options below to fill in
+        your guesses.
       </li>
       <li>
-        Each clickable word will fill the first available spot in the guess
-        area.
+        <b>Auto-Fill:</b> Or use the "Random Guesses" button to automatically
+        fill in empty spots with remaining words.
       </li>
       <li>
-        At any point you can also click the "Random Guesses" button to randomly
-        fill the remaining guesses from the remaining words.
+        <b>Swap Words:</b> To change a guess, click a word in your guess area,
+        then click the spot where you want it moved.
       </li>
       <li>
-        After you made a guess or clicked the "Random Guesses" button, you can
-        swap a word by clicking it and then clicking in the guess area where you
-        want it to go.
+        <b>Complete the Puzzle:</b> Match the correct word order to win.
       </li>
     </ul>
   );
