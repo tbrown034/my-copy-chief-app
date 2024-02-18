@@ -17,6 +17,7 @@ export default function Game({ setGameDisplay, numOfHeadlines }) {
   const [selectedGuess, setSelectedGuess] = useState(null);
   const [guessResults, setGuessResults] = useState([]);
   const [hasWon, setHasWon] = useState(false);
+  const [guessCounter, setGuessCounter] = useState(0);
 
   const [articleWins, setArticleWins] = useState(
     new Array(fullArticles.length).fill(false)
@@ -127,6 +128,10 @@ export default function Game({ setGameDisplay, numOfHeadlines }) {
     }
   };
 
+  let addToGuessCount = () => {
+    setGuessCounter(guessCounter + 1);
+  };
+
   const submitGuesses = () => {
     const correctHeadlines = fullArticles.map((article) =>
       article.title.split(/\s+/)
@@ -151,6 +156,7 @@ export default function Game({ setGameDisplay, numOfHeadlines }) {
       );
 
       newGuessResults.push(articleGuessResults);
+      addToGuessCount();
 
       // Return the win status for this article.
       return isCorrect;
@@ -180,7 +186,7 @@ export default function Game({ setGameDisplay, numOfHeadlines }) {
   return (
     <div>
       {hasWon ? (
-        <WinDisplay fullArticles={fullArticles} />
+        <WinDisplay fullArticles={fullArticles} guessCounter={guessCounter} />
       ) : (
         <div className="flex flex-col gap-8">
           <GuessArea
@@ -199,6 +205,8 @@ export default function Game({ setGameDisplay, numOfHeadlines }) {
             hasWon={hasWon}
             onCorrectGuess={() => updateArticleWinStatus(index, true)}
             setShowAnswers={setShowAnswers}
+            guessCounter={guessCounter}
+            setGuessCounter={setGuessCounter}
           />
           <WordChoices
             words={availableWords}

@@ -1,4 +1,4 @@
-const WinDisplay = ({ fullArticles }) => {
+const WinDisplay = ({ fullArticles, guessCounter }) => {
   const getImageUrl = (mediaArray) => {
     if (
       mediaArray.length > 0 &&
@@ -17,10 +17,12 @@ const WinDisplay = ({ fullArticles }) => {
     <div className="flex flex-col items-center gap-8 px-4 py-8">
       <div className="text-center">
         <h2 className="mb-4 text-3xl font-semibold">Congratulations!</h2>
-        <p className="mb-8 text-lg">
-          You've guessed today's headlines correctly.
-        </p>
+        <p className="text-lg ">You've guessed today's headlines correctly.</p>
       </div>
+      <p>
+        Solved in <b>{guessCounter}</b> Attempts!
+      </p>
+
       {fullArticles.map((article, index) => (
         <div
           className="w-3/4 p-4 rounded-lg shadow-md bg-slate-100"

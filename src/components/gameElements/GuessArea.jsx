@@ -14,6 +14,8 @@ const GuessArea = ({
   guessResults,
   setGuessResults,
   articleWins,
+  guessCounter,
+  setGuessCounter,
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -70,10 +72,14 @@ const GuessArea = ({
   return (
     <>
       <div className="flex flex-col gap-8">
-        <div className="font-bold">
-          {articleWins.filter(Boolean).length} of {fullArticles.length}{" "}
-          Headlines Correctly Guessed
+        <div className="flex flex-col gap-2 font-bold">
+          <div className="">
+            {articleWins.filter(Boolean).length} of {fullArticles.length}{" "}
+            Headlines Correctly Guessed
+          </div>
+          <div>Number of Guesses: {guessCounter} </div>
         </div>
+
         <div className="flex flex-col gap-4">
           {fullArticles.map((article, articleIndex) => (
             <div key={articleIndex}>
