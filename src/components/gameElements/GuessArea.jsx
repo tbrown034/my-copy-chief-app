@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Article from "../UI/Article";
 import ConfirmSolveBox from "../UI/ConfirmSolveBox";
 
@@ -17,6 +17,13 @@ const GuessArea = ({
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [hasMadeAGuess, setHasMadeAGuess] = useState(false);
+  const [isSolutionRevealed, setIsSolutionRevealed] = useState(false);
+
+  useEffect(() => {
+    const hasGuess = guessPlacement.flat().some((guess) => guess !== null);
+    setHasMadeAGuess(hasGuess);
+  }, [guessPlacement]);
 
   const clearAllGuesses = () => {
     const resetState = guessPlacement.map((guesses) =>
@@ -27,9 +34,10 @@ const GuessArea = ({
       availableWords.map((word) => ({ ...word, selected: false }))
     );
     setGuessResults(resetState);
+    setIsSolutionRevealed(false);
   };
-  const isEveryGuessFilled = () =>
-    guessPlacement.every((headline) => headline.every(Boolean));
+  // const isEveryGuessFilled = () =>
+  //   guessPlacement.every((headline) => headline.every(Boolean));
 
   const solvePuzzle = () => {
     const newGuessPlacement = fullArticles.map(
@@ -46,6 +54,7 @@ const GuessArea = ({
       articleGuesses.map(() => "green")
     );
     setGuessResults(newGuessResults);
+    setIsSolutionRevealed(true);
   };
 
   const confirmSolve = () => {
@@ -124,26 +133,27 @@ const GuessArea = ({
           )}
           <button
             onClick={clearAllGuesses}
-            className="p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:focus:ring-white"
+            disabled={!hasMadeAGuess}
+            className={`p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 ${
+              !hasMadeAGuess ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           >
             Clear Guesses
           </button>
           <button
-            onClick={handleInstantSolve}
-            className="p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:focus:ring-white"
+            onClick={submitGuesses}
+            className="p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700"
           >
-            Show Solution
+            Submit Guesses
           </button>
           <button
-            onClick={submitGuesses}
-            disabled={!isEveryGuessFilled()}
-            className={`p-2  text-lg rounded-xl transition duration-150 ease-in-out shadow-sm ${
-              isEveryGuessFilled()
-                ? "border border-black bg-transparent hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:active:bg-gray-800 dark:focus:ring-white"
-                : "bg-gray-300 text-gray-500 border-gray-300 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400"
+            onClick={handleInstantSolve}
+            disabled={isSolutionRevealed}
+            className={`p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 ${
+              isSolutionRevealed ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
-            Enter Guesses
+            Show Solution
           </button>
         </div>
       </div>
