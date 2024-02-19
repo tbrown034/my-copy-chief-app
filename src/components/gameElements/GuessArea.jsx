@@ -83,7 +83,7 @@ const GuessArea = ({
               {articleWins[articleIndex] ? (
                 <Article article={article} />
               ) : (
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-4">
                   <div className="flex flex-col justify-center">
                     <p className="font-sans text-lg font-semibold">
                       Headline {articleIndex + 1}

@@ -20,14 +20,14 @@ const Hints = ({ article }) => {
         <div>
           <button
             onClick={handleClick}
-            className="p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700"
+            className="p-2 text-sm border border-black shadow-sm bg-transparen rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700"
           >
             Show Hint
           </button>
         </div>
       ) : (
         <div className="flex">
-          <div className="flex gap-2 p-2 text-white bg-gray-800 dark:text-black dark:bg-white rounded-xl">
+          <div className="flex gap-2 p-2 text-sm text-white bg-gray-800 dark:text-black dark:bg-white rounded-xl">
             <p className="">NYT Section: {article.section} </p>
           </div>
         </div>
