@@ -166,20 +166,23 @@ const GuessArea = ({
             Show Solution
           </button>
         </div>
-
-        <div className="flex flex-col gap-2 p-4 border-2 border-black dark:border-white rounded-xl ">
-          <h3 className="text-center">Statss</h3>
-          <div className="flex items-center justify-between gap-2">
-            <p>Correct Guesses:</p>
-            <p className="p-2 border-2 border-black rounded-xl dark:border-white ">
-              {articleWins.filter(Boolean).length} of {fullArticles.length}
-            </p>
-          </div>
-          <div className="flex items-center justify-between gap-2 j">
-            <p>Number of Guesses:</p>
-            <p className="p-2 px-6 border-2 border-black rounded-xl dark:border-white ">
-              {guessCounter}
-            </p>
+        <div className="flex justify-center ">
+          <div className="flex flex-col w-1/2 gap-2 p-2 border-2 border-black items justify-center-center dark:border-white rounded-xl ">
+            <div className="flex flex-col gap-6">
+              <h3 className="text-center">Guesses Scoreboard</h3>
+              <div className="flex items-center justify-around gap-2">
+                <p>Correct:</p>
+                <p className="p-2 border-2 border-black rounded-xl dark:border-white ">
+                  {articleWins.filter(Boolean).length} of {fullArticles.length}
+                </p>
+              </div>
+              <div className="flex items-center justify-around gap-2 s">
+                <p>Guesses:</p>
+                <p className="p-2 px-6 border-2 border-black rounded-xl dark:border-white ">
+                  {guessCounter}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
