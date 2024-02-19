@@ -167,9 +167,9 @@ const GuessArea = ({
           </button>
         </div>
         <div className="flex justify-center ">
-          <div className="flex flex-col w-1/2 gap-2 p-2 border-2 border-black items justify-center-center dark:border-white rounded-xl ">
-            <div className="flex flex-col gap-6">
-              <h3 className="text-center">Guesses Scoreboard</h3>
+          <div className="flex flex-col justify-center gap-2 p-2 px-20 border-2 border-black items dark:border-white rounded-xl ">
+            <div className="flex flex-col gap-4 px-8">
+              <h3 className="text-center">Scoreboard</h3>
               <div className="flex items-center justify-around gap-2">
                 <p>Correct:</p>
                 <p className="p-2 border-2 border-black rounded-xl dark:border-white ">
