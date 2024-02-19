@@ -4,19 +4,24 @@ import HowToBullets from "./HowToBullets";
 import HowToExamples from "./HowToExamples";
 import SettingsBox from "../../Shared/SettingsBox";
 
-export default function HowTo({ toggleHowTo, setNumOfHeadlines }) {
+export default function HowTo({
+  toggleHowTo,
+  setNumOfHeadlines,
+  setDuration,
+  duration,
+}) {
   const [isOpen, setIsOpen] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
 
   function handleDifficultyChange(value) {
     setNumOfHeadlines(value); // Apply the selected difficulty
     toggleHowTo(); // Close the modal and start the game
-    setShowSettings(false); // Hide difficulty options
   }
 
   function handleDurationChange(value) {
+    console.log(`Setting duration to: ${value}`);
+
     setDuration(value); // Apply the selected duration
-    setShowSettings(false); // Hide settings options
     toggleHowTo(); // Close the modal and start the game
   }
 
@@ -77,12 +82,12 @@ export default function HowTo({ toggleHowTo, setNumOfHeadlines }) {
                     </button>
                   </div>
                   {showSettings && (
-                    <div className="flex">
-                      <SettingsBox
-                        handleDifficultyChange={handleDifficultyChange}
-                        handleDurationChange={handleDurationChange}
-                      />
-                    </div>
+                    <SettingsBox
+                      handleDifficultyChange={handleDifficultyChange}
+                      handleDurationChange={handleDurationChange}
+                      setDuration={setDuration}
+                      duration={duration}
+                    />
                   )}
                   <div className="flex justify-center">
                     {" "}

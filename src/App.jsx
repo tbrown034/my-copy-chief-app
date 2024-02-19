@@ -35,12 +35,17 @@ function App() {
       {!gameDisplay ? (
         <Home toggleHowTo={toggleHowTo} setGameDisplay={setGameDisplay} />
       ) : (
-        <Game setGameDisplay={setGameDisplay} numOfHeadlines={numOfHeadlines} />
+        <Game
+          setGameDisplay={setGameDisplay}
+          numOfHeadlines={numOfHeadlines}
+          duration={duration}
+        />
       )}
       <Footer />
       {showHowTo && (
         <HowTo
           setDuration={setDuration}
+          duration={duration}
           toggleHowTo={toggleHowTo}
           handleSetNumOfHeadlines={handleSetNumOfHeadlines}
           setNumOfHeadlines={setNumOfHeadlines}

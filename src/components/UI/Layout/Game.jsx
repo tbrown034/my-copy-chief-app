@@ -7,7 +7,7 @@ import GuessArea from "../../gameElements/GuessArea";
 import { shuffleArray } from "../../../utils/shuffleArray";
 import WinDisplay from "./WinDisplay";
 
-export default function Game({ setGameDisplay, numOfHeadlines }) {
+export default function Game({ setGameDisplay, numOfHeadlines, duration }) {
   const API_KEY = import.meta.env.VITE_NYT_API_KEY;
   const [fullArticles, setFullArticles] = useState([]);
   const [processedWords, setProcessedWords] = useState([]);
@@ -26,7 +26,7 @@ export default function Game({ setGameDisplay, numOfHeadlines }) {
   useEffect(() => {
     const loadAndProcessArticles = async () => {
       let fetchedArticles = []; // Initialize here to use later in the logic
-      fetchedArticles = await fetchMostPopular(numOfHeadlines);
+      fetchedArticles = await fetchMostPopular(numOfHeadlines, duration);
 
       setFullArticles(fetchedArticles);
 
@@ -52,7 +52,7 @@ export default function Game({ setGameDisplay, numOfHeadlines }) {
     };
 
     loadAndProcessArticles();
-  }, [numOfHeadlines]);
+  }, [numOfHeadlines, duration]);
 
   const addWordToGuess = (selectedWord) => {
     // Find the first empty position in the nested guessPlacement array
