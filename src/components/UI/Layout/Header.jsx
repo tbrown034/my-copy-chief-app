@@ -1,5 +1,5 @@
 import Toggle from "../Shared/Toggle";
-import { Popover, Transition } from "@headlessui/react";
+import { Popover, Transition, Menu } from "@headlessui/react";
 import { Fragment } from "react";
 
 export default function Header({
@@ -32,7 +32,7 @@ export default function Header({
           {" "}
           <i className="fa-regular fa-circle-question"></i>
         </button>
-        <Popover className="relative">
+        {/* <Popover className="relative">
           <Popover.Button>
             <i className="fas fa-gear hover:text-gray-500 dark:hover:text-gray-300"></i>
           </Popover.Button>
@@ -45,26 +45,26 @@ export default function Header({
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Popover.Panel className="absolute z-10 w-48 max-w-xs mt-3 transform -translate-x-1/2 left-1/2 sm:px-0 lg:max-w-3xl">
-              <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                <div className="relative grid gap-4 p-4 bg-white dark:bg-gray-800">
+            <Popover.Panel className="absolute z-10 p-2 mb-2 right-1 rounded-xl">
+              <div className="rounded-lg shadow-lg ">
+                <div className="relative flex items-center justify-center gap-2 p-4 rounded-xl bg-slate-300 opacity-800 dark:bg-gray-800">
                   <button
                     onClick={() => openModal("difficulty")}
-                    className="flex justify-between w-full px-4 py-2 text-sm text-left text-gray-700 cursor-pointer dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    className="flex justify-between w-full px-4 py-2 text-sm text-left text-gray-700 cursor-pointer dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 bg-slate-200 rounded-xl"
                   >
                     Difficulty
                   </button>
                   <button
                     onClick={() => openModal("duration")}
-                    className="flex justify-between w-full px-4 py-2 text-sm text-left text-gray-700 cursor-pointer dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    className="flex justify-between w-full px-4 py-2 text-sm text-left text-gray-700 cursor-pointer dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 bg-slate-200 rounded-xl"
                   >
-                    Time Period
+                    Duration
                   </button>
                 </div>
               </div>
             </Popover.Panel>
           </Transition>
-        </Popover>
+        </Popover> */}
 
         <Toggle
           darkMode={darkMode}

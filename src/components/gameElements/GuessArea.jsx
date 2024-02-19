@@ -167,16 +167,17 @@ const GuessArea = ({
           </button>
         </div>
 
-        <div className="flex flex-col gap-2 p-4 m-4 text-xl font-semibold border-2 border-black dark:border-white rounded-xl ">
-          <div className="flex items-center justify-around gap-2">
+        <div className="flex flex-col gap-2 p-4 border-2 border-black dark:border-white rounded-xl ">
+          <h3 className="text-center">Statss</h3>
+          <div className="flex items-center justify-between gap-2">
             <p>Correct Guesses:</p>
-            <p className="p-2 text-white bg-black rounded-xl dark:bg-white dark:text-black">
+            <p className="p-2 border-2 border-black rounded-xl dark:border-white ">
               {articleWins.filter(Boolean).length} of {fullArticles.length}
             </p>
           </div>
-          <div className="flex items-center justify-around gap-2">
+          <div className="flex items-center justify-between gap-2 j">
             <p>Number of Guesses:</p>
-            <p className="p-2 px-4 m-2 text-white bg-black dark:bg-white dark:text-black rounded-xl ">
+            <p className="p-2 px-6 border-2 border-black rounded-xl dark:border-white ">
               {guessCounter}
             </p>
           </div>
