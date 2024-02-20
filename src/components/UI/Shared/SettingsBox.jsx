@@ -1,94 +1,144 @@
-import { useState } from "react";
+import { Fragment } from "react";
+import { Listbox, Transition } from "@headlessui/react";
 
 const SettingsBox = ({
   handleDifficultyChange,
   handleDurationChange,
   duration,
-  setDuration,
+  numOfHeadlines,
 }) => {
-  const [showDifficultyOptions, setShowDifficultyOptions] = useState(false);
-  const [showDurationOptions, setDurationOptions] = useState(false);
+  const difficulties = [
+    { label: "Easy", value: 1 },
+    { label: "Medium", value: 2 },
+    { label: "Hard", value: 3 },
+  ];
 
-  function displayDifficultyOptions() {
-    setShowDifficultyOptions((prev) => !prev);
-  }
+  const durations = [
+    { label: "1 Day", value: 1 },
+    { label: "7 Days", value: 7 },
+    { label: "30 Days", value: 30 },
+  ];
 
-  function displayDurationOptions() {
-    setDurationOptions((prev) => !prev);
-  }
+  // Find the difficulty and duration objects, or default to the first if not found
+  const selectedDifficulty =
+    difficulties.find((d) => d.value === numOfHeadlines) || difficulties[1];
+  const selectedDuration =
+    durations.find((d) => d.value === duration) || durations[0];
 
   return (
-    <>
-      <div className="flex justify-center gap-8 text-center">
-        <div>
-          <button
-            onClick={displayDifficultyOptions}
-            className="p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+    <div className="flex justify-center gap-4 p-4 rounded-xl">
+      {/* Difficulty Selector */}
+      <div className="relative overflow-visible">
+        <Listbox
+          value={selectedDifficulty}
+          onChange={(e) => {
+            handleDifficultyChange(e.value);
+          }}
+        >
+          <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white border-2 border-black rounded-lg shadow-md cursor-default border-opacity-35 sm:text-sm">
+            <span className="block truncate">
+              Difficulty: {selectedDifficulty.label || "Select Difficulty"}
+            </span>
+            <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+              <i className="fa-solid fa-angle-down"></i>
+            </span>
+          </Listbox.Button>
+          <Transition
+            as={Fragment}
+            leave="transition ease-in duration-100"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
           >
-            Difficulty{" "}
-          </button>
-        </div>
-        <div>
-          <button
-            onClick={displayDurationOptions}
-            className="p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
-          >
-            Time Period
-          </button>
-        </div>
+            <Listbox.Options className="z-10 w-full py-1 mt-1 overflow-auto text-base bg-white border-2 border-black rounded-md shadow-lg border-opacity-35 max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+              {difficulties.map((difficulty, idx) => (
+                <Listbox.Option
+                  key={idx}
+                  value={difficulty}
+                  className={({ active }) =>
+                    `${
+                      active ? "text-amber-900 bg-amber-100" : "text-gray-900"
+                    } cursor-default select-none relative py-2 pl-10 pr-4`
+                  }
+                >
+                  {({ selected }) => (
+                    <>
+                      <span
+                        className={`${
+                          selected ? "font-medium" : "font-normal"
+                        } block truncate`}
+                      >
+                        {difficulty.label}
+                      </span>
+                      {selected && (
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                          <i className="fa-solid fa-check"></i>
+                        </span>
+                      )}
+                    </>
+                  )}
+                </Listbox.Option>
+              ))}
+            </Listbox.Options>
+          </Transition>
+        </Listbox>
       </div>
 
-      {showDifficultyOptions && (
-        <div className="p-8 m-2 border-2 border-black dark:border-white rounded-xl">
-          <h3 className="font-semibold ">Difficulty</h3>
-          <p>
-            Choose your challenge level by selecting the number of headlines to
-            solve: 'Easy' for a single headline, 'Medium' for two, and 'Hard'
-            for three.
-          </p>
-          <div className="flex flex-col items-center mt-4">
-            {[
-              { label: "Easy", value: 1 },
-              { label: "Medium", value: 2 },
-              { label: "Hard", value: 3 },
-            ].map((difficulty) => (
-              <button
-                key={difficulty.value}
-                onClick={() => handleDifficultyChange(difficulty.value)}
-                className="w-1/2 p-2 my-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
-              >
-                {difficulty.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-      {showDurationOptions && (
-        <div className="p-8 m-2 border-2 border-black dark:border-white rounded-xl">
-          <h3 className="font-semibold">Duration</h3>
-          <p>
-            Tailor your news puzzle to recent or extended periods by selecting
-            the duration. Opt for '1 Day' for the latest, '7 Days' for a weekly
-            recap, or '30 Days' for a comprehensive monthly review.
-          </p>
-          <div className="flex flex-col items-center mt-4">
-            {[
-              { label: "1 Day", value: 1 },
-              { label: "7 Days", value: 7 },
-              { label: "30 Days", value: 30 },
-            ].map((option) => (
-              <button
-                key={option.value}
-                onClick={() => handleDurationChange(option.value)} // You need to define this function
-                className="w-1/2 p-2 my-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-    </>
+      {/* Duration Selector */}
+      <div className="relative">
+        <Listbox
+          value={selectedDuration}
+          onChange={(e) => {
+            handleDurationChange(e.value);
+          }}
+        >
+          <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white border-2 border-black rounded-lg shadow-md cursor-default border-opacity-35 focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 sm:text-sm">
+            <span className="block truncate">
+              Time Period: {selectedDuration.label || "Select Duration"}
+            </span>
+            <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+              <i className="fa-solid fa-angle-down"></i>
+            </span>
+          </Listbox.Button>
+          <Transition
+            as={Fragment}
+            leave="transition ease-in duration-100"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <Listbox.Options className="z-10 w-full py-1 mt-1 overflow-auto text-base bg-white border-2 border-black rounded-md shadow-lg border-opacity-35 max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+              {durations.map((duration, idx) => (
+                <Listbox.Option
+                  key={idx}
+                  value={duration}
+                  className={({ active }) =>
+                    `${
+                      active ? "text-amber-900 bg-amber-100" : "text-gray-900"
+                    } cursor-default select-none relative py-2 pl-10 pr-4`
+                  }
+                >
+                  {({ selected }) => (
+                    <>
+                      <span
+                        className={`${
+                          selected ? "font-medium" : "font-normal"
+                        } block truncate`}
+                      >
+                        {duration.label}
+                      </span>
+                      {selected && (
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                          <i className="fa-solid fa-check"></i>
+                        </span>
+                      )}
+                    </>
+                  )}
+                </Listbox.Option>
+              ))}
+            </Listbox.Options>
+          </Transition>
+        </Listbox>
+      </div>
+    </div>
   );
 };
 

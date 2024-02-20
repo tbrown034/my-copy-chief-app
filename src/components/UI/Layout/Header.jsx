@@ -8,6 +8,7 @@ export default function Header({
   setGameDisplay,
   gameDisplay,
   toggleHowTo,
+  toggleSettings,
 }) {
   const toggleTheme = () => {
     setDarkMode(!darkMode);
@@ -30,9 +31,13 @@ export default function Header({
       <div className="flex items-center justify-center gap-2 text-2xl">
         <button onClick={toggleHowTo}>
           {" "}
-          <i className="fa-regular fa-circle-question"></i>
+          <i className="fa-regular hover:text-gray-500 fa-circle-question"></i>
         </button>
-        {/* <Popover className="relative">
+        {/* <button onClick={toggleSettings}>
+          {" "}
+          <i className="fa-solid fa-gear"></i>
+        </button> */}
+        <Popover className="relative">
           <Popover.Button>
             <i className="fas fa-gear hover:text-gray-500 dark:hover:text-gray-300"></i>
           </Popover.Button>
@@ -64,8 +69,7 @@ export default function Header({
               </div>
             </Popover.Panel>
           </Transition>
-        </Popover> */}
-
+        </Popover>
         <Toggle
           darkMode={darkMode}
           setDarkMode={setDarkMode}

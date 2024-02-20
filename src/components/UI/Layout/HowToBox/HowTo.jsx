@@ -8,6 +8,7 @@ export default function HowTo({
   toggleHowTo,
   setNumOfHeadlines,
   setDuration,
+  numOfHeadlines,
   duration,
 }) {
   const [isOpen, setIsOpen] = useState(true);
@@ -16,14 +17,12 @@ export default function HowTo({
 
   function handleDifficultyChange(value) {
     setNumOfHeadlines(value); // Apply the selected difficulty
-    toggleHowTo(); // Close the modal and start the game
   }
 
   function handleDurationChange(value) {
     console.log(`Setting duration to: ${value}`);
 
     setDuration(value); // Apply the selected duration
-    toggleHowTo(); // Close the modal and start the game
   }
 
   function displaySettings() {
@@ -99,6 +98,7 @@ export default function HowTo({
                       handleDurationChange={handleDurationChange}
                       setDuration={setDuration}
                       duration={duration}
+                      numOfHeadlines={numOfHeadlines}
                     />
                   )}
                   <div className="flex justify-center">

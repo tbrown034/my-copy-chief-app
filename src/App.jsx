@@ -5,12 +5,14 @@ import Game from "./components/UI/Layout/Game";
 import Footer from "./components/UI/Layout/Footer";
 import HowTo from "./components/UI/Layout/HowToBox/HowTo";
 import { useDarkMode } from "./hooks/useDarkMode";
+import SettingsBox from "./components/UI/Shared/SettingsBox";
 
 function App() {
   const [gameDisplay, setGameDisplay] = useState(false);
   const [isDarkMode, setDarkMode] = useDarkMode();
   const [showHowTo, setShowHowTo] = useState(false);
-  const [duration, setDuration] = useState(1); // Defaulting to 1 day for example
+  const [duration, setDuration] = useState(1);
+  const [showSettings, setShowSettings] = useState(false);
 
   const [numOfHeadlines, setNumOfHeadlines] = useState(2);
 
@@ -18,6 +20,23 @@ function App() {
   const handleSetNumOfHeadlines = (num) => {
     setNumOfHeadlines(num);
   };
+
+  function handleDifficultyChange(value) {
+    setNumOfHeadlines(value); // Apply the selected difficulty
+  }
+
+  function handleDurationChange(value) {
+    console.log(`Setting duration to: ${value}`);
+
+    setDuration(value); // Apply the selected duration
+  }
+
+  function toggleSettings() {
+    setShowSettings((prev) => {
+      console.log("Toggling Settings: ", !prev); // Add this line for debugging
+      return !prev;
+    });
+  }
 
   return (
     <div
@@ -28,6 +47,7 @@ function App() {
       <Header
         darkMode={isDarkMode}
         setDarkMode={setDarkMode}
+        toggleSettings={toggleSettings}
         gameDisplay={gameDisplay}
         setGameDisplay={setGameDisplay}
         toggleHowTo={toggleHowTo}
@@ -49,6 +69,8 @@ function App() {
           toggleHowTo={toggleHowTo}
           handleSetNumOfHeadlines={handleSetNumOfHeadlines}
           setNumOfHeadlines={setNumOfHeadlines}
+          numOfHeadlines={numOfHeadlines}
+          handleDurationChange={handleDurationChange}
         />
       )}
     </div>
