@@ -51,6 +51,8 @@ function App() {
         gameDisplay={gameDisplay}
         setGameDisplay={setGameDisplay}
         toggleHowTo={toggleHowTo}
+        handleDurationChange={handleDurationChange}
+        handleDifficultyChange={handleDifficultyChange}
       />
       {!gameDisplay ? (
         <Home toggleHowTo={toggleHowTo} setGameDisplay={setGameDisplay} />
