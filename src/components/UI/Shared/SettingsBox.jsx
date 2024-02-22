@@ -35,13 +35,10 @@ const SettingsBox = ({
             handleDifficultyChange(e.value);
           }}
         >
-          <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white border-2 border-black rounded-lg shadow-md cursor-default border-opacity-35 sm:text-sm">
-            <span className="block truncate">
-              Difficulty: {selectedDifficulty.label || "Select Difficulty"}
-            </span>
-            <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-              <i className="fa-solid fa-angle-down"></i>
-            </span>
+          <Listbox.Button className="flex items-center gap-2 p-2 text-left bg-white border-2 border-black rounded-lg shadow-md cursor-default border-opacity-35 sm:text-sm">
+            <span className="">Difficulty</span>
+
+            <i className="fa-solid fa-angle-down"></i>
           </Listbox.Button>
           <Transition
             as={Fragment}
@@ -91,13 +88,10 @@ const SettingsBox = ({
             handleDurationChange(e.value);
           }}
         >
-          <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white border-2 border-black rounded-lg shadow-md cursor-default border-opacity-35 focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 sm:text-sm">
-            <span className="block truncate">
-              Time Period: {selectedDuration.label || "Select Duration"}
-            </span>
-            <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-              <i className="fa-solid fa-angle-down"></i>
-            </span>
+          <Listbox.Button className="flex items-center gap-2 p-2 text-left bg-white border-2 border-black rounded-lg shadow-md cursor-default border-opacity-35 focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 sm:text-sm">
+            <span className="">Time Period</span>
+
+            <i className="fa-solid fa-angle-down"></i>
           </Listbox.Button>
           <Transition
             as={Fragment}
