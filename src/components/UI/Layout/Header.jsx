@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import SettingsBox from "../Shared/SettingsBox"; // Adjust the path as necessary
 import Toggle from "../Shared/Toggle"; // Adjust the path as necessary
@@ -9,22 +9,29 @@ export default function Header({
   setGameDisplay,
   gameDisplay,
   toggleHowTo,
-  numOfHeadlines,
   setNumOfHeadlines,
-  duration,
   setDuration,
+  numOfHeadlines,
+  duration,
 }) {
   const toggleTheme = () => {
     setDarkMode(!darkMode);
   };
+
   const backToHome = () => {
     if (gameDisplay) {
       setGameDisplay(false);
     }
   };
 
-  // Assuming handleDifficultyChange and handleDurationChange functions
-  // are passed as props or implemented here to update the global state.
+  // Correctly wrap the setters in functions
+  const handleDifficultyChange = (value) => {
+    setNumOfHeadlines(value);
+  };
+
+  const handleDurationChange = (value) => {
+    setDuration(value);
+  };
 
   return (
     <div className="flex justify-between p-2 pb-6 border-b-2 border-opacity-20 border-b-black dark:border-b-white dark:border-opacity-20">
@@ -39,7 +46,7 @@ export default function Header({
         <button onClick={toggleHowTo}>
           <i className="fa-regular hover:text-gray-500 fa-circle-question"></i>
         </button>
-        <Popover className="relative">
+        <Popover className="">
           <Popover.Button>
             <i className="fas fa-gear hover:text-gray-500 dark:hover:text-gray-300"></i>
           </Popover.Button>
@@ -52,10 +59,10 @@ export default function Header({
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Popover.Panel className="absolute z-10 p-2 mb-2 right-1 rounded-xl bg-slate-300 opacity-800 dark:bg-gray-800">
+            <Popover.Panel className="absolute z-10 px-2 m-4 mr-12 text-sm text-black bg-gray-100 border-2 border-black right-2 dark:text-white rounded-xl dark:bg-gray-800">
               <SettingsBox
-                handleDifficultyChange={setNumOfHeadlines} // Adapt this if needed
-                handleDurationChange={setDuration} // Adapt this if needed
+                handleDifficultyChange={handleDifficultyChange}
+                handleDurationChange={handleDurationChange}
                 duration={duration}
                 numOfHeadlines={numOfHeadlines}
               />
