@@ -92,7 +92,11 @@ function App() {
           playGame={playGame}
         />
       )}
-      <Footer />
+      <Footer
+        toggleAbout={toggleAbout}
+        toggleHowToPlay={toggleHowTo}
+        toggleSettings={toggleSettings}
+      />
       {showHowTo && (
         <HowTo
           setDuration={setDuration}
