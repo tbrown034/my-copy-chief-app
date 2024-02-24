@@ -3,6 +3,7 @@ import { Fragment, useState } from "react";
 import HowToBullets from "./HowToBullets";
 import HowToExamples from "./HowToExamples";
 import SettingsBox from "../../Shared/SettingsBox";
+import AboutBox from "../AboutBox";
 
 export default function HowTo({
   toggleHowTo,
@@ -10,10 +11,11 @@ export default function HowTo({
   setDuration,
   numOfHeadlines,
   duration,
+  toggleAbout,
+  showAbout,
 }) {
   const [isOpen, setIsOpen] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
-  const [showAbout, setShowAbout] = useState(false);
 
   function handleDifficultyChange(value) {
     setNumOfHeadlines(value); // Apply the selected difficulty
@@ -29,17 +31,6 @@ export default function HowTo({
     setShowSettings((prev) => !prev);
   }
 
-  // Adjust the handleAbout function to close the current dialog and open the 'About' dialog.
-  function handleAbout() {
-    setIsOpen(false); // Close the "How To" dialog
-    setShowAbout(true); // Open the "About" dialog
-  }
-
-  // Function to close About dialog and open HowTo
-  function handleCloseAbout() {
-    setShowAbout(false); // Close the "About" dialog
-    toggleHowTo(); // This should re-open the "How To" dialog if necessary
-  }
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -86,12 +77,13 @@ export default function HowTo({
                       Settings{" "}
                     </button>
                     <button
-                      onClick={handleAbout}
+                      onClick={toggleAbout}
                       className="p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
                     >
                       About
                     </button>
                   </div>
+
                   {showSettings && (
                     <SettingsBox
                       handleDifficultyChange={handleDifficultyChange}

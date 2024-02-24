@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Hints = ({ article }) => {
+const Hints = ({ article, addToHintCounter }) => {
   // Changed prop to expect a single article
 
   const [showHints, setShowHints] = useState(false);
@@ -12,6 +12,7 @@ const Hints = ({ article }) => {
 
   const handleClick = () => {
     setShowHints((prevState) => !prevState);
+    addToHintCounter();
   };
 
   return (

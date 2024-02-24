@@ -1,12 +1,7 @@
 import React from "react";
 import CurrentDate from "../Shared/CurrentDate";
 
-export default function Home({ setGameDisplay, toggleHowTo }) {
-  const playGame = () => {
-    setGameDisplay(true);
-    toggleHowTo();
-  };
-
+export default function Home({ playGame }) {
   return (
     <>
       <div className="flex flex-col items-center justify-center min-h-screen gap-4 p-2 text-center">

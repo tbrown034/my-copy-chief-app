@@ -8,7 +8,6 @@ import { shuffleArray } from "../../../utils/shuffleArray";
 import WinDisplay from "./WinDisplay";
 
 export default function Game({ setGameDisplay, numOfHeadlines, duration }) {
-  const API_KEY = import.meta.env.VITE_NYT_API_KEY;
   const [fullArticles, setFullArticles] = useState([]);
   const [processedWords, setProcessedWords] = useState([]);
   const [showAnswers, setShowAnswers] = useState(false);
@@ -18,6 +17,7 @@ export default function Game({ setGameDisplay, numOfHeadlines, duration }) {
   const [guessResults, setGuessResults] = useState([]);
   const [hasWon, setHasWon] = useState(false);
   const [guessCounter, setGuessCounter] = useState(0);
+  const [hintCounter, setHintCounter] = useState(0);
 
   const [articleWins, setArticleWins] = useState(
     new Array(fullArticles.length).fill(false)
@@ -132,6 +132,10 @@ export default function Game({ setGameDisplay, numOfHeadlines, duration }) {
     setGuessCounter(guessCounter + 1);
   };
 
+  let addToHintCounter = () => {
+    setHintCounter(hintCounter + 1);
+  };
+
   const submitGuesses = () => {
     const correctHeadlines = fullArticles.map((article) =>
       article.title.split(/\s+/)
@@ -186,7 +190,12 @@ export default function Game({ setGameDisplay, numOfHeadlines, duration }) {
   return (
     <div>
       {hasWon ? (
-        <WinDisplay fullArticles={fullArticles} guessCounter={guessCounter} />
+        <WinDisplay
+          fullArticles={fullArticles}
+          guessCounter={guessCounter}
+          hintCounter={hintCounter}
+          articleWins={articleWins}
+        />
       ) : (
         <div className="flex flex-col gap-8">
           <GuessArea
@@ -207,6 +216,8 @@ export default function Game({ setGameDisplay, numOfHeadlines, duration }) {
             setShowAnswers={setShowAnswers}
             guessCounter={guessCounter}
             setGuessCounter={setGuessCounter}
+            addToHintCounter={addToHintCounter}
+            hintCounter={hintCounter}
           />
           <WordChoices
             words={availableWords}

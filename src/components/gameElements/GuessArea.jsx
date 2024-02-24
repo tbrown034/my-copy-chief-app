@@ -16,6 +16,8 @@ const GuessArea = ({
   setGuessResults,
   articleWins,
   guessCounter,
+  addToHintCounter,
+  hintCounter,
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -76,7 +78,7 @@ const GuessArea = ({
 
   return (
     <>
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-4">
           {fullArticles.map((article, articleIndex) => (
             <div key={articleIndex}>
@@ -92,7 +94,10 @@ const GuessArea = ({
                       Published {formatDate(article.published_date)}
                     </p>
                   </div>
-                  <Hints article={article} />
+                  <Hints
+                    addToHintCounter={addToHintCounter}
+                    article={article}
+                  />
                   <div className="flex flex-wrap gap-2">
                     {article.title.split(/\s+/).map((_, wordIndex) => {
                       const resultClass =
@@ -141,6 +146,7 @@ const GuessArea = ({
               confirmSolve={confirmSolve}
             />
           )}
+
           <button
             onClick={clearAllGuesses}
             disabled={!hasMadeAGuess}
@@ -150,12 +156,7 @@ const GuessArea = ({
           >
             Clear Guesses
           </button>
-          <button
-            onClick={submitGuesses}
-            className="p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700"
-          >
-            Submit Guesses
-          </button>
+
           <button
             onClick={handleInstantSolve}
             disabled={isSolutionRevealed}
@@ -166,8 +167,16 @@ const GuessArea = ({
             Show Solution
           </button>
         </div>
+        <div className="flex justify-center">
+          <button
+            onClick={submitGuesses}
+            className="p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700"
+          >
+            Enter Guess
+          </button>
+        </div>
         <div className="flex justify-center ">
-          <div className="flex flex-col justify-center gap-2 p-2 px-20 border-2 border-black items dark:border-white rounded-xl ">
+          <div className="flex flex-col justify-center gap-2 p-4 px-8 border-2 border-black items dark:border-white rounded-xl ">
             <div className="flex flex-col gap-4 px-8">
               <h3 className="text-center">Scoreboard</h3>
               <div className="flex items-center justify-around gap-2">
@@ -180,6 +189,12 @@ const GuessArea = ({
                 <p>Guesses:</p>
                 <p className="p-2 px-6 border-2 border-black rounded-xl dark:border-white ">
                   {guessCounter}
+                </p>
+              </div>
+              <div className="flex items-center justify-around gap-2 s">
+                <p>Hints Used:</p>
+                <p className="p-2 px-6 border-2 border-black rounded-xl dark:border-white ">
+                  {hintCounter}
                 </p>
               </div>
             </div>

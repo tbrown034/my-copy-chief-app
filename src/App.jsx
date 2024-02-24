@@ -6,19 +6,35 @@ import Footer from "./components/UI/Layout/Footer";
 import HowTo from "./components/UI/Layout/HowToBox/HowTo";
 import { useDarkMode } from "./hooks/useDarkMode";
 import SettingsBox from "./components/UI/Shared/SettingsBox";
+import AboutBox from "./components/UI/Layout/AboutBox";
 
 function App() {
   const [gameDisplay, setGameDisplay] = useState(false);
   const [isDarkMode, setDarkMode] = useDarkMode();
   const [showHowTo, setShowHowTo] = useState(false);
+  const [showAbout, setShowAbout] = useState(false);
   const [duration, setDuration] = useState(1);
   const [showSettings, setShowSettings] = useState(false);
-
   const [numOfHeadlines, setNumOfHeadlines] = useState(2);
 
   const toggleHowTo = () => setShowHowTo((prev) => !prev);
   const handleSetNumOfHeadlines = (num) => {
     setNumOfHeadlines(num);
+  };
+
+  const toggleAbout = () => {
+    // If the How To dialog is open, close it first.
+    if (showHowTo) {
+      setShowHowTo(false); // Close the How To dialog.
+
+      // Wait for the state update to complete before opening the About dialog.
+      setTimeout(() => {
+        setShowAbout(true); // Open the About dialog.
+      }, 0); // Using a timeout of 0 to defer this operation until after the state update.
+    } else {
+      // If the How To dialog is not open, toggle the About dialog directly.
+      setShowAbout((prev) => !prev);
+    }
   };
 
   function handleDifficultyChange(value) {
@@ -38,6 +54,11 @@ function App() {
     });
   }
 
+  const playGame = () => {
+    setGameDisplay(true);
+    toggleHowTo();
+  };
+
   return (
     <div
       className={`flex flex-col min-h-screen justify-between gap-4 p-4 ${
@@ -55,14 +76,20 @@ function App() {
         handleDifficultyChange={handleDifficultyChange}
         setNumOfHeadlines={setNumOfHeadlines}
         setDuration={setDuration}
+        playGame={playGame}
       />
       {!gameDisplay ? (
-        <Home toggleHowTo={toggleHowTo} setGameDisplay={setGameDisplay} />
+        <Home
+          toggleHowTo={toggleHowTo}
+          playGame={playGame}
+          setGameDisplay={setGameDisplay}
+        />
       ) : (
         <Game
           setGameDisplay={setGameDisplay}
           numOfHeadlines={numOfHeadlines}
           duration={duration}
+          playGame={playGame}
         />
       )}
       <Footer />
@@ -75,8 +102,11 @@ function App() {
           setNumOfHeadlines={setNumOfHeadlines}
           numOfHeadlines={numOfHeadlines}
           handleDurationChange={handleDurationChange}
+          toggleAbout={toggleAbout}
+          playGame={playGame}
         />
       )}
+      {showAbout && <AboutBox toggleAbout={toggleAbout} />}
     </div>
   );
 }
