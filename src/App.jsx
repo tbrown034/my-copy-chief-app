@@ -8,7 +8,7 @@ import { useDarkMode } from "./hooks/useDarkMode";
 import SettingsBox from "./components/UI/Modals/SettingsBox";
 import AboutBox from "./components/UI/Modals/AboutBox";
 import HowToBox from "./components/UI/Modals/HowToBox/HowToBox";
-import UserMenuBox from "./components/UI/Modals/UserMenuBox";
+import UserMenuBox from "./components/UI/Modals/UserMenuBox/UserMenuBox";
 
 function App() {
   const [gameDisplay, setGameDisplay] = useState(false);
