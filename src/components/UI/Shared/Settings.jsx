@@ -30,7 +30,7 @@ const Settings = ({
 
   // Enhanced style conditions to include specific case for HowToBox access in dark mode
   const styleConditions = {
-    base: "flex items-center gap-2 p-2 px-8 text-left rounded-lg shadow-md border cursor-default border-opacity-35 sm:text-sm",
+    base: "flex items-center gap-2 p-2 px-4 text-left rounded-lg shadow-md border cursor-default border-opacity-35 sm:text-sm",
     borderStyle: showHowTo && isDarkMode ? "border-white" : "border-black",
   };
 
