@@ -1,7 +1,6 @@
 // Article.jsx
 
 const Article = ({ article }) => {
-  // Helper function to extract image URL
   const getImageUrl = (mediaArray) => {
     if (
       mediaArray.length > 0 &&
@@ -14,7 +13,7 @@ const Article = ({ article }) => {
         ) || mediaArray[0]["media-metadata"][0];
       return mediumImage.url;
     }
-    return ""; // Return a default image URL or an empty string if no image is found
+    return "";
   };
 
   const imageUrl = getImageUrl(article.media);
