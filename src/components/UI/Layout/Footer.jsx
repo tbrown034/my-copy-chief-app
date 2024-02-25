@@ -15,7 +15,7 @@ export default function Footer({ toggleAbout, toggleHowToPlay }) {
           className="flex items-center transition-colors duration-200 ease-in-out hover:text-gray-500 dark:hover:text-gray-400"
           aria-label="Learn how to play"
         >
-          <i className="mr-1 fas fa-question-circle"></i> How to Play
+          <i className="mr-1 fas fa-question-circle"></i> How to Play!
         </button>
 
         {/* Social Links */}
