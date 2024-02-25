@@ -8,6 +8,7 @@ export default function Header({
   setGameDisplay,
   gameDisplay,
   toggleHowTo,
+  toggleUserMenu,
 
   toggleAbout,
   toggleSettings,
@@ -37,6 +38,9 @@ export default function Header({
         </button>
         <button onClick={toggleAbout}>
           <i className="fa-regular fa-question-circle hover:text-gray-500 dark:hover:text-gray-300"></i>
+        </button>
+        <button onClick={toggleUserMenu}>
+          <i className="fa-regular fa-user hover:text-gray-500 dark:hover:text-gray-300"></i>
         </button>
         <button onClick={toggleSettings}>
           <i className="fas fa-gear hover:text-gray-500 dark:hover:text-gray-300"></i>

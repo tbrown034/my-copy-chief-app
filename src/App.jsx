@@ -8,6 +8,7 @@ import { useDarkMode } from "./hooks/useDarkMode";
 import SettingsBox from "./components/UI/Modals/SettingsBox";
 import AboutBox from "./components/UI/Modals/AboutBox";
 import HowToBox from "./components/UI/Modals/HowToBox/HowToBox";
+import UserMenuBox from "./components/UI/Modals/UserMenuBox";
 
 function App() {
   const [gameDisplay, setGameDisplay] = useState(false);
@@ -17,6 +18,7 @@ function App() {
   const [duration, setDuration] = useState(1);
   const [showSettings, setShowSettings] = useState(false);
   const [numOfHeadlines, setNumOfHeadlines] = useState(2);
+  const [showUserMenu, setUserMenu] = useState(false);
 
   const toggleHowTo = () => {
     console.log("Toggling HowTo Modal");
@@ -53,6 +55,13 @@ function App() {
     console.log("Toggling Settings Modal");
     setShowSettings((prev) => {
       console.log("Toggling Settings: ", !prev); // Add this line for debugging
+      return !prev;
+    });
+  }
+
+  function toggleUserMenu() {
+    setUserMenu((prev) => {
+      console.log("toggling user menu");
       return !prev;
     });
   }
@@ -96,6 +105,7 @@ function App() {
         setDuration={setDuration}
         playGame={playGame}
         toggleAbout={toggleAbout}
+        toggleUserMenu={toggleUserMenu}
       />
       {!gameDisplay ? (
         <Home setShowHowTo={setShowHowTo} />
@@ -136,6 +146,7 @@ function App() {
           playGame={playGame}
         />
       )}
+      {showUserMenu && <UserMenuBox toggleUserMenu={toggleUserMenu} />}
     </div>
   );
 }
