@@ -39,10 +39,11 @@ export default function Header({
           toggleAbout={toggleAbout}
           toggleHowTo={toggleHowTo}
           toggleSettings={toggleSettings}
-          toggleTheme={toggleTheme}
+          toggleTheme={toggleTheme} // Add this line
           toggleUserMenu={toggleUserMenu}
           backToHome={backToHome}
           playGame={playGame}
+          darkMode={darkMode} // Add this line
         />
       </div>
 
