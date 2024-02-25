@@ -133,6 +133,8 @@ function App() {
           handleDurationChange={handleDurationChange}
           toggleAbout={toggleAbout}
           playGame={playGame}
+          showHowTo={showHowTo}
+          isDarkMode={isDarkMode}
         />
       )}
       {showAbout && <AboutBox toggleAbout={toggleAbout} />}
@@ -144,6 +146,8 @@ function App() {
           numOfHeadlines={numOfHeadlines}
           toggleSettings={toggleSettings}
           playGame={playGame}
+          showHowTo={showHowTo}
+          isDarkMode={isDarkMode}
         />
       )}
       {showUserMenu && <UserMenuBox toggleUserMenu={toggleUserMenu} />}

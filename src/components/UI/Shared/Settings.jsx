@@ -7,6 +7,8 @@ const Settings = ({
   duration,
   numOfHeadlines,
   playGame,
+  showHowTo,
+  isDarkMode,
 }) => {
   const difficulties = [
     { label: "Easy", value: 1 },
@@ -25,6 +27,15 @@ const Settings = ({
     difficulties.find((d) => d.value === numOfHeadlines) || difficulties[1];
   const selectedDuration =
     durations.find((d) => d.value === duration) || durations[0];
+
+  // Enhanced style conditions to include specific case for HowToBox access in dark mode
+  const styleConditions = {
+    base: "flex items-center gap-2 p-2 px-8 text-left rounded-lg shadow-md border cursor-default border-opacity-35 sm:text-sm",
+    borderStyle: showHowTo && isDarkMode ? "border-white" : "border-black",
+  };
+
+  // Construct button class name with the enhanced condition
+  const buttonClassName = `${styleConditions.base} ${styleConditions.borderStyle}`;
 
   return (
     <div className="flex flex-col gap-2 pt-2 pl-2 ">
@@ -51,7 +62,7 @@ const Settings = ({
               handleDifficultyChange(e.value);
             }}
           >
-            <Listbox.Button className="flex items-center gap-2 p-2 text-left bg-white border-2 border-black rounded-lg shadow-md cursor-default border-opacity-35 sm:text-sm dark:text-black">
+            <Listbox.Button className={buttonClassName}>
               <span className="">Difficulty</span>
 
               <i className="fa-solid fa-angle-down"></i>
@@ -104,7 +115,7 @@ const Settings = ({
               handleDurationChange(e.value);
             }}
           >
-            <Listbox.Button className="flex items-center gap-2 p-2 text-left bg-white border-2 border-black rounded-lg shadow-md cursor-default border-opacity-35 focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 sm:text-sm dark:text-black">
+            <Listbox.Button className={buttonClassName}>
               <span className="">Duration</span>
 
               <i className="fa-solid fa-angle-down"></i>
@@ -151,10 +162,7 @@ const Settings = ({
       </div>
       <div className="flex justify-center">
         {" "}
-        <button
-          onClick={playGame}
-          className="p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
-        >
+        <button onClick={playGame} className={buttonClassName}>
           Play!!!
         </button>
       </div>

@@ -11,6 +11,8 @@ export default function HowTo({
   numOfHeadlines,
   duration,
   playGame,
+  showHowTo,
+  isDarkMode,
 }) {
   const [isOpen, setIsOpen] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
@@ -88,6 +90,8 @@ export default function HowTo({
                       duration={duration}
                       numOfHeadlines={numOfHeadlines}
                       playGame={playGame}
+                      showHowTo={showHowTo}
+                      isDarkMode={isDarkMode}
                     />
                   )}
 
