@@ -1,148 +1,55 @@
-import { Fragment } from "react";
-import { Listbox, Transition } from "@headlessui/react";
+import { Fragment, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import Settings from "../Shared/Settings";
 
 const SettingsBox = ({
+  toggleSettings,
   handleDifficultyChange,
   handleDurationChange,
   duration,
   numOfHeadlines,
 }) => {
-  const difficulties = [
-    { label: "Easy", value: 1 },
-    { label: "Medium", value: 2 },
-    { label: "Hard", value: 3 },
-  ];
-
-  const durations = [
-    { label: "1 Day", value: 1 },
-    { label: "7 Days", value: 7 },
-    { label: "30 Days", value: 30 },
-  ];
-
-  // Find the difficulty and duration objects, or default to the first if not found
-  const selectedDifficulty =
-    difficulties.find((d) => d.value === numOfHeadlines) || difficulties[1];
-  const selectedDuration =
-    durations.find((d) => d.value === duration) || durations[0];
+  let [isOpen, setIsOpen] = useState(true);
 
   return (
-    <div className="flex flex-col gap-2 pt-2 pl-2 ">
-      <p className="text-lg font-bold ">Settings</p>
-      <ul className="px-4 list-disc ">
-        <li>Difficulty sets how many headlines you have to solve.</li>
-        <li>
-          Time period sets whether the top headlines are from the past day,
-          seven days or month.{" "}
-        </li>
-      </ul>
-      <div className="flex justify-center gap-4 p-4 rounded-xl">
-        {/* Difficulty Selector */}
-        <div className="relative overflow-visible">
-          <Listbox
-            value={selectedDifficulty}
-            onChange={(e) => {
-              handleDifficultyChange(e.value);
-            }}
-          >
-            <Listbox.Button className="flex items-center gap-2 p-2 text-left bg-white border-2 border-black rounded-lg shadow-md cursor-default border-opacity-35 sm:text-sm dark:text-black">
-              <span className="">Difficulty</span>
+    <Transition appear show={isOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-10" onClose={toggleSettings}>
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-black bg-opacity-25" />
+        </Transition.Child>
 
-              <i className="fa-solid fa-angle-down"></i>
-            </Listbox.Button>
-            <Transition
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex items-end justify-center min-h-full p-4 text-center sm:items-center sm:p-0">
+            <Transition.Child
               as={Fragment}
-              leave="transition ease-in duration-100"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              enterTo="opacity-100 translate-y-0 sm:scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Listbox.Options className="z-10 w-full py-1 mt-1 overflow-auto text-base bg-white border-2 border-black rounded-md shadow-lg border-opacity-35 max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                {difficulties.map((difficulty, idx) => (
-                  <Listbox.Option
-                    key={idx}
-                    value={difficulty}
-                    className={({ active }) =>
-                      `${
-                        active ? "text-amber-900 bg-amber-100" : "text-gray-900"
-                      } cursor-default select-none relative py-2 pl-10 pr-4`
-                    }
-                  >
-                    {({ selected }) => (
-                      <>
-                        <span
-                          className={`${
-                            selected ? "font-medium" : "font-normal"
-                          } block truncate`}
-                        >
-                          {difficulty.label}
-                        </span>
-                        {selected && (
-                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                            <i className="fa-solid fa-check"></i>
-                          </span>
-                        )}
-                      </>
-                    )}
-                  </Listbox.Option>
-                ))}
-              </Listbox.Options>
-            </Transition>
-          </Listbox>
+              <Dialog.Panel className="relative px-4 pt-5 pb-4 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:max-w-lg sm:w-full sm:p-6">
+                <Settings
+                  handleDifficultyChange={handleDifficultyChange}
+                  handleDurationChange={handleDurationChange}
+                  duration={duration}
+                  numOfHeadlines={numOfHeadlines}
+                />
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
         </div>
-
-        {/* Duration Selector */}
-        <div className="relative">
-          <Listbox
-            value={selectedDuration}
-            onChange={(e) => {
-              handleDurationChange(e.value);
-            }}
-          >
-            <Listbox.Button className="flex items-center gap-2 p-2 text-left bg-white border-2 border-black rounded-lg shadow-md cursor-default border-opacity-35 focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 sm:text-sm dark:text-black">
-              <span className="">Duration</span>
-
-              <i className="fa-solid fa-angle-down"></i>
-            </Listbox.Button>
-            <Transition
-              as={Fragment}
-              leave="transition ease-in duration-100"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <Listbox.Options className="z-10 w-full py-1 mt-1 overflow-auto text-base bg-white border-2 border-black rounded-md shadow-lg border-opacity-35 max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                {durations.map((duration, idx) => (
-                  <Listbox.Option
-                    key={idx}
-                    value={duration}
-                    className={({ active }) =>
-                      `${
-                        active ? "text-amber-900 bg-amber-100" : "text-gray-900"
-                      } cursor-default select-none relative py-2 pl-10 pr-4`
-                    }
-                  >
-                    {({ selected }) => (
-                      <>
-                        <span
-                          className={`${
-                            selected ? "font-medium" : "font-normal"
-                          } block truncate`}
-                        >
-                          {duration.label}
-                        </span>
-                        {selected && (
-                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                            <i className="fa-solid fa-check"></i>
-                          </span>
-                        )}
-                      </>
-                    )}
-                  </Listbox.Option>
-                ))}
-              </Listbox.Options>
-            </Transition>
-          </Listbox>
-        </div>
-      </div>
-    </div>
+      </Dialog>
+    </Transition>
   );
 };
 

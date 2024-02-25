@@ -1,7 +1,11 @@
 import React from "react";
 import CurrentDate from "../Shared/CurrentDate";
 
-export default function Home({ playGame }) {
+export default function Home({ setShowHowTo }) {
+  const handleStart = () => {
+    setShowHowTo(true);
+  };
+
   return (
     <>
       <div className="flex flex-col items-center justify-center min-h-screen gap-4 p-2 text-center">
@@ -11,9 +15,9 @@ export default function Home({ playGame }) {
         <div className="py-8">
           <button
             className="p-2 px-10 text-xl bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700 "
-            onClick={playGame}
+            onClick={handleStart}
           >
-            Play Game
+            Start
           </button>
         </div>
         <CurrentDate />

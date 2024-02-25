@@ -1,6 +1,6 @@
 const HowToBullets = () => {
   return (
-    <ul className="flex flex-col gap-2 list-disc list-inside ">
+    <ul className="flex flex-col list-disc list-inside ">
       <li>
         <b>Select Words:</b> Click on words from the options below to fill in
         your guesses.

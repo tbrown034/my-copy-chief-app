@@ -18,12 +18,17 @@ function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [numOfHeadlines, setNumOfHeadlines] = useState(2);
 
-  const toggleHowTo = () => setShowHowTo((prev) => !prev);
+  const toggleHowTo = () => {
+    console.log("Toggling HowTo Modal");
+    setShowHowTo((prev) => !prev);
+  };
   const handleSetNumOfHeadlines = (num) => {
+    console.log(`Setting Number of Headlines to: ${num}`);
     setNumOfHeadlines(num);
   };
 
   const toggleAbout = () => {
+    console.log("Toggling About Modal");
     if (showHowTo) {
       setShowHowTo(false);
       setTimeout(() => {
@@ -35,25 +40,38 @@ function App() {
   };
 
   function handleDifficultyChange(value) {
+    console.log(`Changing Difficulty to: ${value}`);
     setNumOfHeadlines(value);
   }
 
   function handleDurationChange(value) {
-    console.log(`Setting duration to: ${value}`);
-
+    console.log(`Setting Duration to: ${value}`);
     setDuration(value);
   }
 
   function toggleSettings() {
+    console.log("Toggling Settings Modal");
     setShowSettings((prev) => {
       console.log("Toggling Settings: ", !prev); // Add this line for debugging
       return !prev;
     });
   }
 
+  // In App component
   const playGame = () => {
-    setGameDisplay(true);
-    toggleHowTo();
+    console.log("Starting new game with current settings.");
+    setShowHowTo(false); // Close the HowTo modal if it's open
+    setShowSettings(false); // Close the Settings modal if it's open
+    setGameDisplay(true); // Display the game board
+  };
+
+  const restartGame = () => {
+    console.log("Restarting game...");
+    // Add logic here if you need to reset any game state before restarting
+    setGameDisplay(false); // This might seem counterintuitive, but if you need to reset the state,
+    setTimeout(() => {
+      setGameDisplay(true); // Re-display the game board
+    }, 0); // Using setTimeout to ensure state updates are processed in order
   };
 
   return (
@@ -77,11 +95,7 @@ function App() {
         toggleAbout={toggleAbout}
       />
       {!gameDisplay ? (
-        <Home
-          toggleHowTo={toggleHowTo}
-          playGame={playGame}
-          setGameDisplay={setGameDisplay}
-        />
+        <Home setShowHowTo={setShowHowTo} />
       ) : (
         <GameBoard
           setGameDisplay={setGameDisplay}
@@ -109,6 +123,15 @@ function App() {
         />
       )}
       {showAbout && <AboutBox toggleAbout={toggleAbout} />}
+      {showSettings && (
+        <SettingsBox
+          handleDifficultyChange={handleDifficultyChange}
+          handleDurationChange={handleDurationChange}
+          duration={duration}
+          numOfHeadlines={numOfHeadlines}
+          toggleSettings={toggleSettings}
+        />
+      )}
     </div>
   );
 }

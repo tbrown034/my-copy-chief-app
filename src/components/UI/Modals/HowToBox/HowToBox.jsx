@@ -2,14 +2,14 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import HowToBullets from "./HowToBullets";
 import HowToExamples from "./HowToExamples";
-import HowToSettings from "./HowToSettings";
+import Settings from "../../Shared/Settings";
+
 export default function HowTo({
   toggleHowTo,
   setNumOfHeadlines,
   setDuration,
   numOfHeadlines,
   duration,
-  toggleAbout,
 }) {
   const [isOpen, setIsOpen] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
@@ -20,7 +20,6 @@ export default function HowTo({
 
   function handleDurationChange(value) {
     console.log(`Setting duration to: ${value}`);
-
     setDuration(value); // Apply the selected duration
   }
 
@@ -69,20 +68,19 @@ export default function HowTo({
                   <div className="flex justify-center gap-2 mt-6 ">
                     <button
                       onClick={displaySettings}
-                      className="p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                      className="flex items-center justify-center gap-2 p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
                     >
-                      Settings{" "}
-                    </button>
-                    <button
-                      onClick={toggleAbout}
-                      className="p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
-                    >
-                      About
+                      <span>Settings</span>{" "}
+                      {showSettings ? (
+                        <i className="fa-solid fa-angle-up"></i> // Arrow up when settings are shown
+                      ) : (
+                        <i className="fa-solid fa-angle-down"></i> // Arrow down when settings are hidden
+                      )}
                     </button>
                   </div>
 
                   {showSettings && (
-                    <HowToSettings
+                    <Settings
                       handleDifficultyChange={handleDifficultyChange}
                       handleDurationChange={handleDurationChange}
                       setDuration={setDuration}
@@ -90,15 +88,18 @@ export default function HowTo({
                       numOfHeadlines={numOfHeadlines}
                     />
                   )}
-                  <div className="flex justify-center">
-                    {" "}
-                    <button
-                      onClick={() => toggleHowTo()}
-                      className="p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
-                    >
-                      OK, Let's Play!
-                    </button>
-                  </div>
+
+                  {/* Conditionally render the Play button based on showSettings state */}
+                  {!showSettings && (
+                    <div className="flex justify-center mt-4">
+                      <button
+                        onClick={() => toggleHowTo()}
+                        className="p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                      >
+                        Play!
+                      </button>
+                    </div>
+                  )}
                 </Dialog.Panel>
               </Transition.Child>
             </div>

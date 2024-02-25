@@ -1,11 +1,12 @@
 import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 
-const HowToSettings = ({
+const Settings = ({
   handleDifficultyChange,
   handleDurationChange,
   duration,
   numOfHeadlines,
+  playGame,
 }) => {
   const difficulties = [
     { label: "Easy", value: 1 },
@@ -27,14 +28,20 @@ const HowToSettings = ({
 
   return (
     <div className="flex flex-col gap-2 pt-2 pl-2 ">
-      <p className="text-lg font-bold ">Settings</p>
-      <ul className="px-4 list-disc ">
-        <li>Difficulty sets how many headlines you have to solve.</li>
+      <p className="text-2xl font-bold ">Settings</p>
+      <ul className="flex flex-col gap-4 list-disc list-inside ">
         <li>
-          Time period sets whether the top headlines are from the past day,
-          seven days or month.{" "}
+          <b>Difficulty:</b> This setting determines how many headlines you need
+          to solve. A higher difficulty means more headlines, increasing the
+          challenge.
+        </li>
+        <li>
+          <b>Duration:</b> This option lets you choose the timeframe for the
+          headlines you'll be working with. You can select from the last day,
+          week or month.
         </li>
       </ul>
+
       <div className="flex justify-center gap-4 p-4 rounded-xl">
         {/* Difficulty Selector */}
         <div className="relative overflow-visible">
@@ -142,8 +149,17 @@ const HowToSettings = ({
           </Listbox>
         </div>
       </div>
+      <div className="flex justify-center">
+        {" "}
+        <button
+          onClick={playGame}
+          className="p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+        >
+          Play
+        </button>
+      </div>
     </div>
   );
 };
 
-export default HowToSettings;
+export default Settings;
