@@ -10,6 +10,7 @@ export default function HowTo({
   setDuration,
   numOfHeadlines,
   duration,
+  playGame,
 }) {
   const [isOpen, setIsOpen] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
@@ -86,6 +87,7 @@ export default function HowTo({
                       setDuration={setDuration}
                       duration={duration}
                       numOfHeadlines={numOfHeadlines}
+                      playGame={playGame}
                     />
                   )}
 
@@ -93,7 +95,7 @@ export default function HowTo({
                   {!showSettings && (
                     <div className="flex justify-center mt-4">
                       <button
-                        onClick={() => toggleHowTo()}
+                        onClick={playGame}
                         className="p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
                       >
                         Play!

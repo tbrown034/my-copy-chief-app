@@ -155,7 +155,7 @@ const Settings = ({
           onClick={playGame}
           className="p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
         >
-          Play
+          Play!!!
         </button>
       </div>
     </div>

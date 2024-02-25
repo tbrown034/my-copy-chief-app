@@ -59,10 +59,13 @@ function App() {
 
   // In App component
   const playGame = () => {
-    console.log("Starting new game with current settings.");
-    setShowHowTo(false); // Close the HowTo modal if it's open
-    setShowSettings(false); // Close the Settings modal if it's open
     setGameDisplay(true); // Display the game board
+    if (showHowTo) {
+      setShowHowTo(false);
+    }
+    if (showSettings) {
+      setShowSettings(false);
+    }
   };
 
   const restartGame = () => {
@@ -130,6 +133,7 @@ function App() {
           duration={duration}
           numOfHeadlines={numOfHeadlines}
           toggleSettings={toggleSettings}
+          playGame={playGame}
         />
       )}
     </div>

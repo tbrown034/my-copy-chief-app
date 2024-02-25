@@ -8,6 +8,7 @@ const SettingsBox = ({
   handleDurationChange,
   duration,
   numOfHeadlines,
+  playGame,
 }) => {
   let [isOpen, setIsOpen] = useState(true);
 
@@ -43,6 +44,7 @@ const SettingsBox = ({
                   handleDurationChange={handleDurationChange}
                   duration={duration}
                   numOfHeadlines={numOfHeadlines}
+                  playGame={playGame}
                 />
               </Dialog.Panel>
             </Transition.Child>
