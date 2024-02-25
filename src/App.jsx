@@ -1,12 +1,13 @@
 import React, { useState } from "react";
+
 import Header from "./components/UI/Layout/Header";
 import Home from "./components/UI/Layout/Home";
-import Game from "./components/UI/Layout/Game";
+import GameBoard from "./components/UI/Layout/GameBoard";
 import Footer from "./components/UI/Layout/Footer";
-import HowTo from "./components/UI/Layout/HowToBox/HowTo";
 import { useDarkMode } from "./hooks/useDarkMode";
-import SettingsBox from "./components/UI/Shared/SettingsBox";
-import AboutBox from "./components/UI/Layout/AboutBox";
+import SettingsBox from "./components/UI/Modals/SettingsBox";
+import AboutBox from "./components/UI/Modals/AboutBox";
+import HowToBox from "./components/UI/Modals/HowToBox/HowToBox";
 
 function App() {
   const [gameDisplay, setGameDisplay] = useState(false);
@@ -23,28 +24,24 @@ function App() {
   };
 
   const toggleAbout = () => {
-    // If the How To dialog is open, close it first.
     if (showHowTo) {
-      setShowHowTo(false); // Close the How To dialog.
-
-      // Wait for the state update to complete before opening the About dialog.
+      setShowHowTo(false);
       setTimeout(() => {
-        setShowAbout(true); // Open the About dialog.
-      }, 0); // Using a timeout of 0 to defer this operation until after the state update.
+        setShowAbout(true);
+      }, 0);
     } else {
-      // If the How To dialog is not open, toggle the About dialog directly.
       setShowAbout((prev) => !prev);
     }
   };
 
   function handleDifficultyChange(value) {
-    setNumOfHeadlines(value); // Apply the selected difficulty
+    setNumOfHeadlines(value);
   }
 
   function handleDurationChange(value) {
     console.log(`Setting duration to: ${value}`);
 
-    setDuration(value); // Apply the selected duration
+    setDuration(value);
   }
 
   function toggleSettings() {
@@ -77,6 +74,7 @@ function App() {
         setNumOfHeadlines={setNumOfHeadlines}
         setDuration={setDuration}
         playGame={playGame}
+        toggleAbout={toggleAbout}
       />
       {!gameDisplay ? (
         <Home
@@ -85,7 +83,7 @@ function App() {
           setGameDisplay={setGameDisplay}
         />
       ) : (
-        <Game
+        <GameBoard
           setGameDisplay={setGameDisplay}
           numOfHeadlines={numOfHeadlines}
           duration={duration}
@@ -98,7 +96,7 @@ function App() {
         toggleSettings={toggleSettings}
       />
       {showHowTo && (
-        <HowTo
+        <HowToBox
           setDuration={setDuration}
           duration={duration}
           toggleHowTo={toggleHowTo}

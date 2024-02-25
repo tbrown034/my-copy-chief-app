@@ -52,7 +52,7 @@ export default function AboutBox({ toggleAbout }) {
                         Heroku with a backend server built though Express.js.
                         The headlines are fetched using the New York Times API.
                       </p>
-                      <div className="flex justify-center gap-2 ">
+                      <div className="flex gap-4 ">
                         {" "}
                         <a
                           href="https://github.com/tbrown034/my-copy-chief-app"
@@ -98,7 +98,7 @@ export default function AboutBox({ toggleAbout }) {
                       </p>
                     </div>
 
-                    <div className="flex justify-center gap-4 ">
+                    <div className="flex gap-4 j ">
                       {" "}
                       <a
                         mailto="trevorbrown.web@gmail.com"
@@ -117,8 +117,8 @@ export default function AboutBox({ toggleAbout }) {
                     <div className="flex justify-center mt-4">
                       <button
                         type="button"
-                        className="inline-flex justify-center px-8 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                        onClick={closeModal}
+                        className="p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                        onClick={toggleAbout}
                       >
                         Back
                       </button>

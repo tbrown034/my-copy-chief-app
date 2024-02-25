@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Article from "../UI/Shared/Article";
-import ConfirmSolveBox from "../UI/Shared/ConfirmSolveBox";
+import ConfirmSolveBox from "../UI/Modals/ConfirmSolveBox";
 import Hints from "../UI/Shared/HInts";
 
 const GuessArea = ({

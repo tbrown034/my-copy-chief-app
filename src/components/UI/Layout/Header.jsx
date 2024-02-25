@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
-import SettingsBox from "../Shared/SettingsBox"; // Adjust the path as necessary
+import SettingsBox from "../Modals/SettingsBox"; // Adjust the path as necessary
 import Toggle from "../Shared/Toggle"; // Adjust the path as necessary
 
 export default function Header({
@@ -13,6 +13,8 @@ export default function Header({
   setDuration,
   numOfHeadlines,
   duration,
+  toggleAbout,
+  toggleSettings,
 }) {
   const toggleTheme = () => {
     setDarkMode(!darkMode);
@@ -44,9 +46,16 @@ export default function Header({
       </a>
       <div className="flex items-center justify-center gap-2 text-2xl">
         <button onClick={toggleHowTo}>
-          <i className="fa-regular hover:text-gray-500 fa-circle-question"></i>
+          <i className="fa-regular hover:text-gray-500 fa-info-circle"></i>
         </button>
-        <Popover className="">
+        <button onClick={toggleAbout}>
+          <i className="fa-regular fa-question-circle hover:text-gray-500 dark:hover:text-gray-300"></i>
+        </button>
+        <button onClick={toggleHowTo}>
+          <i className="fas fa-gear hover:text-gray-500 dark:hover:text-gray-300"></i>
+        </button>
+
+        {/* <Popover className="">
           <Popover.Button>
             <i className="fas fa-gear hover:text-gray-500 dark:hover:text-gray-300"></i>
           </Popover.Button>
@@ -68,7 +77,7 @@ export default function Header({
               />
             </Popover.Panel>
           </Transition>
-        </Popover>
+        </Popover> */}
         <Toggle
           darkMode={darkMode}
           setDarkMode={setDarkMode}

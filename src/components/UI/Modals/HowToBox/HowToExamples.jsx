@@ -1,4 +1,4 @@
-import WordExample from "./WordExample";
+import WordExample from "./HowToWordExamples";
 
 const HowToExamples = () => {
   return (

@@ -2,9 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import HowToBullets from "./HowToBullets";
 import HowToExamples from "./HowToExamples";
-import SettingsBox from "../../Shared/SettingsBox";
-import AboutBox from "../AboutBox";
-
+import HowToSettings from "./HowToSettings";
 export default function HowTo({
   toggleHowTo,
   setNumOfHeadlines,
@@ -12,7 +10,6 @@ export default function HowTo({
   numOfHeadlines,
   duration,
   toggleAbout,
-  showAbout,
 }) {
   const [isOpen, setIsOpen] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
@@ -85,7 +82,7 @@ export default function HowTo({
                   </div>
 
                   {showSettings && (
-                    <SettingsBox
+                    <HowToSettings
                       handleDifficultyChange={handleDifficultyChange}
                       handleDurationChange={handleDurationChange}
                       setDuration={setDuration}

@@ -7,7 +7,11 @@ import GuessArea from "../../gameElements/GuessArea";
 import { shuffleArray } from "../../../utils/shuffleArray";
 import WinDisplay from "./WinDisplay";
 
-export default function Game({ setGameDisplay, numOfHeadlines, duration }) {
+export default function GameBoard({
+  setGameDisplay,
+  numOfHeadlines,
+  duration,
+}) {
   const [fullArticles, setFullArticles] = useState([]);
   const [processedWords, setProcessedWords] = useState([]);
   const [showAnswers, setShowAnswers] = useState(false);

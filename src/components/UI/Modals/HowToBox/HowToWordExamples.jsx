@@ -1,4 +1,4 @@
-const WordExample = () => {
+const HowToWordExamples = () => {
   return (
     <div>
       <div className="flex flex-wrap items-center justify-center gap-2 font-semibold ">
@@ -28,4 +28,4 @@ const WordExample = () => {
     </div>
   );
 };
-export default WordExample;
+export default HowToWordExamples;
