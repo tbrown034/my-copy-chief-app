@@ -153,7 +153,6 @@ const SettingsExtended = ({
         </div>
       </div>
       <div className="flex justify-center gap-4">
-        {" "}
         <button
           onClick={toggleHowTo}
           className="p-2 px-4 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"

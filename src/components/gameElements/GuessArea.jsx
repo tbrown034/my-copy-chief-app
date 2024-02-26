@@ -151,29 +151,29 @@ const GuessArea = ({
           <button
             onClick={clearAllGuesses}
             disabled={!hasMadeAGuess}
-            className={`p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 ${
+            className={`flex items-center justify-center p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 ${
               !hasMadeAGuess ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
-            Clear Guesses
+            <i className="mr-2 fa-solid fa-trash-alt"></i> Clear Guesses
           </button>
 
           <button
             onClick={handleInstantSolve}
             disabled={isSolutionRevealed}
-            className={`p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 ${
+            className={`flex items-center justify-center p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 ${
               isSolutionRevealed ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
-            Show Solution
+            <i class="fa-regular mr-2 fa-diamond-exclamation"></i> Show Solution
           </button>
         </div>
         <div className="flex justify-center">
           <button
             onClick={submitGuesses}
-            className="p-2 text-lg bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700"
+            className="flex items-center justify-center p-2 text-lg bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700"
           >
-            Enter Guess
+            <i className="mr-2 fa-solid fa-check"></i> Enter Guess
           </button>
         </div>
 

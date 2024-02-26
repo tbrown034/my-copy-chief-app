@@ -13,9 +13,10 @@ const ConfirmSolveBox = ({ isOpen, setIsOpen, confirmSolve }) => {
         <div className="relative max-w-sm p-4 mx-auto bg-white shadow-xl dark:bg-gray-800 rounded-2xl">
           <Dialog.Title
             as="h3"
-            className="text-xl font-semibold text-center text-gray-900 dark:text-white"
+            className="flex items-center justify-center text-xl font-semibold text-center text-gray-900 dark:text-white"
           >
-            Confirm Action
+            <i className="mr-2 fa-regular fa-diamond-exclamation"></i> Confirm
+            Action
           </Dialog.Title>
           <div className="mt-4 text-center text-gray-600 dark:text-gray-300">
             <p>
@@ -26,17 +27,17 @@ const ConfirmSolveBox = ({ isOpen, setIsOpen, confirmSolve }) => {
           <div className="flex justify-center gap-4 mt-6">
             <button
               type="button"
-              className="p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:text-white"
+              className="flex items-center justify-center p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:text-white"
               onClick={confirmSolve}
             >
-              Reveal
+              <i className="mr-2 fa-solid fa-eye"></i> Reveal
             </button>
             <button
               type="button"
-              className="p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:text-white "
+              className="flex items-center justify-center p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:text-white"
               onClick={() => setIsOpen(false)}
             >
-              Cancel
+              <i className="mr-2 fa-solid fa-times"></i> Cancel
             </button>
           </div>
         </div>

@@ -52,19 +52,19 @@ export default function AboutBox({ toggleAbout }) {
                       Heroku with a backend server built though Express.js. The
                       headlines are fetched using the New York Times API.
                     </p>
-                    <div className="flex gap-4 ">
-                      {" "}
+                    <div className="flex gap-4">
                       <a
                         href="https://github.com/tbrown034/my-copy-chief-app"
-                        className="p-2 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
+                        className="flex items-center justify-center p-2 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
                       >
-                        Github
+                        <i className="mr-2 fa-brands fa-github"></i> Github
                       </a>
                       <a
                         href="https://developer.nytimes.com/apis"
-                        className="p-2 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
+                        className="flex items-center justify-center p-2 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
                       >
-                        New York Times API
+                        <i className="mr-2 fa-solid fa-code"></i> New York Times
+                        API
                       </a>
                     </div>
                   </div>
@@ -74,38 +74,35 @@ export default function AboutBox({ toggleAbout }) {
                       The Developer
                     </p>
 
-                    <p className="text-sm ">
+                    <p className="text-sm">
                       Hi, my name is Trevor Brown! After nearly 15 years as an
                       award-winning investigative reporter, I recently made a
                       career change and began my web development journey.
                     </p>
-                    <p className="text-sm ">
+                    <p className="text-sm">
                       This project embodies my profound passion for journalism
                       and web development. I am actively seeking my next
-                      challenge and am eager to explore opporutnites at the
-                      interesection of journalism tech.
+                      challenge and am eager to explore opportunities at the
+                      intersection of journalism tech.
                     </p>
-                    <p className="text-sm ">
-                      Please don't hesitate to{" "}
-                      <a className="underline" href="trevorbrown.web@gmail.com">
-                        contact me
-                      </a>{" "}
-                      with questions, opporutnites or anything else!
+                    <p className="text-sm">
+                      Please don't hesitate to contact me with questions,
+                      opportunities or anything else!
                     </p>
                   </div>
 
-                  <div className="flex gap-4 j ">
-                    {" "}
+                  <div className="flex gap-4">
                     <a
-                      mailto="trevorbrown.web@gmail.com"
-                      className="p-2 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
+                      href="mailto:trevorbrown.web@gmail.com"
+                      className="flex items-center justify-center p-2 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
                     >
-                      Contact Me
+                      <i className="mr-2 fa-solid fa-envelope"></i> Contact Me
                     </a>
                     <a
                       href="https://trevorthewebdeveloper.com/"
-                      className="p-2 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
+                      className="flex items-center justify-center p-2 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
                     >
+                      <i className="mr-2 fa-solid fa-external-link-alt"></i>{" "}
                       View My Portfolio Site
                     </a>
                   </div>
@@ -113,10 +110,10 @@ export default function AboutBox({ toggleAbout }) {
                   <div className="flex justify-center mt-4">
                     <button
                       type="button"
-                      className="p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 "
+                      className="flex items-center justify-center p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
                       onClick={toggleAbout}
                     >
-                      Back
+                      <i className="mr-2 fa-solid fa-arrow-left"></i> Back
                     </button>
                   </div>
                 </Dialog.Panel>

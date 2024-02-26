@@ -55,26 +55,32 @@ const WordChoices = ({
       <div className="flex gap-2">
         <button
           onClick={toggleSort}
-          className="p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 "
+          className="flex items-center justify-center p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700"
         >
-          Sort {isSortedAZ ? "Z-A ↓" : "A-Z ↑"}
+          <i
+            className={`fa-solid ${
+              isSortedAZ ? "fa-sort-alpha-up" : "fa-sort-alpha-down"
+            } mr-2`}
+          ></i>
+          Sort
         </button>
         <button
           onClick={fillRandomGuesses}
-          className="p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 "
+          className="flex items-center justify-center p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700"
         >
+          <i className="mr-2 fa-solid fa-random"></i>
           Random Guesses
         </button>
       </div>
-      <div className="flex flex-wrap justify-center gap-2 font-semibold ">
+      <div className="flex flex-wrap justify-center gap-2 font-semibold">
         {displayWords.map((word) => (
           <div
             onClick={() => !word.selected && onWordClick(word)}
-            className={`p-2 text-lg  rounded-xl hover:cursor-pointer ${
+            className={`p-2 text-lg rounded-xl hover:cursor-pointer ${
               word.selected
-                ? "bg-gray-400 dark:bg-gray-300 dark:text-gray-500  hover:cursor-not-allowed "
+                ? "bg-gray-400 dark:bg-gray-300 dark:text-gray-500 hover:cursor-not-allowed"
                 : "bg-gray-200 dark:bg-zinc-500"
-            } hover:bg-gray-300 dark:hover:bg-gray-600 dark:active:bg-gray-700 `}
+            } hover:bg-gray-300 dark:hover:bg-gray-600 dark:active:bg-gray-700`}
             key={word.id}
           >
             {word.word}

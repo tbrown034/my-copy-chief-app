@@ -72,7 +72,7 @@ export default function HowTo({
                   </p>
                   {/* Conditionally render the Play button based on showSettings state */}
                   {!showSettings && (
-                    <div className="flex justify-center gap-4 ">
+                    <div className="flex flex-col justify-center gap-4 sm:flex-row ">
                       <button
                         onClick={toggleHowTo}
                         className="flex items-center justify-center p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
@@ -80,6 +80,14 @@ export default function HowTo({
                         <i className="mr-2 fa-solid fa-arrow-left"></i>{" "}
                         {/* Ensure proper icon class; adjust margin as needed */}
                         Back
+                      </button>
+                      <button
+                        onClick={playGame}
+                        className="flex items-center justify-center p-2 px-6 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 "
+                      >
+                        <i className="mr-2 fa-regular fa-play"></i>{" "}
+                        {/* Ensure proper icon class; adjust margin as needed */}
+                        Play
                       </button>
 
                       <button
@@ -92,14 +100,6 @@ export default function HowTo({
                         ) : (
                           <i className="fa-solid fa-angle-down"></i> // Arrow down when settings are hidden
                         )}
-                      </button>
-                      <button
-                        onClick={playGame}
-                        className="flex items-center justify-center p-2 px-6 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 "
-                      >
-                        <i className="mr-2 fa-regular fa-play"></i>{" "}
-                        {/* Ensure proper icon class; adjust margin as needed */}
-                        Play
                       </button>
                     </div>
                   )}
