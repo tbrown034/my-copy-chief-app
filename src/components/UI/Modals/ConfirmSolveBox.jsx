@@ -30,14 +30,14 @@ const ConfirmSolveBox = ({ isOpen, setIsOpen, confirmSolve }) => {
               className="flex items-center justify-center p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:text-white"
               onClick={confirmSolve}
             >
-              <i className="mr-2 fa-solid fa-eye"></i> Reveal
+              <i className="mr-2 fa-regular fa-eye"></i> Reveal
             </button>
             <button
               type="button"
               className="flex items-center justify-center p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700 dark:text-white"
               onClick={() => setIsOpen(false)}
             >
-              <i className="mr-2 fa-solid fa-times"></i> Cancel
+              <i className="mr-2 fa-regular fa-times"></i> Cancel
             </button>
           </div>
         </div>

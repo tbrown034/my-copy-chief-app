@@ -1,23 +1,10 @@
 export default function Footer({ toggleAbout, toggleHowToPlay }) {
   return (
     <footer className="flex flex-col items-center justify-center gap-4 py-6 text-gray-700 dark:text-gray-300">
+      <div className="text-sm font-medium text-center">
+        <span>© 2024 Trevor Brown. All rights reserved. | Copy Chief</span>
+      </div>
       <nav className="flex flex-wrap justify-center gap-4 text-sm">
-        {/* Information Buttons */}
-        <button
-          onClick={toggleAbout}
-          className="flex items-center transition-colors duration-200 ease-in-out hover:text-gray-500 dark:hover:text-gray-400"
-          aria-label="Learn more about us"
-        >
-          <i className="mr-1 fas fa-info-circle"></i> About
-        </button>
-        <button
-          onClick={toggleHowToPlay}
-          className="flex items-center transition-colors duration-200 ease-in-out hover:text-gray-500 dark:hover:text-gray-400"
-          aria-label="Learn how to play"
-        >
-          <i className="mr-1 fas fa-question-circle"></i> How to Play!
-        </button>
-
         {/* Social Links */}
         <a
           href="https://twitter.com/tbrownokc"
@@ -47,9 +34,6 @@ export default function Footer({ toggleAbout, toggleHowToPlay }) {
           <i className="mr-1 fab fa-linkedin"></i> LinkedIn
         </a>
       </nav>
-      <div className="text-sm font-medium text-center">
-        <span>© 2024 Trevor Brown. All rights reserved. | Copy Chief</span>
-      </div>
       <a
         href="https://trevorthewebdeveloper.com"
         target="_blank"

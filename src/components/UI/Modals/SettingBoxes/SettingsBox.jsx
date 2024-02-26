@@ -85,7 +85,7 @@ const SettingsBox = ({
                         <Listbox.Button className="flex items-center justify-center gap-2 p-2 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100">
                           <span className="">Difficulty</span>
 
-                          <i className="fa-solid fa-angle-down"></i>
+                          <i className="fa-regular fa-angle-down"></i>
                         </Listbox.Button>
                         <Transition
                           as={Fragment}
@@ -117,7 +117,7 @@ const SettingsBox = ({
                                     </span>
                                     {selected && (
                                       <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                                        <i className="fa-solid fa-check"></i>
+                                        <i className="fa-regular fa-check"></i>
                                       </span>
                                     )}
                                   </>
@@ -137,10 +137,10 @@ const SettingsBox = ({
                           handleDurationChange(e.value);
                         }}
                       >
-                        <Listbox.Button className="flex items-center justify-center gap-2 p-2 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100">
+                        <Listbox.Button className="flex items-center justify-center gap-2 p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100">
                           <span className="">Duration</span>
 
-                          <i className="fa-solid fa-angle-down"></i>
+                          <i className="fa-regular fa-angle-down"></i>
                         </Listbox.Button>
                         <Transition
                           as={Fragment}
@@ -172,7 +172,7 @@ const SettingsBox = ({
                                     </span>
                                     {selected && (
                                       <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                                        <i className="fa-solid fa-check"></i>
+                                        <i className="fa-regular fa-check"></i>
                                       </span>
                                     )}
                                   </>
@@ -188,17 +188,17 @@ const SettingsBox = ({
                     {" "}
                     <button
                       onClick={toggleSettings}
-                      className="p-2 px-4 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
+                      className="p-2 px-4 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
                     >
-                      <i className="mr-2 fa-solid fa-arrow-left"></i>{" "}
+                      <i className="mr-2 fa-regular fa-arrow-left"></i>{" "}
                       {/* Ensure proper icon class; adjust margin as needed */}
                       Back
                     </button>
                     <button
                       onClick={playGame}
-                      className="p-2 px-4 text-sm bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100"
+                      className="p-2 px-4 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100"
                     >
-                      <i className="mr-2 fa-solid fa-play"></i>{" "}
+                      <i className="mr-2 fa-regular fa-play"></i>{" "}
                       {/* Ensure proper icon class; adjust margin as needed */}
                       Play
                     </button>

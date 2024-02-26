@@ -21,9 +21,10 @@ const Hints = ({ article, addToHintCounter }) => {
         <div>
           <button
             onClick={handleClick}
-            className="p-2 text-sm border border-black shadow-sm bg-transparen rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700"
+            className="flex items-center justify-center p-2 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700"
           >
-            Show Hint
+            <i className="mr-2 fa-regular fa-magnifying-glass-plus"></i> Show
+            Hint
           </button>
         </div>
       ) : (

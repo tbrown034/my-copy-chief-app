@@ -63,8 +63,8 @@ export default function AboutBox({ toggleAbout }) {
                         href="https://developer.nytimes.com/apis"
                         className="flex items-center justify-center p-2 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
                       >
-                        <i className="mr-2 fa-solid fa-code"></i> New York Times
-                        API
+                        <i className="mr-2 fa-regular fa-code"></i> New York
+                        Times API
                       </a>
                     </div>
                   </div>
@@ -96,13 +96,13 @@ export default function AboutBox({ toggleAbout }) {
                       href="mailto:trevorbrown.web@gmail.com"
                       className="flex items-center justify-center p-2 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
                     >
-                      <i className="mr-2 fa-solid fa-envelope"></i> Contact Me
+                      <i className="mr-2 fa-regular fa-envelope"></i> Contact Me
                     </a>
                     <a
                       href="https://trevorthewebdeveloper.com/"
                       className="flex items-center justify-center p-2 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
                     >
-                      <i className="mr-2 fa-solid fa-external-link-alt"></i>{" "}
+                      <i className="mr-2 fa-regular fa-external-link-alt"></i>{" "}
                       View My Portfolio Site
                     </a>
                   </div>
@@ -113,7 +113,7 @@ export default function AboutBox({ toggleAbout }) {
                       className="flex items-center justify-center p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
                       onClick={toggleAbout}
                     >
-                      <i className="mr-2 fa-solid fa-arrow-left"></i> Back
+                      <i className="mr-2 fa-regular fa-arrow-left"></i> Back
                     </button>
                   </div>
                 </Dialog.Panel>

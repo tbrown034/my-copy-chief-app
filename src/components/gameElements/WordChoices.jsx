@@ -58,7 +58,7 @@ const WordChoices = ({
           className="flex items-center justify-center p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700"
         >
           <i
-            className={`fa-solid ${
+            className={`fa-regular ${
               isSortedAZ ? "fa-sort-alpha-up" : "fa-sort-alpha-down"
             } mr-2`}
           ></i>
@@ -68,7 +68,7 @@ const WordChoices = ({
           onClick={fillRandomGuesses}
           className="flex items-center justify-center p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700"
         >
-          <i className="mr-2 fa-solid fa-random"></i>
+          <i className="mr-2 fa-regular fa-random"></i>
           Random Guesses
         </button>
       </div>

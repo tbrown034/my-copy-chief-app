@@ -14,7 +14,7 @@ export const HeaderDropDown = ({
     <div>
       <Menu as="div" className="relative inline-block text-left">
         <Menu.Button className="text-2xl hover:text-gray-500">
-          <i className="fa-solid fa-bars"></i>
+          <i className="fa-regular fa-bars"></i>
         </Menu.Button>
         <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-gray-100 divide-y divide-gray-100 rounded-md shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">

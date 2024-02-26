@@ -155,7 +155,7 @@ const GuessArea = ({
               !hasMadeAGuess ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
-            <i className="mr-2 fa-solid fa-trash-alt"></i> Clear Guesses
+            <i className="mr-2 fa-regular fa-trash-alt"></i> Clear Guesses
           </button>
 
           <button
@@ -173,7 +173,7 @@ const GuessArea = ({
             onClick={submitGuesses}
             className="flex items-center justify-center p-2 text-lg bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700"
           >
-            <i className="mr-2 fa-solid fa-check"></i> Enter Guess
+            <i className="mr-2 fa-regular fa-check"></i> Enter Guess
           </button>
         </div>
 

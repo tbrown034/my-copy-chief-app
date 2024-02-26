@@ -192,7 +192,7 @@ export default function GameBoard({
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       {hasWon ? (
         <WinDisplay
           fullArticles={fullArticles}
@@ -234,12 +234,12 @@ export default function GameBoard({
         </div>
       )}
 
-      <div className="flex justify-center gap-2 py-8">
+      <div className="flex justify-center gap-2 mt-8">
         <button
           onClick={resetGame}
-          className="p-2 px-10 text-xl bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700 "
+          className="flex items-center justify-center p-2 px-8 text-xl bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
         >
-          Main Menu
+          <i className="mr-2 fa-regular fa-house"></i> Main Menu
         </button>
       </div>
     </div>
