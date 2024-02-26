@@ -171,7 +171,7 @@ const GuessArea = ({
         <div className="flex justify-center">
           <button
             onClick={submitGuesses}
-            className="p-2 text-lg bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700"
+            className="p-2 text-lg bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:bg-transparent dark:hover:bg-gray-700"
           >
             Enter Guess
           </button>

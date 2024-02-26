@@ -1,15 +1,13 @@
 import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 
-const Settings = ({
+const SettingsExtended = ({
   handleDifficultyChange,
   handleDurationChange,
   duration,
   numOfHeadlines,
   playGame,
-  showHowTo,
-  isDarkMode,
-  toggleSettings,
+  toggleHowTo,
 }) => {
   const difficulties = [
     { label: "Easy", value: 1 },
@@ -29,18 +27,11 @@ const Settings = ({
   const selectedDuration =
     durations.find((d) => d.value === duration) || durations[0];
 
-  // Enhanced style conditions to include specific case for HowToBox access in dark mode
-  const styleConditions = {
-    base: "flex items-center gap-2 p-2 px-4 text-left rounded-lg shadow-md border cursor-default border-opacity-35 sm:text-sm",
-    borderStyle: showHowTo && isDarkMode ? "border-white" : "border-black",
-  };
-
-  // Construct button class name with the enhanced condition
-  const buttonClassName = `${styleConditions.base} ${styleConditions.borderStyle}`;
-
   return (
     <div className="flex flex-col gap-2 pt-2 pl-2 ">
-      <p className="text-2xl font-bold ">Settings</p>
+      <p className="text-2xl font-bold underline underline-offset-8 ">
+        Settings
+      </p>
       <ul className="flex flex-col gap-4 list-disc list-inside ">
         <li>
           <b>Difficulty:</b> This setting determines how many headlines you need
@@ -63,7 +54,7 @@ const Settings = ({
               handleDifficultyChange(e.value);
             }}
           >
-            <Listbox.Button className={buttonClassName}>
+            <Listbox.Button className="flex items-center justify-center gap-2 p-2 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100">
               <span className="">Difficulty</span>
 
               <i className="fa-solid fa-angle-down"></i>
@@ -116,7 +107,7 @@ const Settings = ({
               handleDurationChange(e.value);
             }}
           >
-            <Listbox.Button className={buttonClassName}>
+            <Listbox.Button className="flex items-center justify-center gap-2 p-2 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100">
               <span className="">Duration</span>
 
               <i className="fa-solid fa-angle-down"></i>
@@ -163,15 +154,25 @@ const Settings = ({
       </div>
       <div className="flex justify-center gap-4">
         {" "}
-        <button onClick={playGame} className={buttonClassName}>
-          Play
-        </button>
-        <button onClick={toggleSettings} className={buttonClassName}>
+        <button
+          onClick={toggleHowTo}
+          className="p-2 px-4 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
+        >
+          <i className="mr-2 fa-solid fa-arrow-left"></i>{" "}
+          {/* Ensure proper icon class; adjust margin as needed */}
           Back
+        </button>
+        <button
+          onClick={playGame}
+          className="p-2 px-4 text-sm bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100"
+        >
+          <i className="mr-2 fa-regular fa-play"></i>{" "}
+          {/* Ensure proper icon class; adjust margin as needed */}
+          Play
         </button>
       </div>
     </div>
   );
 };
 
-export default Settings;
+export default SettingsExtended;

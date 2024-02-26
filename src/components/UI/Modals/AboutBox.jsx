@@ -36,7 +36,9 @@ export default function AboutBox({ toggleAbout }) {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="flex flex-col gap-4 p-4 overflow-hidden text-left transition-all transform bg-white shadow-xl rounded-2xl">
-                  <div className="text-2xl font-bold">About</div>
+                  <div className="text-2xl font-bold underline underline-offset-8">
+                    About
+                  </div>
                   <div className="flex flex-col gap-2">
                     <p className="pt-2 text-xl font-bold ">The App</p>
                     <p className="text-sm">
@@ -59,10 +61,10 @@ export default function AboutBox({ toggleAbout }) {
                         Github
                       </a>
                       <a
-                        href="https://www.nytimes.com/"
+                        href="https://developer.nytimes.com/apis"
                         className="p-2 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
                       >
-                        Visit The New York Times
+                        New York Times API
                       </a>
                     </div>
                   </div>
@@ -104,7 +106,7 @@ export default function AboutBox({ toggleAbout }) {
                       href="https://trevorthewebdeveloper.com/"
                       className="p-2 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
                     >
-                      Learn More
+                      View My Portfolio Site
                     </a>
                   </div>
 

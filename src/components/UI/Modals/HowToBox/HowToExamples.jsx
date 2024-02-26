@@ -14,7 +14,7 @@ const HowToExamples = () => {
             <div className="flex items-center justify-center h-10 p-2 font-bold border-2 border-gray-400 rounded-lg min-w-10 ">
               Dewey
             </div>
-            <div className="flex items-center justify-center h-10 p-2 font-bold bg-green-500 border-2 border-gray-400 rounded-lg min-w-10 dark:bg-green-600">
+            <div className="flex items-center justify-center h-10 p-2 font-bold bg-green-500 border-2 border-gray-400 rounded-lg dark:bg-green-600 min-w-10 ">
               Defeats
             </div>
             <div className="flex items-center justify-center h-10 p-2 font-bold border-2 border-gray-400 rounded-lg min-w-10 ">

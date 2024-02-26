@@ -2,7 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import HowToBullets from "./HowToBullets";
 import HowToExamples from "./HowToExamples";
-import Settings from "../../Shared/Settings";
+import SettingsExtended from "../SettingBoxes/SettingsExtended";
 
 export default function HowTo({
   toggleHowTo,
@@ -61,8 +61,8 @@ export default function HowTo({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="flex flex-col gap-4 p-4 overflow-hidden text-left transition-all transform bg-white shadow-xl dark:bg-gray-800 dark:text-white rounded-2xl">
-                  <Dialog.Title className="text-2xl font-bold">
+                <Dialog.Panel className="flex flex-col gap-4 p-4 overflow-hidden text-left transition-all transform bg-white shadow-xl dark:bg-gray-200 rounded-2xl">
+                  <Dialog.Title className="text-2xl font-bold underline underline-offset-8">
                     How To Play
                   </Dialog.Title>
                   <HowToBullets />
@@ -74,35 +74,38 @@ export default function HowTo({
                   {!showSettings && (
                     <div className="flex justify-center gap-4 ">
                       <button
-                        onClick={playGame}
-                        className="p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                        onClick={toggleHowTo}
+                        className="flex items-center justify-center p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
                       >
-                        Play
+                        <i className="mr-2 fa-solid fa-arrow-left"></i>{" "}
+                        {/* Ensure proper icon class; adjust margin as needed */}
+                        Back
+                      </button>
+
+                      <button
+                        onClick={displaySettings}
+                        className="flex items-center justify-center gap-2 p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 "
+                      >
+                        <span>Settings</span>{" "}
+                        {showSettings ? (
+                          <i className="fa-solid fa-angle-up"></i> // Arrow up when settings are shown
+                        ) : (
+                          <i className="fa-solid fa-angle-down"></i> // Arrow down when settings are hidden
+                        )}
                       </button>
                       <button
-                        onClick={toggleHowTo}
-                        className="p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                        onClick={playGame}
+                        className="flex items-center justify-center p-2 px-6 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 "
                       >
-                        Back
+                        <i className="mr-2 fa-regular fa-play"></i>{" "}
+                        {/* Ensure proper icon class; adjust margin as needed */}
+                        Play
                       </button>
                     </div>
                   )}
-                  <div className="flex justify-center gap-2 ">
-                    <button
-                      onClick={displaySettings}
-                      className="flex items-center justify-center gap-2 p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
-                    >
-                      <span>Settings</span>{" "}
-                      {showSettings ? (
-                        <i className="fa-solid fa-angle-up"></i> // Arrow up when settings are shown
-                      ) : (
-                        <i className="fa-solid fa-angle-down"></i> // Arrow down when settings are hidden
-                      )}
-                    </button>
-                  </div>
 
                   {showSettings && (
-                    <Settings
+                    <SettingsExtended
                       handleDifficultyChange={handleDifficultyChange}
                       handleDurationChange={handleDurationChange}
                       setDuration={setDuration}
@@ -111,6 +114,7 @@ export default function HowTo({
                       playGame={playGame}
                       showHowTo={showHowTo}
                       isDarkMode={isDarkMode}
+                      toggleHowTo={toggleHowTo}
                     />
                   )}
                 </Dialog.Panel>

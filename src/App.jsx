@@ -5,7 +5,7 @@ import Home from "./components/UI/Layout/Home";
 import GameBoard from "./components/UI/Layout/GameBoard";
 import Footer from "./components/UI/Layout/Footer";
 import { useDarkMode } from "./hooks/useDarkMode";
-import SettingsBox from "./components/UI/Modals/SettingsBox";
+import SettingsBox from "./components/UI/Modals/SettingBoxes/SettingsBox";
 import AboutBox from "./components/UI/Modals/AboutBox";
 import HowToBox from "./components/UI/Modals/HowToBox/HowToBox";
 import UserMenuBox from "./components/UI/Modals/UserMenuBox/UserMenuBox";
@@ -135,6 +135,7 @@ function App() {
           playGame={playGame}
           showHowTo={showHowTo}
           isDarkMode={isDarkMode}
+          handleDifficultyChange={handleDifficultyChange}
         />
       )}
       {showAbout && <AboutBox toggleAbout={toggleAbout} />}

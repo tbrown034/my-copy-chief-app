@@ -12,14 +12,17 @@ export default function Home({ setShowHowTo }) {
         <i className="p-2 text-6xl fa-regular fa-newspaper"></i>
         <h1 className="text-4xl font-bold font-zillaSlab">CopyChief</h1>
         <h2 className="text-2xl ">A Wordle-inspired headline guessing game.</h2>
-        <div className="py-8">
+        <div className="flex justify-center py-8">
           <button
-            className="p-2 px-10 text-xl bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700 "
+            className="flex items-center justify-center p-2 px-10 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
             onClick={handleStart}
           >
+            <i className="mr-2 fa-regular fa-play"></i>{" "}
+            {/* Adjust the margin-right as needed */}
             Start
           </button>
         </div>
+
         <CurrentDate />
         <p>
           Created by{" "}
