@@ -30,7 +30,7 @@ const SettingsBox = ({
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex items-end justify-center min-h-full p-4 text-center sm:items-center sm:p-0">
+          <div className="flex items-center justify-center min-h-full p-4 text-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -40,7 +40,7 @@ const SettingsBox = ({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative px-4 pt-5 pb-4 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:max-w-lg sm:w-full sm:p-6">
+              <Dialog.Panel className="flex flex-col gap-4 p-4 overflow-hidden text-left transition-all transform bg-white shadow-xl rounded-2xl">
                 <Settings
                   handleDifficultyChange={handleDifficultyChange}
                   handleDurationChange={handleDurationChange}
@@ -49,6 +49,7 @@ const SettingsBox = ({
                   playGame={playGame}
                   showHowTo={showHowTo}
                   isDarkMode={isDarkMode}
+                  toggleSettings={toggleSettings}
                 />
               </Dialog.Panel>
             </Transition.Child>

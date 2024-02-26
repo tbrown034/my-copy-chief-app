@@ -3,7 +3,9 @@ import WordExample from "./HowToWordExamples";
 const HowToExamples = () => {
   return (
     <div className="flex flex-col gap-2 px-2">
-      <p className="text-xl font-bold ">Example:</p>
+      <p className="pt-2 text-xl font-bold border-t border-black border-opacity-30 ">
+        Example
+      </p>
       <div>
         <p className=" opacity-55">Guess Area</p>
 

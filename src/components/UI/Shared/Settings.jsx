@@ -9,6 +9,7 @@ const Settings = ({
   playGame,
   showHowTo,
   isDarkMode,
+  toggleSettings,
 }) => {
   const difficulties = [
     { label: "Easy", value: 1 },
@@ -160,10 +161,13 @@ const Settings = ({
           </Listbox>
         </div>
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center gap-4">
         {" "}
         <button onClick={playGame} className={buttonClassName}>
-          Play!!!
+          Play
+        </button>
+        <button onClick={toggleSettings} className={buttonClassName}>
+          Back
         </button>
       </div>
     </div>

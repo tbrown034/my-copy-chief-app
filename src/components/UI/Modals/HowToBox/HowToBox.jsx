@@ -67,8 +67,27 @@ export default function HowTo({
                   </Dialog.Title>
                   <HowToBullets />
                   <HowToExamples />
-
-                  <div className="flex justify-center gap-2 mt-6 ">
+                  <p className="pt-2 text-xl font-bold border-t border-black border-opacity-30 ">
+                    Get Started
+                  </p>
+                  {/* Conditionally render the Play button based on showSettings state */}
+                  {!showSettings && (
+                    <div className="flex justify-center gap-4 ">
+                      <button
+                        onClick={playGame}
+                        className="p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                      >
+                        Play
+                      </button>
+                      <button
+                        onClick={toggleHowTo}
+                        className="p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                      >
+                        Back
+                      </button>
+                    </div>
+                  )}
+                  <div className="flex justify-center gap-2 ">
                     <button
                       onClick={displaySettings}
                       className="flex items-center justify-center gap-2 p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
@@ -93,18 +112,6 @@ export default function HowTo({
                       showHowTo={showHowTo}
                       isDarkMode={isDarkMode}
                     />
-                  )}
-
-                  {/* Conditionally render the Play button based on showSettings state */}
-                  {!showSettings && (
-                    <div className="flex justify-center mt-4">
-                      <button
-                        onClick={playGame}
-                        className="p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
-                      >
-                        Play!
-                      </button>
-                    </div>
                   )}
                 </Dialog.Panel>
               </Transition.Child>
