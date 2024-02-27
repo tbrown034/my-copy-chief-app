@@ -56,7 +56,7 @@ const SettingsBox = ({
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="flex flex-col gap-4 p-4 overflow-hidden text-left transition-all transform bg-white shadow-xl rounded-2xl">
-                <div className="flex flex-col gap-2 pt-2 pl-2 ">
+                <div className="flex flex-col gap-4 pt-2 pl-2 ">
                   <p className="text-2xl font-bold underline underline-offset-8 ">
                     Settings
                   </p>
@@ -82,7 +82,7 @@ const SettingsBox = ({
                           handleDifficultyChange(e.value);
                         }}
                       >
-                        <Listbox.Button className="flex items-center justify-center gap-2 p-2 text-sm bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100">
+                        <Listbox.Button className="flex items-center justify-center gap-2 p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100">
                           <span className="">Difficulty</span>
 
                           <i className="fa-regular fa-angle-down"></i>
