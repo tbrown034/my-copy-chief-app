@@ -165,7 +165,8 @@ const GuessArea = ({
               isSolutionRevealed ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
-            <i class="fa-regular mr-2 fa-diamond-exclamation"></i> Show Solution
+            <i className="mr-2 fa-regular fa-diamond-exclamation"></i> Show
+            Solution
           </button>
         </div>
         <div className="flex justify-center">
