@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 import { auth } from "../../../../config/Firebase.jsx";
 
 export const UserLogin = ({
@@ -28,8 +32,22 @@ export const UserLogin = ({
   };
 
   const handleGoogleSignIn = () => {
-    console.log("Google Sign-In");
-    // Integration point for Firebase Google auth
+    const provider = new GoogleAuthProvider();
+
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        console.log("User signed in with Google:", user.email);
+        handleOpenProfile(); // Navigate to the user profile or similar action
+      })
+      .catch((error) => {
+        console.error("Error signing in with Google:", error.message);
+        // Handle errors here, such as showing an error message to the user
+      });
   };
 
   return (

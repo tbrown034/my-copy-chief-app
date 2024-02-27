@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { auth } from "../../../../config/Firebase.jsx";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 
 export const UserRegister = ({
   handleOpenLogIn,
@@ -13,8 +17,28 @@ export const UserRegister = ({
   const [username, setUsername] = useState("");
 
   const handleGoogleSignIn = () => {
-    console.log("Google Sign-In for Registration");
-    // Integration point for Firebase Google auth for registration
+    const provider = new GoogleAuthProvider();
+    // Optional: Add additional scopes
+    // provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        console.log("User signed in with Google:", user.email);
+        // Optionally, handle additional tasks like navigation or profile setup here
+        handleOpenProfile(); // Assuming this is a method to handle post-sign-in actions
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error("Error during Google sign-in:", errorCode, errorMessage);
+        // Optionally, handle error states, such as showing an error message to the user
+      });
   };
 
   const handleSubmit = (e) => {

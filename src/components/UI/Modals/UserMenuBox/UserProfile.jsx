@@ -1,38 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { auth } from "../../../../config/Firebase.jsx";
 import { signOut } from "firebase/auth";
 
 export const UserProfile = ({ toggleUserMenu, handleOpenLogIn }) => {
+  const [userDetails, setUserDetails] = useState({
+    displayName: "",
+    email: "",
+    creationTime: "",
+    lastSignInTime: "",
+  });
+
+  useEffect(() => {
+    const user = auth.currentUser;
+    if (user) {
+      // Update state with user details
+      setUserDetails({
+        displayName: user.displayName || "No display name",
+        email: user.email,
+        creationTime: user.metadata.creationTime,
+        lastSignInTime: user.metadata.lastSignInTime,
+      });
+    }
+  }, []);
+
   // Function to handle user logout
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
-        // Sign-out successful.
         console.log("User signed out successfully.");
         handleOpenLogIn(); // Optionally redirect the user to the login screen
       })
       .catch((error) => {
-        // An error happened.
         console.error("Error signing out:", error);
       });
   };
 
   return (
     <div className="flex flex-col gap-4">
+      <p className="pt-2 text-xl font-bold">Profile</p>
+
       <div className="flex flex-col gap-2">
-        <p className="pt-2 text-xl font-bold">Profile</p>
-        <p className="text-sm">
-          Welcome Back! Below is a summary of your stats to date.
-        </p>
-      </div>
-      <div className="flex flex-col gap-2">
-        <p className="pt-2 text-xl font-bold">Your Stats</p>
-        <div className="flex flex-col gap-2 p-2 border border-black rounded-xl ">
-          <p>Wins:</p>
-          <p>Clean Wins:</p>
-          <p>Hints:</p>
-          <p>Guesses:</p>
-        </div>
+        <p className="text-xl ">Welcome Back, {userDetails.displayName}!</p>
+        <p>Email: {userDetails.email}</p>
+        <p>Account Created: {userDetails.creationTime}</p>
+        <p>Last Sign-In: {userDetails.lastSignInTime}</p>
       </div>
       <div className="flex justify-center gap-4">
         <button
