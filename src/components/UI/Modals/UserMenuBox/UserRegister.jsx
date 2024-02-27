@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { auth } from "../../../../config/Firebase.jsx";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export const UserRegister = ({
   handleOpenLogIn,
@@ -25,11 +27,21 @@ export const UserRegister = ({
       return;
     }
 
-    console.log("Registration Submitted");
-    console.log("Username:", username);
-    console.log("Email:", email);
-    console.log("Password:", password);
-    // Integration point for your auth service for email/password registration
+    // Firebase user registration
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed up
+        const user = userCredential.user;
+        console.log("User registered successfully with email:", user.email);
+        // Optionally handle user profile setup or navigation here
+        handleOpenProfile(); // or any other post-registration logic
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error("Error during registration:", errorCode, errorMessage);
+        // Handle errors here, such as displaying a notification to the user
+      });
   };
 
   return (
@@ -118,7 +130,6 @@ export const UserRegister = ({
               <i className="mr-2 fa-regular fa-arrow-left"></i>Back
             </button>
             <button
-              onClick={handleOpenProfile}
               type="submit"
               className="flex items-center justify-center p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
             >
@@ -127,7 +138,7 @@ export const UserRegister = ({
           </div>
         </form>
         <div className="flex flex-col gap-4">
-          {/* Google Sign-In Button for Registration */}
+          {/* Placeholder for Google Sign-In Button for Registration */}
           <button
             onClick={handleGoogleSignIn}
             className="mt-4 flex items-center justify-center w-full max-w-md px-5 py-2.5 text-sm font-medium text-center text-gray-900 bg-white rounded-lg border border-gray-300 shadow-sm hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300"

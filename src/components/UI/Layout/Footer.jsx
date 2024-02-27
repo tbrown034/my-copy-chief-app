@@ -1,4 +1,4 @@
-export default function Footer({ toggleAbout, toggleHowToPlay }) {
+export default function Footer() {
   return (
     <footer className="flex flex-col items-center justify-center gap-4 py-6 text-gray-700 dark:text-gray-300">
       <div className="text-sm font-medium text-center">

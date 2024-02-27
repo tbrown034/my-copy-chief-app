@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../../../config/Firebase.jsx";
 
 export const UserLogin = ({
   handleOpenRegister,
@@ -8,12 +10,21 @@ export const UserLogin = ({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(); // Prevents form from refreshing the page
-    console.log("Email/Password Login Submitted");
-    console.log("Email:", email);
-    console.log("Password:", password);
-    // Integration point for Firebase email/password auth
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log("User logged in successfully:", userCredential.user);
+      handleOpenProfile(); // Proceed to open the user profile or similar action
+    } catch (error) {
+      console.error("Error logging in:", error.message);
+      // Here you can handle errors, such as showing an error message to the user
+    }
   };
 
   const handleGoogleSignIn = () => {
@@ -62,7 +73,7 @@ export const UserLogin = ({
               placeholder="••••••••"
             />
           </div>
-          <div className="flex justify-center gap-4 ">
+          <div className="flex justify-center gap-4">
             <button
               onClick={toggleUserMenu}
               type="button"
@@ -70,10 +81,8 @@ export const UserLogin = ({
             >
               <i className="mr-2 fa-regular fa-arrow-left"></i>Back
             </button>
-
             <button
               type="submit"
-              onClick={handleOpenProfile}
               className="flex items-center justify-center p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
             >
               <i className="mr-2 fa-regular fa-check"></i> Enter

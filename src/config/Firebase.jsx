@@ -1,8 +1,15 @@
 // src/config/Firebase.jsx
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
+  // apiKey: "AIzaSyBkIS0wokIeVnYtBBOjJ6ocAAdPj-ddILI",
+  // authDomain: "copychief-cf54b.firebaseapp.com",
+  // projectId: "copychief-cf54b",
+  // storageBucket: "copychief-cf54b.appspot.com",
+  // messagingSenderId: "387942657017",
+  // appId: "1:387942657017:web:7c903e84eda78f45c86b28",
+  // measurementId: "G-R90RLS2SM7",
   apiKey: import.meta.env.VITE_API_KEY,
   authDomain: import.meta.env.VITE_AUTH_DOMAIN,
   projectId: import.meta.env.VITE_PROJECT_ID,
@@ -13,10 +20,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-let analytics;
-if (firebaseConfig.measurementId) {
-  analytics = getAnalytics(app);
-}
-
-export { app, analytics };
+export { app, auth };

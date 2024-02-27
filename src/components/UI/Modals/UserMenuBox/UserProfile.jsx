@@ -1,5 +1,22 @@
+import React from "react";
+import { auth } from "../../../../config/Firebase.jsx";
+import { signOut } from "firebase/auth";
+
 export const UserProfile = ({ toggleUserMenu, handleOpenLogIn }) => {
-  // Assuming 'user' is the authenticated user object
+  // Function to handle user logout
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        console.log("User signed out successfully.");
+        handleOpenLogIn(); // Optionally redirect the user to the login screen
+      })
+      .catch((error) => {
+        // An error happened.
+        console.error("Error signing out:", error);
+      });
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
@@ -26,7 +43,7 @@ export const UserProfile = ({ toggleUserMenu, handleOpenLogIn }) => {
           <i className="mr-2 fa-regular fa-arrow-left"></i>Back
         </button>
         <button
-          onClick={handleOpenLogIn}
+          onClick={handleLogout} // Updated to use the handleLogout function
           type="button"
           className="flex items-center justify-center p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
         >
