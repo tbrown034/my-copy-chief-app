@@ -11,8 +11,8 @@ app.use(cors());
 
 // Route to fetch articles
 app.get("/articles", async (req, res) => {
-  const numOfArticles = req.query.num || 2; // Default to 2 articles if no number specified
-  const duration = req.query.duration || 1; // Default to 1 day if no duration specified
+  const numOfArticles = req.query.num || 2;
+  const duration = req.query.duration || 1;
 
   const API_KEY = process.env.NYT_API_KEY; // Use NYT API key from environment variables
 

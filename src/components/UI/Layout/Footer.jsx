@@ -5,7 +5,6 @@ export default function Footer() {
         <span>© 2024 Trevor Brown. All rights reserved. | Copy Chief</span>
       </div>
       <nav className="flex flex-wrap justify-center gap-4 text-sm">
-        {/* Social Links */}
         <a
           href="https://twitter.com/tbrownokc"
           target="_blank"
