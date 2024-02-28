@@ -7,8 +7,10 @@ export const HeaderDropDown = ({
   toggleSettings,
   backToHome,
   playGame,
-  darkMode, // Ensure darkMode is passed as a prop
-  toggleTheme, // Ensure toggleTheme is passed as a prop
+  darkMode,
+  toggleTheme,
+  isLoggedIn,
+  handleUserAction,
 }) => {
   return (
     <div>
@@ -20,14 +22,27 @@ export const HeaderDropDown = ({
           <div className="py-1">
             <Menu.Item>
               {({ active }) => (
-                <button
-                  onClick={toggleUserMenu}
-                  className={`${
-                    active ? "bg-gray-500 text-white" : "text-gray-900"
-                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                >
-                  <i className="mr-2 fa-regular fa-user"></i> Login
-                </button>
+                <div>
+                  {isLoggedIn ? (
+                    <button
+                      onClick={() => handleUserAction("profile")}
+                      className={`${
+                        active ? "bg-gray-500 text-white" : "text-gray-900"
+                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                    >
+                      <i className="mr-2 fa-regular fa-user-check"></i> Profile
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleUserAction("login")}
+                      className={`${
+                        active ? "bg-gray-500 text-white" : "text-gray-900"
+                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                    >
+                      <i className="mr-2 fa-regular fa-user"></i> Login
+                    </button>
+                  )}
+                </div>
               )}
             </Menu.Item>
             <Menu.Item>

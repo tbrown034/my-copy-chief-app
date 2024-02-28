@@ -104,8 +104,8 @@ function App() {
         setDuration={setDuration}
         playGame={playGame}
         toggleAbout={toggleAbout}
-        toggleUserMenu={toggleUserMenu}
         isLoggedIn={isLoggedIn}
+        handleUserAction={handleUserAction}
       />
       {!gameDisplay ? (
         <Home

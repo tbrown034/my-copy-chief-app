@@ -8,11 +8,11 @@ export default function Header({
   setGameDisplay,
   gameDisplay,
   toggleHowTo,
-  toggleUserMenu,
   toggleAbout,
   toggleSettings,
   playGame,
   isLoggedIn,
+  handleUserAction,
 }) {
   const toggleTheme = () => {
     setDarkMode(!darkMode);
@@ -41,10 +41,11 @@ export default function Header({
           toggleHowTo={toggleHowTo}
           toggleSettings={toggleSettings}
           toggleTheme={toggleTheme} // Add this line
-          toggleUserMenu={toggleUserMenu}
           backToHome={backToHome}
           playGame={playGame}
           darkMode={darkMode} // Add this line
+          isLoggedIn={isLoggedIn}
+          handleUserAction={handleUserAction}
         />
       </div>
 
@@ -56,13 +57,16 @@ export default function Header({
         <button onClick={toggleAbout}>
           <i className="fa-regular fa-question-circle hover:text-gray-500 dark:hover:text-gray-300"></i>
         </button>
-        <button onClick={toggleUserMenu}>
-          {isLoggedIn ? (
-            <i className="fas fa-user-check hover:text-gray-500 dark:hover:text-gray-300"></i> // Example of a filled icon when logged in
-          ) : (
-            <i className="fa-regular fa-user hover:text-gray-500 dark:hover:text-gray-300"></i> // Regular icon when not logged in
-          )}
-        </button>
+        {isLoggedIn ? (
+          <button onClick={() => handleUserAction("profile")}>
+            <i className="fas fa-user-check hover:text-gray-500 dark:hover:text-gray-300"></i>{" "}
+          </button>
+        ) : (
+          <button onClick={() => handleUserAction("login")}>
+            <i className="fa-regular fa-user hover:text-gray-500 dark:hover:text-gray-300"></i>{" "}
+          </button>
+        )}
+
         <button onClick={toggleSettings}>
           <i className="fas fa-gear hover:text-gray-500 dark:hover:text-gray-300"></i>
         </button>
