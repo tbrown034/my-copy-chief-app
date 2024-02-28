@@ -1,26 +1,87 @@
 import React from "react";
 import CurrentDate from "../Shared/CurrentDate";
+import { auth } from "../../../config/Firebase";
+import { signOut } from "firebase/auth";
 
-export default function Home({ setShowHowTo }) {
+export default function Home({
+  setShowHowTo,
+  handleUserAction,
+  isLoggedIn,
+  user,
+}) {
   const handleStart = () => {
     setShowHowTo(true);
   };
+
+  // Determine the name to display
+  const displayName = user?.displayName || user?.email || "there";
 
   return (
     <>
       <div className="flex flex-col items-center justify-center min-h-screen gap-4 p-2 text-center">
         <i className="p-2 text-6xl fa-regular fa-newspaper"></i>
-        <h1 className="text-4xl font-bold font-zillaSlab">CopyChief</h1>
-        <h2 className="text-2xl ">A Wordle-inspired headline guessing game.</h2>
-        <div className="flex justify-center py-8">
-          <button
-            className="flex items-center justify-center p-2 px-10 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
-            onClick={handleStart}
-          >
-            <i className="mr-2 fa-regular fa-play"></i>{" "}
-            {/* Adjust the margin-right as needed */}
-            Start
-          </button>
+        <h1 className="text-4xl font-bold">CopyChief</h1>
+        <h2 className="text-2xl">A Wordle-inspired headline guessing game.</h2>
+        <div className="flex flex-col justify-center gap-12 py-8">
+          {isLoggedIn ? (
+            <div className="flex flex-col items-center gap-8 text-center">
+              <div className="flex flex-col gap-4">
+                <p className="text-lg underline ring-offset-8">
+                  Hello, {displayName}!
+                </p>
+                <p
+                  onClick={() => {
+                    signOut(auth)
+                      .then(() => {
+                        console.log("Signed out successfully");
+                        // Additional logic to handle UI changes post logout can be added here
+                      })
+                      .catch((error) => {
+                        console.error("Sign out error", error);
+                      });
+                  }}
+                  className="text-sm text-gray-500 cursor-pointer"
+                >
+                  (Log out)
+                </p>
+                <button
+                  className="flex items-center justify-center p-2 px-4 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                  onClick={() => handleUserAction("profile")}
+                >
+                  View Profile
+                </button>
+              </div>
+              <button
+                className="flex items-center justify-center p-2 px-10 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                onClick={handleStart}
+              >
+                <i className="mr-2 fa-regular fa-play"></i> Start
+              </button>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-8">
+              <button
+                className="flex items-center justify-center p-2 px-10 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                onClick={handleStart}
+              >
+                <i className="mr-2 fa-regular fa-play"></i> Start
+              </button>
+              <div className="flex justify-center gap-2">
+                <button
+                  className="flex items-center justify-center p-2 px-4 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                  onClick={() => handleUserAction("login")}
+                >
+                  <i className="mr-2 fas fa-sign-in-alt"></i> Log In
+                </button>
+                <button
+                  className="flex items-center justify-center p-2 px-4 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                  onClick={() => handleUserAction("register")}
+                >
+                  <i className="mr-2 fas fa-user-plus"></i> Register
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         <CurrentDate />

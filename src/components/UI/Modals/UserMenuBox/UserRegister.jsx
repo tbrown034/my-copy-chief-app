@@ -1,76 +1,65 @@
 import React, { useState } from "react";
-import { auth } from "../../../../config/Firebase.jsx";
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
+import { auth } from "../../../../config/Firebase"; // Ensure this path matches your project structure
 
-export const UserRegister = ({
-  handleOpenLogIn,
-  handleOpenProfile,
-  toggleUserMenu,
-}) => {
+export const UserRegister = ({ toggleUserMenu }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [userName, setUserName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [username, setUsername] = useState("");
+  const [error, setError] = useState(""); // Enhanced state for error handling
 
-  const handleGoogleSignIn = () => {
-    const provider = new GoogleAuthProvider();
-    // Optional: Add additional scopes
-    // provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(""); // Reset error message on new submission
 
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
-        console.log("User signed in with Google:", user.email);
-        // Optionally, handle additional tasks like navigation or profile setup here
-        handleOpenProfile(); // Assuming this is a method to handle post-sign-in actions
-      })
-      .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error("Error during Google sign-in:", errorCode, errorMessage);
-        // Optionally, handle error states, such as showing an error message to the user
-      });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevents form from refreshing the page
-
-    // Basic validation for matching passwords
     if (password !== confirmPassword) {
-      console.error("Passwords do not match!");
-      // Here you can set an error state and show an error message to the user
+      setError("Passwords do not match!");
       return;
     }
 
-    // Firebase user registration
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user;
-        console.log("User registered successfully with email:", user.email);
-        // Optionally handle user profile setup or navigation here
-        handleOpenProfile(); // or any other post-registration logic
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error("Error during registration:", errorCode, errorMessage);
-        // Handle errors here, such as displaying a notification to the user
-      });
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log("User registered successfully:", userCredential.user);
+      toggleUserMenu(false); // Close the UserMenuBox upon successful registration
+    } catch (error) {
+      console.error("Error during registration:", error);
+      if (error.code === "auth/email-already-in-use") {
+        setError(
+          "An account with this email already exists. Would you like to log in instead?"
+        );
+        // Optionally, show a button or link that directs the user to the login form
+      } else {
+        setError("Failed to register: " + error.message); // Provide specific error messages
+      }
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+
+    try {
+      await signInWithPopup(auth, provider);
+      console.log("User signed in with Google");
+      toggleUserMenu(false); // Close the UserMenuBox upon successful Google sign in
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
+      setError("Failed to sign in with Google: " + error.message);
+    }
   };
 
   return (
     <div>
       <p className="pt-2 text-xl font-bold">Register</p>
+      {error && <div className="my-2 text-sm text-red-500">{error}</div>}
       <div className="flex flex-col items-center justify-center p-4">
         <form
           onSubmit={handleSubmit}
@@ -87,8 +76,8 @@ export const UserRegister = ({
               type="text"
               name="username"
               id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
               required
               className="block w-full p-2 mt-1 text-gray-900 bg-gray-100 border border-gray-300 rounded-lg shadow-sm"
               placeholder="Your username"
@@ -147,7 +136,7 @@ export const UserRegister = ({
           </div>
           <div className="flex justify-center gap-4">
             <button
-              onClick={toggleUserMenu}
+              onClick={() => toggleUserMenu(false)}
               type="button"
               className="flex items-center justify-center p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
             >
@@ -161,23 +150,12 @@ export const UserRegister = ({
             </button>
           </div>
         </form>
-        <div className="flex flex-col gap-4">
-          {/* Placeholder for Google Sign-In Button for Registration */}
-          <button
-            onClick={handleGoogleSignIn}
-            className="mt-4 flex items-center justify-center w-full max-w-md px-5 py-2.5 text-sm font-medium text-center text-gray-900 bg-white rounded-lg border border-gray-300 shadow-sm hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300"
-          >
-            <i className="mr-2 fab fa-google"></i> Register with Google
-          </button>
-          <div>
-            <button
-              onClick={handleOpenLogIn}
-              className="cursor-pointer hover:underline hover:text-gray-700"
-            >
-              Already registered? Log in now!
-            </button>
-          </div>
-        </div>
+        <button
+          onClick={handleGoogleSignIn}
+          className="mt-4 px-5 py-2.5 text-sm font-medium text-center text-white bg-[#4285F4] rounded-lg hover:bg-[#357ae8]"
+        >
+          <i className="mr-2 fab fa-google"></i>Sign in or Register with Google
+        </button>
       </div>
     </div>
   );

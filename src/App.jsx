@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
 import Header from "./components/UI/Layout/Header";
 import Home from "./components/UI/Layout/Home";
 import GameBoard from "./components/UI/Layout/GameBoard";
 import Footer from "./components/UI/Layout/Footer";
 import { useDarkMode } from "./hooks/useDarkMode";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "./config/Firebase";
 import SettingsBox from "./components/UI/Modals/SettingBoxes/SettingsBox";
 import AboutBox from "./components/UI/Modals/AboutBox";
 import HowToBox from "./components/UI/Modals/HowToBox/HowToBox";
@@ -19,71 +20,69 @@ function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [numOfHeadlines, setNumOfHeadlines] = useState(2);
   const [showUserMenu, setUserMenu] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+  const [userMenuView, setUserMenuView] = useState("");
 
-  const toggleHowTo = () => {
-    console.log("Toggling HowTo Modal");
-    setShowHowTo((prev) => !prev);
-  };
-  const handleSetNumOfHeadlines = (num) => {
-    console.log(`Setting Number of Headlines to: ${num}`);
-    setNumOfHeadlines(num);
-  };
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setIsLoggedIn(true);
+        setUser(currentUser);
+      } else {
+        setIsLoggedIn(false);
+        setUser(null);
+      }
+    });
 
-  const toggleAbout = () => {
-    console.log("Toggling About Modal");
-    if (showHowTo) {
-      setShowHowTo(false);
-      setTimeout(() => {
-        setShowAbout(true);
-      }, 0);
-    } else {
-      setShowAbout((prev) => !prev);
+    return () => unsubscribe();
+  }, []);
+
+  const handleUserAction = (action) => {
+    // Enhancing the function to handle more scenarios
+    if (isLoggedIn && (action === "login" || action === "register")) {
+      console.log("Error: You are already logged in.");
+      return; // Prevent showing login/register if already logged in
     }
+
+    if (!isLoggedIn && action === "profile") {
+      console.log("Error: You must be logged in to view your profile.");
+      return; // Prevent showing profile if not logged in
+    }
+
+    // This allows us to open the UserMenuBox with the correct content based on the user action
+    setUserMenu(true);
+    setUserMenuView(action);
   };
 
-  function handleDifficultyChange(value) {
-    console.log(`Changing Difficulty to: ${value}`);
-    setNumOfHeadlines(value);
-  }
+  const handleLogOut = () => {
+    signOut(auth)
+      .then(() => {
+        console.log("User signed out successfully.");
+        setUserMenu(false);
+      })
+      .catch((error) => {
+        console.error("Error signing out:", error);
+      });
+  };
 
-  function handleDurationChange(value) {
-    console.log(`Setting Duration to: ${value}`);
-    setDuration(value);
-  }
+  const toggleHowTo = () => setShowHowTo((prev) => !prev);
+  const handleSetNumOfHeadlines = (num) => setNumOfHeadlines(num);
+  const toggleAbout = () => setShowAbout((prev) => !prev);
+  const handleDifficultyChange = (value) => setNumOfHeadlines(value);
+  const handleDurationChange = (value) => setDuration(value);
+  const toggleSettings = () => setShowSettings((prev) => !prev);
+  const toggleUserMenu = () => setUserMenu((prev) => !prev);
 
-  function toggleSettings() {
-    console.log("Toggling Settings Modal");
-    setShowSettings((prev) => {
-      console.log("Toggling Settings: ", !prev); // Add this line for debugging
-      return !prev;
-    });
-  }
-
-  function toggleUserMenu() {
-    setUserMenu((prev) => {
-      console.log("toggling user menu");
-      return !prev;
-    });
-  }
-
-  // In App component
   const playGame = () => {
-    setGameDisplay(true); // Display the game board
-    if (showHowTo) {
-      setShowHowTo(false);
-    }
-    if (showSettings) {
-      setShowSettings(false);
-    }
+    setGameDisplay(true);
+    setShowHowTo(false);
+    setShowSettings(false);
   };
 
   const restartGame = () => {
-    console.log("Restarting game...");
-    // Add logic here if you need to reset any game state before restarting
-    setGameDisplay(false); // This might seem counterintuitive, but if you need to reset the state,
-    setTimeout(() => {
-      setGameDisplay(true); // Re-display the game board
-    }, 0); // Using setTimeout to ensure state updates are processed in order
+    setGameDisplay(false);
+    setTimeout(() => setGameDisplay(true), 0);
   };
 
   return (
@@ -106,9 +105,15 @@ function App() {
         playGame={playGame}
         toggleAbout={toggleAbout}
         toggleUserMenu={toggleUserMenu}
+        isLoggedIn={isLoggedIn}
       />
       {!gameDisplay ? (
-        <Home setShowHowTo={setShowHowTo} />
+        <Home
+          setShowHowTo={setShowHowTo}
+          isLoggedIn={isLoggedIn}
+          handleUserAction={handleUserAction}
+          user={user}
+        />
       ) : (
         <GameBoard
           setGameDisplay={setGameDisplay}
@@ -151,7 +156,14 @@ function App() {
           isDarkMode={isDarkMode}
         />
       )}
-      {showUserMenu && <UserMenuBox toggleUserMenu={toggleUserMenu} />}
+      {showUserMenu && (
+        <UserMenuBox
+          toggleUserMenu={toggleUserMenu}
+          userMenuView={userMenuView}
+          setUserMenuView={setUserMenuView}
+          handleLogOut={handleLogOut}
+        />
+      )}
     </div>
   );
 }

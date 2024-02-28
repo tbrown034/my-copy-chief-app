@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { auth } from "../../../../config/Firebase.jsx";
-import { signOut } from "firebase/auth";
 
-export const UserProfile = ({ toggleUserMenu, handleOpenLogIn }) => {
+export const UserProfile = ({ toggleUserMenu, handleLogOut }) => {
   const [userDetails, setUserDetails] = useState({
     displayName: "",
     email: "",
@@ -24,16 +23,17 @@ export const UserProfile = ({ toggleUserMenu, handleOpenLogIn }) => {
   }, []);
 
   // Function to handle user logout
-  const handleLogout = () => {
-    signOut(auth)
-      .then(() => {
-        console.log("User signed out successfully.");
-        handleOpenLogIn(); // Optionally redirect the user to the login screen
-      })
-      .catch((error) => {
-        console.error("Error signing out:", error);
-      });
-  };
+  // In UserProfile component
+  // const handleLogout = () => {
+  //   signOut(auth)
+  //     .then(() => {
+  //       console.log("User signed out successfully.");
+  //       toggleUserMenu(false); // Close the user menu box
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error signing out:", error);
+  //     });
+  // };
 
   return (
     <div className="flex flex-col gap-4">
@@ -54,7 +54,7 @@ export const UserProfile = ({ toggleUserMenu, handleOpenLogIn }) => {
           <i className="mr-2 fa-regular fa-arrow-left"></i>Back
         </button>
         <button
-          onClick={handleLogout} // Updated to use the handleLogout function
+          onClick={handleLogOut} // Updated to use the handleLogout function
           type="button"
           className="flex items-center justify-center p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
         >

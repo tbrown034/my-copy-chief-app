@@ -1,36 +1,44 @@
-import { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { UserLogin } from "./UserLogIn";
 import { UserRegister } from "./UserRegister";
 import { UserProfile } from "./UserProfile";
 
-const UserMenuBox = ({ toggleUserMenu }) => {
-  let [isOpen, setIsOpen] = useState(true);
-  const [showLogIn, setShowLogIn] = useState(true);
-  const [showRegister, setShowRegister] = useState(false);
-  const [showProfile, setShowProfile] = useState(false);
-
-  const handleOpenRegister = () => {
-    setShowLogIn(false);
-    setShowRegister(true);
-    setShowProfile(false);
-  };
-
-  const handleOpenLogIn = () => {
-    setShowLogIn(true);
-    setShowRegister(false);
-    setShowProfile(false);
-  };
-
-  const handleOpenProfile = () => {
-    setShowLogIn(false);
-    setShowRegister(false);
-    setShowProfile(true);
+const UserMenuBox = ({
+  toggleUserMenu,
+  userMenuView,
+  setUserMenuView,
+  handleLogOut,
+}) => {
+  // Determine the component to render based on userMenuView
+  const renderComponent = () => {
+    switch (userMenuView) {
+      case "login":
+        return <UserLogin toggleUserMenu={toggleUserMenu} />;
+      case "register":
+        return <UserRegister toggleUserMenu={toggleUserMenu} />;
+      case "profile":
+        return (
+          <UserProfile
+            toggleUserMenu={toggleUserMenu}
+            handleLogOut={handleLogOut}
+          />
+        );
+      default:
+        return null; // Or a default component if needed
+    }
   };
 
   return (
-    <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={toggleUserMenu}>
+    <Transition appear show={userMenuView !== ""} as={Fragment}>
+      <Dialog
+        as="div"
+        className="relative z-10"
+        onClose={() => {
+          toggleUserMenu(false);
+          setUserMenuView(""); // Reset userMenuView when closing the dialog
+        }}
+      >
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -59,26 +67,7 @@ const UserMenuBox = ({ toggleUserMenu }) => {
                   <h3 className="text-2xl font-bold underline underline-offset-8">
                     User
                   </h3>
-                  {showLogIn && (
-                    <UserLogin
-                      toggleUserMenu={toggleUserMenu}
-                      handleOpenProfile={handleOpenProfile}
-                      handleOpenRegister={handleOpenRegister}
-                    />
-                  )}
-                  {showRegister && (
-                    <UserRegister
-                      handleOpenProfile={handleOpenProfile}
-                      toggleUserMenu={toggleUserMenu}
-                      handleOpenLogIn={handleOpenLogIn}
-                    />
-                  )}
-                  {showProfile && (
-                    <UserProfile
-                      toggleUserMenu={toggleUserMenu}
-                      handleOpenLogIn={handleOpenLogIn}
-                    />
-                  )}
+                  {renderComponent()}
                 </div>
               </Dialog.Panel>
             </Transition.Child>

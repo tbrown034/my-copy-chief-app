@@ -12,6 +12,7 @@ export default function Header({
   toggleAbout,
   toggleSettings,
   playGame,
+  isLoggedIn,
 }) {
   const toggleTheme = () => {
     setDarkMode(!darkMode);
@@ -56,7 +57,11 @@ export default function Header({
           <i className="fa-regular fa-question-circle hover:text-gray-500 dark:hover:text-gray-300"></i>
         </button>
         <button onClick={toggleUserMenu}>
-          <i className="fa-regular fa-user hover:text-gray-500 dark:hover:text-gray-300"></i>
+          {isLoggedIn ? (
+            <i className="fas fa-user-check hover:text-gray-500 dark:hover:text-gray-300"></i> // Example of a filled icon when logged in
+          ) : (
+            <i className="fa-regular fa-user hover:text-gray-500 dark:hover:text-gray-300"></i> // Regular icon when not logged in
+          )}
         </button>
         <button onClick={toggleSettings}>
           <i className="fas fa-gear hover:text-gray-500 dark:hover:text-gray-300"></i>
