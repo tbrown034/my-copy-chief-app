@@ -51,78 +51,82 @@ export const UserLogin = ({
   return (
     <div>
       {error && <p className="text-red-500">{error}</p>}
-
-      <div className="flex flex-col items-center justify-center p-4">
-        <button
-          onClick={handleGoogleSignIn}
-          className="w-full mb-4 px-5 py-2.5 text-sm font-medium text-center text-white bg-[#4285F4] rounded-lg hover:bg-[#357ae8]"
-        >
-          <i className="fab fa-google"></i> Sign in with Google
-        </button>
-        <div className="flex items-center w-full mb-4">
-          <hr className="w-full" />
-          <p className="px-2">OR</p>
-          <hr className="w-full" />
+      <div>
+        <div className="flex flex-col items-center justify-center p-4">
+          <button
+            onClick={handleGoogleSignIn}
+            className="w-full mb-4 px-5 py-2.5 text-sm font-medium text-center text-white bg-[#4285F4] rounded-lg hover:bg-[#357ae8]"
+          >
+            <i className="fab fa-google"></i> Sign in with Google
+          </button>
+          <div className="flex items-center w-full mb-4">
+            <hr className="w-full" />
+            <p className="px-2">OR</p>
+            <hr className="w-full" />
+          </div>
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col w-full max-w-md gap-4"
+          >
+            <div>
+              <label
+                htmlFor="email"
+                className="block font-medium text-gray-900"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="block w-full p-2 mt-1 text-gray-900 bg-gray-100 border border-gray-300 rounded-lg shadow-sm"
+                placeholder="your-email@example.com"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="password"
+                className="block font-medium text-gray-900"
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="block w-full p-2 mt-1 text-gray-900 bg-gray-100 border border-gray-300 rounded-lg shadow-sm"
+                placeholder="••••••••"
+              />
+            </div>
+            <div className="flex justify-center gap-4">
+              <button
+                type="button"
+                onClick={() => toggleUserMenu(false)}
+                className="flex items-center justify-center p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
+              >
+                <i className="mr-2 fa-regular fa-arrow-left"></i>Back
+              </button>
+              <button
+                type="submit"
+                className="flex items-center justify-center p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
+              >
+                <i className="mr-2 fa-regular fa-check"></i> Enter
+              </button>
+            </div>
+          </form>
+          <button
+            onClick={() => setUserMenuView("register")}
+            className="mt-4 text-sm text-center text-gray-600 cursor-pointer hover:underline"
+          >
+            Not Registered Yet? Sign Up For Free Now!
+          </button>
         </div>
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col w-full max-w-md gap-4"
-        >
-          <div>
-            <label htmlFor="email" className="block font-medium text-gray-900">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="block w-full p-2 mt-1 text-gray-900 bg-gray-100 border border-gray-300 rounded-lg shadow-sm"
-              placeholder="your-email@example.com"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="password"
-              className="block font-medium text-gray-900"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="block w-full p-2 mt-1 text-gray-900 bg-gray-100 border border-gray-300 rounded-lg shadow-sm"
-              placeholder="••••••••"
-            />
-          </div>
-          <div className="flex justify-center gap-4">
-            <button
-              type="button"
-              onClick={() => toggleUserMenu(false)}
-              className="flex items-center justify-center p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
-            >
-              <i className="mr-2 fa-regular fa-arrow-left"></i>Back
-            </button>
-            <button
-              type="submit"
-              className="flex items-center justify-center p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
-            >
-              <i className="mr-2 fa-regular fa-check"></i> Enter
-            </button>
-          </div>
-        </form>
-        <button
-          onClick={() => setUserMenuView("register")}
-          className="mt-4 text-sm text-center text-gray-600 cursor-pointer hover:underline"
-        >
-          Not Registered Yet? Sign Up For Free Now!
-        </button>
       </div>
     </div>
   );
