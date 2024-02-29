@@ -4,11 +4,12 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { auth } from "../../../../config/Firebase.jsx";
+import { auth, db } from "../../../../config/Firebase"; // Ensure db is imported here
+import { doc, getDoc, setDoc } from "firebase/firestore"; // Import Firestore functions
 
 export const UserLogin = ({
   toggleUserMenu,
-  handleUserAction,
+  handleUserAction, // Ensure this prop is used or remove it if unnecessary
   setUserMenuView,
 }) => {
   const [email, setEmail] = useState("");
@@ -28,23 +29,36 @@ export const UserLogin = ({
       alert("Error logging in: " + error.message); // Display error to the user
     }
   };
+
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
-
     try {
       const result = await signInWithPopup(auth, provider);
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
-      // The signed-in user info.
-      const user = result.user;
-      console.log("user:", user, "token:", token);
-      setUserMenuView("profile");
-      // Handle successful sign in here (e.g., update application state, redirect, etc.)
+      const { user } = result;
+      console.log("Google sign-in result:", user);
+
+      // Check Firestore to see if the user already exists
+      const userRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(userRef);
+
+      // If the user doesn't exist in Firestore, add them
+      if (!docSnap.exists()) {
+        await setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+          displayName: user.displayName || "Anonymous User",
+          createdAt: new Date().toISOString(),
+        });
+        console.log("New Google user added to Firestore:", user.uid);
+        alert("Welcome! Your account has been created.");
+      } else {
+        console.log("Existing Google user logged in:", user.uid);
+      }
+
+      setUserMenuView("profile"); // Navigate to the profile view
     } catch (error) {
-      // Handle Errors here.
-      console.error("Error logging in with Google:", error.code, error.message);
-      setError(error.message); // Update the state to display the error message
+      console.error("Error during Google sign-in:", error);
+      setError(`Error signing in with Google: ${error.message}`);
+      alert(`Error signing in with Google: ${error.message}`);
     }
   };
 
