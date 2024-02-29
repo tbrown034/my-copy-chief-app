@@ -13,6 +13,8 @@ export default function GameBoard({
   duration,
   updateUserWinCount,
   user,
+  dailyPuzzle,
+  isDailyGame,
 }) {
   const [fullArticles, setFullArticles] = useState([]);
   const [processedWords, setProcessedWords] = useState([]);
@@ -29,14 +31,11 @@ export default function GameBoard({
   );
 
   useEffect(() => {
-    const loadAndProcessArticles = async () => {
-      let fetchedArticles = []; // Initialize here to use later in the logic
-      fetchedArticles = await fetchMostPopular(numOfHeadlines, duration);
-      setFullArticles(fetchedArticles);
+    const processArticles = (articles) => {
       let wordIdCounter = 0;
-      const wordsWithIds = fetchedArticles.flatMap((article, index) =>
+      const wordsWithIds = articles.flatMap((article, index) =>
         article.title.split(/\s+/).map((word) => ({
-          id: `${index}-${wordIdCounter++}`,
+          id: `${index}-${wordIdCounter++}`, // Increment wordIdCounter for unique IDs
           word: word,
           articleIndex: index,
           selected: false,
@@ -44,18 +43,38 @@ export default function GameBoard({
       );
 
       const shuffledWords = shuffleArray(wordsWithIds);
+      setFullArticles(articles);
       setProcessedWords(shuffledWords);
       setAvailableWords(shuffledWords);
 
-      const initialGuessPlacement = fetchedArticles.map((article) =>
+      const initialGuessPlacement = articles.map((article) =>
         Array(article.title.split(/\s+/).length).fill(null)
       );
       setGuessPlacement(initialGuessPlacement);
-      setArticleWins(new Array(fetchedArticles.length).fill(false));
+      setArticleWins(new Array(articles.length).fill(false));
     };
 
-    loadAndProcessArticles();
-  }, [numOfHeadlines, duration]);
+    // Conditional logic to determine if daily puzzle should be processed
+    if (isDailyGame && dailyPuzzle) {
+      // Assume dailyPuzzle is already in the format expected by processArticles
+      processArticles(dailyPuzzle);
+    } else {
+      // Original logic for fetching and processing articles for custom games
+      const loadAndProcessArticles = async () => {
+        try {
+          const fetchedArticles = await fetchMostPopular(
+            numOfHeadlines,
+            duration
+          );
+          processArticles(fetchedArticles);
+        } catch (error) {
+          console.error("Error fetching and processing articles:", error);
+        }
+      };
+
+      loadAndProcessArticles();
+    }
+  }, [numOfHeadlines, duration, isDailyGame, dailyPuzzle]); // Include isDailyGame and dailyPuzzle in the dependency array
 
   const addWordToGuess = (selectedWord) => {
     let emptyPositionIndex = -1;

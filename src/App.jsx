@@ -6,7 +6,8 @@ import Footer from "./components/UI/Layout/Footer";
 import { useDarkMode } from "./hooks/useDarkMode";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db } from "./config/Firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { fetchMostPopular } from "./utils/apiFetch";
 import SettingsBox from "./components/UI/Modals/SettingBoxes/SettingsBox";
 import AboutBox from "./components/UI/Modals/AboutBox";
 import HowToBox from "./components/UI/Modals/HowToBox/HowToBox";
@@ -24,6 +25,8 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userMenuView, setUserMenuView] = useState("");
   const [user, setUser] = useState(null);
+  const [isDailyGame, setIsDailyGame] = useState(false);
+  const [dailyPuzzle, setDailyPuzzle] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -37,6 +40,29 @@ function App() {
     });
     return () => unsubscribe();
   }, []);
+
+  const playDailyGame = async () => {
+    const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
+    const docRef = doc(db, "dailyPuzzles", today);
+
+    try {
+      console.log("Fetching new puzzle for today.");
+      const articles = await fetchMostPopular(2, 1); // Fetch default articles
+      if (articles.length > 0) {
+        console.log(
+          "Storing new puzzle in Firestore, overwriting any existing data for today."
+        );
+        await setDoc(docRef, { articles }); // This will overwrite the existing document for today
+        setGameDisplay(true);
+        setIsDailyGame(true);
+        // Optionally, set up the game with the newly fetched articles here
+      } else {
+        console.error("Failed to fetch articles for the daily puzzle.");
+      }
+    } catch (error) {
+      console.error("Error fetching or storing the daily puzzle:", error);
+    }
+  };
 
   const updateUserWinCount = async (userId) => {
     if (!userId) {
@@ -132,6 +158,7 @@ function App() {
           isLoggedIn={isLoggedIn}
           handleUserAction={handleUserAction}
           user={user}
+          playDailyGame={playDailyGame}
         />
       ) : (
         <GameBoard
@@ -141,6 +168,8 @@ function App() {
           playGame={playGame}
           updateUserWinCount={updateUserWinCount}
           user={user} // Pass the current user state as a prop
+          playDailyGame={playDailyGame}
+          isDailyGame={isDailyGame}
         />
       )}
       <Footer

@@ -8,6 +8,7 @@ export default function Home({
   handleUserAction,
   isLoggedIn,
   user,
+  playDailyGame,
 }) {
   const handleStart = () => {
     setShowHowTo(true);
@@ -49,21 +50,37 @@ export default function Home({
                   View Profile
                 </button>
               </div>
-              <button
-                className="flex items-center justify-center p-2 px-10 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
-                onClick={handleStart}
-              >
-                <i className="mr-2 fa-regular fa-play"></i> Start
-              </button>
+              <div className="flex justify-center gap-2">
+                <button
+                  className="flex items-center justify-center p-2 px-10 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                  onClick={handleStart}
+                >
+                  <i className="mr-2 fa-regular fa-play"></i> Start
+                </button>
+                <button
+                  className="flex items-center justify-center p-2 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                  onClick={playDailyGame}
+                >
+                  <i className="mr-2 fa-regular fa-play"></i> Daily Game
+                </button>
+              </div>
             </div>
           ) : (
             <div className="flex flex-col items-center gap-8">
-              <button
-                className="flex items-center justify-center p-2 px-10 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
-                onClick={handleStart}
-              >
-                <i className="mr-2 fa-regular fa-play"></i> Start
-              </button>
+              <div className="flex justify-center gap-2">
+                <button
+                  className="flex items-center justify-center p-2 px-10 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                  onClick={handleStart}
+                >
+                  <i className="mr-2 fa-regular fa-play"></i> Start
+                </button>
+                <button
+                  className="flex items-center justify-center p-2 px-10 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                  onClick={playDailyGame}
+                >
+                  <i className="mr-2 fa-regular fa-play"></i> Play Daily Game
+                </button>
+              </div>
               <div className="flex justify-center gap-2">
                 <button
                   className="flex items-center justify-center p-2 px-4 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
@@ -81,7 +98,6 @@ export default function Home({
             </div>
           )}
         </div>
-
         <CurrentDate />
         <p>
           Created by{" "}
