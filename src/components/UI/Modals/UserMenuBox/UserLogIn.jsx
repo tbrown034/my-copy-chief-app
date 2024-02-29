@@ -4,29 +4,29 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { auth, db } from "../../../../config/Firebase"; // Ensure db is imported here
-import { doc, getDoc, setDoc } from "firebase/firestore"; // Import Firestore functions
+import { auth, db } from "../../../../config/Firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export const UserLogin = ({
   toggleUserMenu,
-  handleUserAction, // Ensure this prop is used or remove it if unnecessary
+  handleUserAction,
   setUserMenuView,
 }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // State to handle error messages
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Reset error message on new submission
+    setError("");
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      alert("User logged in successfully"); // Use an alert for user feedback
-      toggleUserMenu(); // Close the user menu upon successful login
+      alert("User logged in successfully");
+      toggleUserMenu();
     } catch (error) {
       console.error("Error logging in:", error.message);
-      setError(error.message); // Set error message to display to the user
-      alert("Error logging in: " + error.message); // Display error to the user
+      setError(error.message);
+      alert("Error logging in: " + error.message);
     }
   };
 
@@ -36,12 +36,8 @@ export const UserLogin = ({
       const result = await signInWithPopup(auth, provider);
       const { user } = result;
       console.log("Google sign-in result:", user);
-
-      // Check Firestore to see if the user already exists
       const userRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(userRef);
-
-      // If the user doesn't exist in Firestore, add them
       if (!docSnap.exists()) {
         await setDoc(doc(db, "users", user.uid), {
           email: user.email,
@@ -53,8 +49,7 @@ export const UserLogin = ({
       } else {
         console.log("Existing Google user logged in:", user.uid);
       }
-
-      setUserMenuView("profile"); // Navigate to the profile view
+      setUserMenuView("profile");
     } catch (error) {
       console.error("Error during Google sign-in:", error);
       setError(`Error signing in with Google: ${error.message}`);

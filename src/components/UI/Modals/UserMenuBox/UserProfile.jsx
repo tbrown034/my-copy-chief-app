@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { auth, db } from "../../../../config/Firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, onSnapshot } from "firebase/firestore";
-
 export const UserProfile = ({ toggleUserMenu, handleLogOut }) => {
   const [userDetails, setUserDetails] = useState({
     displayName: "",
@@ -11,7 +10,6 @@ export const UserProfile = ({ toggleUserMenu, handleLogOut }) => {
     lastSignInTime: "",
     wins: 0,
   });
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -42,14 +40,12 @@ export const UserProfile = ({ toggleUserMenu, handleLogOut }) => {
         });
       }
     });
-
     return () => unsubscribe();
   }, []);
 
   return (
     <div className="flex flex-col gap-4">
       <p className="pt-2 text-xl font-bold">Profile</p>
-
       <div className="flex flex-col gap-2">
         <p className="text-xl ">Welcome Back, {userDetails.displayName}!</p>
         <p>Email: {userDetails.email}</p>
@@ -66,7 +62,7 @@ export const UserProfile = ({ toggleUserMenu, handleLogOut }) => {
           <i className="mr-2 fa-regular fa-arrow-left"></i>Back
         </button>
         <button
-          onClick={handleLogOut} // Updated to use the handleLogout function
+          onClick={handleLogOut}
           type="button"
           className="flex items-center justify-center p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
         >

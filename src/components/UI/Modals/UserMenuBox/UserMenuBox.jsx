@@ -3,7 +3,6 @@ import { Dialog, Transition } from "@headlessui/react";
 import { UserLogin } from "./UserLogIn";
 import { UserRegister } from "./UserRegister";
 import { UserProfile } from "./UserProfile";
-
 const UserMenuBox = ({
   toggleUserMenu,
   userMenuView,
@@ -11,7 +10,6 @@ const UserMenuBox = ({
   handleLogOut,
   handleUserAction,
 }) => {
-  // Determine the component to render based on userMenuView
   const renderComponent = () => {
     switch (userMenuView) {
       case "login":
@@ -38,7 +36,7 @@ const UserMenuBox = ({
           />
         );
       default:
-        return null; // Or a default component if needed
+        return null;
     }
   };
 
@@ -49,7 +47,7 @@ const UserMenuBox = ({
         className="relative z-10"
         onClose={() => {
           toggleUserMenu(false);
-          setUserMenuView(""); // Reset userMenuView when closing the dialog
+          setUserMenuView("");
         }}
       >
         <Transition.Child
@@ -63,7 +61,6 @@ const UserMenuBox = ({
         >
           <div className="fixed inset-0 bg-black bg-opacity-25" />
         </Transition.Child>
-
         <div className="fixed inset-0 overflow-y-auto">
           <div className="flex items-center justify-center min-h-full p-4 text-center">
             <Transition.Child
@@ -90,5 +87,4 @@ const UserMenuBox = ({
     </Transition>
   );
 };
-
 export default UserMenuBox;

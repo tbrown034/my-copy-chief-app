@@ -13,7 +13,6 @@ export default function Home({
     setShowHowTo(true);
   };
 
-  // Determine the name to display
   const displayName = user?.displayName || user?.email || "there";
 
   return (
@@ -34,7 +33,6 @@ export default function Home({
                     signOut(auth)
                       .then(() => {
                         console.log("Signed out successfully");
-                        // Additional logic to handle UI changes post logout can be added here
                       })
                       .catch((error) => {
                         console.error("Sign out error", error);

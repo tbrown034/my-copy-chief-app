@@ -41,8 +41,6 @@ const GuessArea = ({
     setGuessResults(resetState);
     setIsSolutionRevealed(false);
   };
-  // const isEveryGuessFilled = () =>
-  //   guessPlacement.every((headline) => headline.every(Boolean));
 
   const solvePuzzle = () => {
     const newGuessPlacement = fullArticles.map(
@@ -64,8 +62,7 @@ const GuessArea = ({
 
   const confirmSolve = () => {
     solvePuzzle();
-    // Logic to instantly solve the puzzle
-    setIsOpen(false); // Close the modal upon confirmation
+    setIsOpen(false);
   };
 
   const handleInstantSolve = () => {
@@ -147,7 +144,6 @@ const GuessArea = ({
               confirmSolve={confirmSolve}
             />
           )}
-
           <button
             onClick={clearAllGuesses}
             disabled={!hasMadeAGuess}
@@ -157,7 +153,6 @@ const GuessArea = ({
           >
             <i className="mr-2 fa-regular fa-trash-alt"></i> Clear Guesses
           </button>
-
           <button
             onClick={handleInstantSolve}
             disabled={isSolutionRevealed}
@@ -177,7 +172,6 @@ const GuessArea = ({
             <i className="mr-2 fa-regular fa-check"></i> Enter Guess
           </button>
         </div>
-
         <Scoreboard
           articleWins={articleWins}
           hintCounter={hintCounter}

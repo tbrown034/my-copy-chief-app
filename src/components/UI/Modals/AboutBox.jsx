@@ -1,13 +1,10 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
-
 export default function AboutBox({ toggleAbout }) {
   let [isOpen, setIsOpen] = useState(true);
-
   function closeModal() {
     setIsOpen(false);
   }
-
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -23,7 +20,6 @@ export default function AboutBox({ toggleAbout }) {
           >
             <div className="fixed inset-0 bg-black/25" />
           </Transition.Child>
-
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex items-center justify-center min-h-full p-4 text-center">
               <Transition.Child
@@ -45,7 +41,6 @@ export default function AboutBox({ toggleAbout }) {
                       Copy Chief is a Wordle-inspired game that challenges users
                       to guess the top headlines of the day.
                     </p>
-
                     <p className="text-sm">
                       This project is built using React (Vite), stylized using
                       Tailwind CSS, Headless UI and FontAwesome and hosted on
@@ -68,12 +63,10 @@ export default function AboutBox({ toggleAbout }) {
                       </a>
                     </div>
                   </div>
-
                   <div className="flex flex-col gap-2">
                     <p className="pt-2 text-xl font-bold border-t border-black border-opacity-30">
                       The Developer
                     </p>
-
                     <p className="text-sm">
                       Hi, my name is Trevor Brown! After nearly 15 years as an
                       award-winning investigative reporter, I recently made a
@@ -90,7 +83,6 @@ export default function AboutBox({ toggleAbout }) {
                       opportunities or anything else!
                     </p>
                   </div>
-
                   <div className="flex gap-4">
                     <a
                       href="mailto:trevorbrown.web@gmail.com"
@@ -106,7 +98,6 @@ export default function AboutBox({ toggleAbout }) {
                       View My Portfolio Site
                     </a>
                   </div>
-
                   <div className="flex justify-center mt-4">
                     <button
                       type="button"

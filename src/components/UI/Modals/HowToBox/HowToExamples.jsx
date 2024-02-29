@@ -1,5 +1,4 @@
 import WordExample from "./HowToWordExamples";
-
 const HowToExamples = () => {
   return (
     <div className="flex flex-col gap-2 px-2">
@@ -8,7 +7,6 @@ const HowToExamples = () => {
       </p>
       <div>
         <p className=" opacity-55">Guess Area</p>
-
         <div className="flex justify-around gap-2 p-2 text-sm">
           <div className="flex gap-2 ">
             <div className="flex items-center justify-center h-10 p-2 font-bold border-2 border-gray-400 rounded-lg min-w-10 ">
@@ -27,7 +25,6 @@ const HowToExamples = () => {
             </div>
           </div>
         </div>
-
         <div className="flex justify-around gap-2 p-2 text-sm">
           <div className="flex gap-2 ">
             <div className="flex items-center justify-center h-10 p-2 font-bold bg-green-500 border-2 border-gray-400 rounded-lg min-w-10 dark:bg-green-600">

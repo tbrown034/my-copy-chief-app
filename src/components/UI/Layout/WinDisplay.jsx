@@ -1,5 +1,4 @@
 import { Scoreboard } from "../Shared/Scoreboard";
-
 const WinDisplay = ({
   fullArticles,
   guessCounter,

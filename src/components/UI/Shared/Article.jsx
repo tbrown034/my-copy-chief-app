@@ -1,5 +1,4 @@
 // Article.jsx
-
 const Article = ({ article }) => {
   const getImageUrl = (mediaArray) => {
     if (
@@ -17,7 +16,6 @@ const Article = ({ article }) => {
   };
 
   const imageUrl = getImageUrl(article.media);
-
   return (
     <div className="w-3/4 p-4 mx-auto my-4 rounded-lg shadow-md bg-slate-100">
       {imageUrl && (

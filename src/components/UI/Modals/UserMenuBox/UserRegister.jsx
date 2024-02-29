@@ -13,17 +13,14 @@ export const UserRegister = ({ toggleUserMenu, setUserMenuView }) => {
   const [userName, setUserName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
     if (password !== confirmPassword) {
       setError("Passwords do not match!");
       alert("Passwords do not match!");
       return;
     }
-
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -34,13 +31,11 @@ export const UserRegister = ({ toggleUserMenu, setUserMenuView }) => {
         "User registered successfully with email/password:",
         userCredential.user
       );
-
       await setDoc(doc(db, "users", userCredential.user.uid), {
         email: userCredential.user.email,
         displayName: userCredential.user.displayName || userName,
         createdAt: new Date().toISOString(),
       });
-
       console.log(
         "Firestore document created for email/password user:",
         userCredential.user.uid
@@ -60,12 +55,8 @@ export const UserRegister = ({ toggleUserMenu, setUserMenuView }) => {
       const result = await signInWithPopup(auth, provider);
       const { user } = result;
       console.log("Google sign-in result:", user);
-
-      // Check Firestore to see if the user already exists
       const userRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(userRef);
-
-      // If the user doesn't exist in Firestore, add them
       if (!docSnap.exists()) {
         await setDoc(doc(db, "users", user.uid), {
           email: user.email,
@@ -77,7 +68,6 @@ export const UserRegister = ({ toggleUserMenu, setUserMenuView }) => {
       } else {
         console.log("Existing Google user logged in:", user.uid);
       }
-
       setUserMenuView("profile"); // Navigate to the profile view
     } catch (error) {
       console.error("Error during Google sign-in:", error);
@@ -108,7 +98,6 @@ export const UserRegister = ({ toggleUserMenu, setUserMenuView }) => {
           onSubmit={handleSubmit}
           className="flex flex-col w-full max-w-md gap-4"
         >
-          {/* Username input */}
           <div>
             <label
               htmlFor="username"
@@ -127,7 +116,6 @@ export const UserRegister = ({ toggleUserMenu, setUserMenuView }) => {
               placeholder="Your username"
             />
           </div>
-          {/* Email input */}
           <div>
             <label htmlFor="email" className="block font-medium text-gray-900">
               Email
@@ -143,7 +131,6 @@ export const UserRegister = ({ toggleUserMenu, setUserMenuView }) => {
               placeholder="your-email@example.com"
             />
           </div>
-          {/* Password input */}
           <div>
             <label
               htmlFor="password"
@@ -162,7 +149,6 @@ export const UserRegister = ({ toggleUserMenu, setUserMenuView }) => {
               placeholder="••••••••"
             />
           </div>
-          {/* Confirm password input */}
           <div>
             <label
               htmlFor="confirmPassword"
@@ -181,7 +167,6 @@ export const UserRegister = ({ toggleUserMenu, setUserMenuView }) => {
               placeholder="••••••••"
             />
           </div>
-          {/* Action buttons */}
           <div className="flex justify-center gap-4">
             <button
               onClick={() => toggleUserMenu(false)}

@@ -49,7 +49,6 @@ export default function HowTo({
           >
             <div className="fixed inset-0 bg-black/25" />
           </Transition.Child>
-
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex items-center justify-center min-h-full p-8 text-center">
               <Transition.Child
@@ -70,7 +69,6 @@ export default function HowTo({
                   <p className="pt-2 text-xl font-bold border-t border-black border-opacity-30 ">
                     Get Started
                   </p>
-                  {/* Conditionally render the Play button based on showSettings state */}
                   {!showSettings && (
                     <div className="flex flex-col gap-2">
                       <div className="flex justify-center gap-4">
@@ -78,17 +76,13 @@ export default function HowTo({
                           onClick={toggleHowTo}
                           className="flex items-center justify-center p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
                         >
-                          <i className="mr-2 fa-regular fa-arrow-left"></i>{" "}
-                          {/* Ensure proper icon class; adjust margin as needed */}
-                          Back
+                          <i className="mr-2 fa-regular fa-arrow-left"></i> Back
                         </button>
                         <button
                           onClick={playGame}
                           className="flex items-center justify-center p-2 px-6 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 "
                         >
-                          <i className="mr-2 fa-regular fa-play"></i>{" "}
-                          {/* Ensure proper icon class; adjust margin as needed */}
-                          Play
+                          <i className="mr-2 fa-regular fa-play"></i> Play
                         </button>
                       </div>
                       <div className="flex justify-center">
@@ -98,9 +92,9 @@ export default function HowTo({
                         >
                           <span>Settings</span>{" "}
                           {showSettings ? (
-                            <i className="fa-regular fa-angle-up"></i> // Arrow up when settings are shown
+                            <i className="fa-regular fa-angle-up"></i>
                           ) : (
-                            <i className="fa-regular fa-angle-down"></i> // Arrow down when settings are hidden
+                            <i className="fa-regular fa-angle-down"></i>
                           )}
                         </button>
                       </div>

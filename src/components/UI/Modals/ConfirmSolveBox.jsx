@@ -1,5 +1,4 @@
 import { Dialog } from "@headlessui/react";
-
 const ConfirmSolveBox = ({ isOpen, setIsOpen, confirmSolve }) => {
   return (
     <>
@@ -9,7 +8,6 @@ const ConfirmSolveBox = ({ isOpen, setIsOpen, confirmSolve }) => {
         className="fixed inset-0 z-30 flex items-center justify-center p-8"
       >
         <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-60" />
-
         <div className="relative max-w-sm p-4 mx-auto bg-white shadow-xl dark:bg-gray-800 rounded-2xl">
           <Dialog.Title
             as="h3"
@@ -45,5 +43,4 @@ const ConfirmSolveBox = ({ isOpen, setIsOpen, confirmSolve }) => {
     </>
   );
 };
-
 export default ConfirmSolveBox;

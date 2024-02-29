@@ -49,7 +49,6 @@ const SettingsExtended = ({
       <div className="flex flex-col gap-4">
         <div className="p-2">
           <div className="flex justify-center gap-4 p-2 rounded-xl">
-            {/* Difficulty Selector */}
             <div className="relative overflow-visible">
               <Listbox
                 value={selectedDifficulty}
@@ -59,7 +58,6 @@ const SettingsExtended = ({
               >
                 <Listbox.Button className="flex items-center justify-center gap-2 p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100">
                   <span className="">Difficulty</span>
-
                   <i className="fa-regular fa-angle-down"></i>
                 </Listbox.Button>
                 <Transition
@@ -103,8 +101,6 @@ const SettingsExtended = ({
                 </Transition>
               </Listbox>
             </div>
-
-            {/* Duration Selector */}
             <div className="relative">
               <Listbox
                 value={selectedDuration}
@@ -165,17 +161,13 @@ const SettingsExtended = ({
             onClick={toggleHowTo}
             className="p-2 px-4 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
           >
-            <i className="mr-2 fa-regular fa-arrow-left"></i>{" "}
-            {/* Ensure proper icon class; adjust margin as needed */}
-            Back
+            <i className="mr-2 fa-regular fa-arrow-left"></i> Back
           </button>
           <button
             onClick={playGame}
             className="p-2 px-4 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100"
           >
-            <i className="mr-2 fa-regular fa-play"></i>{" "}
-            {/* Ensure proper icon class; adjust margin as needed */}
-            Play
+            <i className="mr-2 fa-regular fa-play"></i> Play
           </button>
         </div>
       </div>

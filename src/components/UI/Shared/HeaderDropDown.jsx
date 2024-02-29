@@ -28,7 +28,6 @@ export const HeaderDropDown = ({
         >
           <Menu.Items className="absolute right-0 z-10 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             <div className="py-1">
-              {/* Profile/Login Button */}
               {isLoggedIn ? (
                 <Menu.Item>
                   {({ active }) => (
@@ -56,9 +55,7 @@ export const HeaderDropDown = ({
                   )}
                 </Menu.Item>
               )}
-              {/* Divider */}
               <div className="border-t border-gray-200"></div>
-              {/* How to Play Button */}
               <Menu.Item>
                 {({ active }) => (
                   <button
@@ -72,9 +69,7 @@ export const HeaderDropDown = ({
                   </button>
                 )}
               </Menu.Item>
-              {/* Divider */}
               <div className="border-t border-gray-200"></div>
-              {/* Settings Button */}
               <Menu.Item>
                 {({ active }) => (
                   <button
@@ -87,9 +82,7 @@ export const HeaderDropDown = ({
                   </button>
                 )}
               </Menu.Item>
-              {/* Divider */}
               <div className="border-t border-gray-200"></div>
-              {/* About Button */}
               <Menu.Item>
                 {({ active }) => (
                   <button
@@ -102,9 +95,7 @@ export const HeaderDropDown = ({
                   </button>
                 )}
               </Menu.Item>
-              {/* Divider */}
               <div className="border-t border-gray-200"></div>
-              {/* Play Now Button */}
               <Menu.Item>
                 {({ active }) => (
                   <button
@@ -117,9 +108,7 @@ export const HeaderDropDown = ({
                   </button>
                 )}
               </Menu.Item>
-              {/* Divider */}
               <div className="border-t border-gray-200"></div>
-              {/* Toggle Theme Button */}
               <Menu.Item>
                 {({ active }) => (
                   <button

@@ -23,7 +23,6 @@ const SettingsBox = ({
     { label: "30 Days", value: 30 },
   ];
 
-  // Find the difficulty and duration objects, or default to the first if not found
   const selectedDifficulty =
     difficulties.find((d) => d.value === numOfHeadlines) || difficulties[1];
   const selectedDuration =
@@ -43,7 +42,6 @@ const SettingsBox = ({
         >
           <div className="fixed inset-0 bg-black bg-opacity-25" />
         </Transition.Child>
-
         <div className="fixed inset-0 overflow-y-auto">
           <div className="flex items-center justify-center min-h-full p-4 text-center">
             <Transition.Child
@@ -72,9 +70,7 @@ const SettingsBox = ({
                       from the last day, week or month.
                     </li>
                   </ul>
-
                   <div className="flex justify-center gap-4 p-4 rounded-xl">
-                    {/* Difficulty Selector */}
                     <div className="relative overflow-visible">
                       <Listbox
                         value={selectedDifficulty}
@@ -128,8 +124,6 @@ const SettingsBox = ({
                         </Transition>
                       </Listbox>
                     </div>
-
-                    {/* Duration Selector */}
                     <div className="relative">
                       <Listbox
                         value={selectedDuration}
@@ -139,7 +133,6 @@ const SettingsBox = ({
                       >
                         <Listbox.Button className="flex items-center justify-center gap-2 p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100">
                           <span className="">Duration</span>
-
                           <i className="fa-regular fa-angle-down"></i>
                         </Listbox.Button>
                         <Transition
@@ -190,17 +183,13 @@ const SettingsBox = ({
                       onClick={toggleSettings}
                       className="p-2 px-4 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
                     >
-                      <i className="mr-2 fa-regular fa-arrow-left"></i>{" "}
-                      {/* Ensure proper icon class; adjust margin as needed */}
-                      Back
+                      <i className="mr-2 fa-regular fa-arrow-left"></i> Back
                     </button>
                     <button
                       onClick={playGame}
                       className="p-2 px-4 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100"
                     >
-                      <i className="mr-2 fa-regular fa-play"></i>{" "}
-                      {/* Ensure proper icon class; adjust margin as needed */}
-                      Play
+                      <i className="mr-2 fa-regular fa-play"></i> Play
                     </button>
                   </div>
                 </div>

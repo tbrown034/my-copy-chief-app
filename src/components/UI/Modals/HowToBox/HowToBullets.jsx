@@ -19,5 +19,4 @@ const HowToBullets = () => {
     </ul>
   );
 };
-
 export default HowToBullets;

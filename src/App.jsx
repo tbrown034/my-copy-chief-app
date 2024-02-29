@@ -5,9 +5,8 @@ import GameBoard from "./components/UI/Layout/GameBoard";
 import Footer from "./components/UI/Layout/Footer";
 import { useDarkMode } from "./hooks/useDarkMode";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "./config/Firebase";
+import { auth, db } from "./config/Firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "./config/Firebase";
 import SettingsBox from "./components/UI/Modals/SettingBoxes/SettingsBox";
 import AboutBox from "./components/UI/Modals/AboutBox";
 import HowToBox from "./components/UI/Modals/HowToBox/HowToBox";
@@ -23,9 +22,8 @@ function App() {
   const [numOfHeadlines, setNumOfHeadlines] = useState(2);
   const [showUserMenu, setUserMenu] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);
   const [userMenuView, setUserMenuView] = useState("");
-  const [totalWins, setTotalWins] = useState(0);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -37,7 +35,6 @@ function App() {
         setUser(null);
       }
     });
-
     return () => unsubscribe();
   }, []);
 
