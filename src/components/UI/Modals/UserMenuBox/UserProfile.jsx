@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { auth } from "../../../../config/Firebase.jsx";
+import { onAuthStateChanged } from "firebase/auth";
 
 export const UserProfile = ({ toggleUserMenu, handleLogOut }) => {
+  const [isFirstTime, setIsFirstTime] = useState(false);
   const [userDetails, setUserDetails] = useState({
     displayName: "",
     email: "",
@@ -10,34 +12,40 @@ export const UserProfile = ({ toggleUserMenu, handleLogOut }) => {
   });
 
   useEffect(() => {
-    const user = auth.currentUser;
-    if (user) {
-      // Update state with user details
-      setUserDetails({
-        displayName: user.displayName || "No display name",
-        email: user.email,
-        creationTime: user.metadata.creationTime,
-        lastSignInTime: user.metadata.lastSignInTime,
-      });
-    }
-  }, []);
+    // Set up the observer on the auth object
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in
+        const details = {
+          displayName: user.displayName || "No display name",
+          email: user.email,
+          creationTime: user.metadata.creationTime,
+          lastSignInTime: user.metadata.lastSignInTime,
+        };
+        setUserDetails(details);
 
-  // Function to handle user logout
-  // In UserProfile component
-  // const handleLogout = () => {
-  //   signOut(auth)
-  //     .then(() => {
-  //       console.log("User signed out successfully.");
-  //       toggleUserMenu(false); // Close the user menu box
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error signing out:", error);
-  //     });
-  // };
+        // Determine if it's the user's first time logging in
+        setIsFirstTime(details.creationTime === details.lastSignInTime);
+      } else {
+        // User is signed out
+        setUserDetails({
+          displayName: "",
+          email: "",
+          creationTime: "",
+          lastSignInTime: "",
+        });
+        setIsFirstTime(false);
+      }
+    });
+
+    // Clean up the observer when the component unmounts
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="flex flex-col gap-4">
       <p className="pt-2 text-xl font-bold">Profile</p>
+      {isFirstTime ? <div>first</div> : <div>welcome back </div>}
 
       <div className="flex flex-col gap-2">
         <p className="text-xl ">Welcome Back, {userDetails.displayName}!</p>

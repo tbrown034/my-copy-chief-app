@@ -1,11 +1,10 @@
-import { Menu } from "@headlessui/react";
+import { Menu, Transition } from "@headlessui/react";
+import { Fragment } from "react";
 
 export const HeaderDropDown = ({
   toggleHowTo,
-  toggleUserMenu,
   toggleAbout,
   toggleSettings,
-  backToHome,
   playGame,
   darkMode,
   toggleTheme,
@@ -15,103 +14,130 @@ export const HeaderDropDown = ({
   return (
     <div>
       <Menu as="div" className="relative inline-block text-left">
-        <Menu.Button className="text-2xl hover:text-gray-500">
-          <i className="fa-regular fa-bars"></i>
+        <Menu.Button className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
+          <i className="text-xl fa-regular fa-bars"></i>
         </Menu.Button>
-        <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-gray-100 divide-y divide-gray-100 rounded-md shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <div className="py-1">
-            <Menu.Item>
-              {({ active }) => (
-                <div>
-                  {isLoggedIn ? (
+        <Transition
+          as={Fragment}
+          enter="transition ease-out duration-100"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-75"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
+        >
+          <Menu.Items className="absolute right-0 z-10 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <div className="py-1">
+              {/* Profile/Login Button */}
+              {isLoggedIn ? (
+                <Menu.Item>
+                  {({ active }) => (
                     <button
                       onClick={() => handleUserAction("profile")}
                       className={`${
-                        active ? "bg-gray-500 text-white" : "text-gray-900"
-                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                        active ? "bg-gray-100" : ""
+                      } group flex w-full items-center rounded-md px-4 py-2 text-sm text-gray-700`}
                     >
                       <i className="mr-2 fa-regular fa-user-check"></i> Profile
                     </button>
-                  ) : (
+                  )}
+                </Menu.Item>
+              ) : (
+                <Menu.Item>
+                  {({ active }) => (
                     <button
                       onClick={() => handleUserAction("login")}
                       className={`${
-                        active ? "bg-gray-500 text-white" : "text-gray-900"
-                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                        active ? "bg-gray-100" : ""
+                      } group flex w-full items-center rounded-md px-4 py-2 text-sm text-gray-700`}
                     >
                       <i className="mr-2 fa-regular fa-user"></i> Login
                     </button>
                   )}
-                </div>
+                </Menu.Item>
               )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <button
-                  onClick={toggleHowTo}
-                  className={`${
-                    active ? "bg-gray-500 text-white" : "text-gray-900"
-                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                >
-                  <i className="mr-2 fa-regular fa-question-circle"></i> How to
-                  Play
-                </button>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <button
-                  onClick={toggleSettings}
-                  className={`${
-                    active ? "bg-gray-500 text-white" : "text-gray-900"
-                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                >
-                  <i className="mr-2 fas fa-gear"></i> Settings
-                </button>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <button
-                  onClick={toggleAbout}
-                  className={`${
-                    active ? "bg-gray-500 text-white" : "text-gray-900"
-                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                >
-                  <i className="mr-2 fa-regular fa-info-circle"></i> About
-                </button>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <button
-                  onClick={playGame}
-                  className={`${
-                    active ? "bg-gray-500 text-white" : "text-gray-900"
-                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                >
-                  <i className="mr-2 fas fa-play"></i> Play Now
-                </button>
-              )}
-            </Menu.Item>
-            {/* Toggle theme button */}
-            <Menu.Item>
-              {({ active }) => (
-                <button
-                  onClick={toggleTheme}
-                  className={`${
-                    active ? "bg-gray-500 text-white" : "text-gray-900"
-                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                >
-                  <i
-                    className={`mr-2 fas ${darkMode ? "fa-sun" : "fa-moon"}`}
-                  ></i>
-                  {darkMode ? "Light Mode" : "Dark Mode"}
-                </button>
-              )}
-            </Menu.Item>
-          </div>
-        </Menu.Items>
+              {/* Divider */}
+              <div className="border-t border-gray-200"></div>
+              {/* How to Play Button */}
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    onClick={toggleHowTo}
+                    className={`${
+                      active ? "bg-gray-100" : ""
+                    } group flex w-full items-center rounded-md px-4 py-2 text-sm text-gray-700`}
+                  >
+                    <i className="mr-2 fa-regular fa-question-circle"></i> How
+                    to Play
+                  </button>
+                )}
+              </Menu.Item>
+              {/* Divider */}
+              <div className="border-t border-gray-200"></div>
+              {/* Settings Button */}
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    onClick={toggleSettings}
+                    className={`${
+                      active ? "bg-gray-100" : ""
+                    } group flex w-full items-center rounded-md px-4 py-2 text-sm text-gray-700`}
+                  >
+                    <i className="mr-2 fas fa-gear"></i> Settings
+                  </button>
+                )}
+              </Menu.Item>
+              {/* Divider */}
+              <div className="border-t border-gray-200"></div>
+              {/* About Button */}
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    onClick={toggleAbout}
+                    className={`${
+                      active ? "bg-gray-100" : ""
+                    } group flex w-full items-center rounded-md px-4 py-2 text-sm text-gray-700`}
+                  >
+                    <i className="mr-2 fa-regular fa-info-circle"></i> About
+                  </button>
+                )}
+              </Menu.Item>
+              {/* Divider */}
+              <div className="border-t border-gray-200"></div>
+              {/* Play Now Button */}
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    onClick={playGame}
+                    className={`${
+                      active ? "bg-gray-100" : ""
+                    } group flex w-full items-center rounded-md px-4 py-2 text-sm text-gray-700`}
+                  >
+                    <i className="mr-2 fas fa-play"></i> Play Now
+                  </button>
+                )}
+              </Menu.Item>
+              {/* Divider */}
+              <div className="border-t border-gray-200"></div>
+              {/* Toggle Theme Button */}
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    onClick={toggleTheme}
+                    className={`${
+                      active ? "bg-gray-100" : ""
+                    } group flex w-full items-center rounded-md px-4 py-2 text-sm text-gray-700`}
+                  >
+                    <i
+                      className={`mr-2 fas ${darkMode ? "fa-sun" : "fa-moon"}`}
+                    ></i>
+                    {darkMode ? "Light Mode" : "Dark Mode"}
+                  </button>
+                )}
+              </Menu.Item>
+            </div>
+          </Menu.Items>
+        </Transition>
       </Menu>
     </div>
   );

@@ -9,14 +9,27 @@ const UserMenuBox = ({
   userMenuView,
   setUserMenuView,
   handleLogOut,
+  handleUserAction,
 }) => {
   // Determine the component to render based on userMenuView
   const renderComponent = () => {
     switch (userMenuView) {
       case "login":
-        return <UserLogin toggleUserMenu={toggleUserMenu} />;
+        return (
+          <UserLogin
+            handleUserAction={handleUserAction}
+            userMenuView={userMenuView}
+            toggleUserMenu={toggleUserMenu}
+            setUserMenuView={setUserMenuView}
+          />
+        );
       case "register":
-        return <UserRegister toggleUserMenu={toggleUserMenu} />;
+        return (
+          <UserRegister
+            toggleUserMenu={toggleUserMenu}
+            setUserMenuView={setUserMenuView}
+          />
+        );
       case "profile":
         return (
           <UserProfile

@@ -4,21 +4,23 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { auth } from "../../../../config/Firebase"; // Ensure this path matches your project structure
+import { auth, db } from "../../../../config/Firebase";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
-export const UserRegister = ({ toggleUserMenu }) => {
+export const UserRegister = ({ toggleUserMenu, setUserMenuView }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState(""); // Enhanced state for error handling
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Reset error message on new submission
+    setError("");
 
     if (password !== confirmPassword) {
       setError("Passwords do not match!");
+      alert("Passwords do not match!");
       return;
     }
 
@@ -28,43 +30,85 @@ export const UserRegister = ({ toggleUserMenu }) => {
         email,
         password
       );
-      console.log("User registered successfully:", userCredential.user);
-      toggleUserMenu(false); // Close the UserMenuBox upon successful registration
+      console.log(
+        "User registered successfully with email/password:",
+        userCredential.user
+      );
+
+      await setDoc(doc(db, "users", userCredential.user.uid), {
+        email: userCredential.user.email,
+        displayName: userCredential.user.displayName || userName,
+        createdAt: new Date().toISOString(),
+      });
+
+      console.log(
+        "Firestore document created for email/password user:",
+        userCredential.user.uid
+      );
+      alert("Registration successful! Redirecting to your profile...");
+      setUserMenuView("profile");
     } catch (error) {
-      console.error("Error during registration:", error);
-      if (error.code === "auth/email-already-in-use") {
-        setError(
-          "An account with this email already exists. Would you like to log in instead?"
-        );
-        // Optionally, show a button or link that directs the user to the login form
-      } else {
-        setError("Failed to register: " + error.message); // Provide specific error messages
-      }
+      console.error("Error during email/password registration:", error);
+      setError(error.message);
+      alert(error.message);
     }
   };
 
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
-
     try {
-      await signInWithPopup(auth, provider);
-      console.log("User signed in with Google");
-      toggleUserMenu(false); // Close the UserMenuBox upon successful Google sign in
+      const result = await signInWithPopup(auth, provider);
+      const { user } = result;
+      console.log("Google sign-in result:", user);
+
+      // Check Firestore to see if the user already exists
+      const userRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(userRef);
+
+      // If the user doesn't exist in Firestore, add them
+      if (!docSnap.exists()) {
+        await setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+          displayName: user.displayName || "Anonymous User",
+          createdAt: new Date().toISOString(),
+        });
+        console.log("New Google user added to Firestore:", user.uid);
+        alert("Welcome! Your account has been created.");
+      } else {
+        console.log("Existing Google user logged in:", user.uid);
+      }
+
+      setUserMenuView("profile"); // Navigate to the profile view
     } catch (error) {
-      console.error("Error signing in with Google:", error);
-      setError("Failed to sign in with Google: " + error.message);
+      console.error("Error during Google sign-in:", error);
+      setError(`Error signing in with Google: ${error.message}`);
+      alert(`Error signing in with Google: ${error.message}`);
     }
   };
 
   return (
     <div>
-      <p className="pt-2 text-xl font-bold">Register</p>
-      {error && <div className="my-2 text-sm text-red-500">{error}</div>}
       <div className="flex flex-col items-center justify-center p-4">
+        <button
+          onClick={handleGoogleSignIn}
+          className="w-full mb-4 px-5 py-2.5 text-sm font-medium text-center text-white bg-[#4285F4] rounded-lg hover:bg-[#357ae8]"
+        >
+          <i className="fab fa-google"></i> Register with Google
+        </button>
+        <div className="flex items-center w-full mb-4">
+          <hr className="w-full" />
+          <p className="px-2">OR</p>
+          <hr className="w-full" />
+        </div>
+        <p className="pt-2 text-xl font-bold text-center">
+          Register with Email
+        </p>
+        {error && <div className="my-2 text-sm text-red-500">{error}</div>}
         <form
           onSubmit={handleSubmit}
           className="flex flex-col w-full max-w-md gap-4"
         >
+          {/* Username input */}
           <div>
             <label
               htmlFor="username"
@@ -83,6 +127,7 @@ export const UserRegister = ({ toggleUserMenu }) => {
               placeholder="Your username"
             />
           </div>
+          {/* Email input */}
           <div>
             <label htmlFor="email" className="block font-medium text-gray-900">
               Email
@@ -98,6 +143,7 @@ export const UserRegister = ({ toggleUserMenu }) => {
               placeholder="your-email@example.com"
             />
           </div>
+          {/* Password input */}
           <div>
             <label
               htmlFor="password"
@@ -116,6 +162,7 @@ export const UserRegister = ({ toggleUserMenu }) => {
               placeholder="••••••••"
             />
           </div>
+          {/* Confirm password input */}
           <div>
             <label
               htmlFor="confirmPassword"
@@ -134,6 +181,7 @@ export const UserRegister = ({ toggleUserMenu }) => {
               placeholder="••••••••"
             />
           </div>
+          {/* Action buttons */}
           <div className="flex justify-center gap-4">
             <button
               onClick={() => toggleUserMenu(false)}
@@ -150,13 +198,9 @@ export const UserRegister = ({ toggleUserMenu }) => {
             </button>
           </div>
         </form>
-        <button
-          onClick={handleGoogleSignIn}
-          className="mt-4 px-5 py-2.5 text-sm font-medium text-center text-white bg-[#4285F4] rounded-lg hover:bg-[#357ae8]"
-        >
-          <i className="mr-2 fab fa-google"></i>Sign in or Register with Google
-        </button>
       </div>
     </div>
   );
 };
+
+export default UserRegister;
