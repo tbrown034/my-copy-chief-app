@@ -11,6 +11,8 @@ export default function GameBoard({
   setGameDisplay,
   numOfHeadlines,
   duration,
+  updateUserWinCount,
+  user,
 }) {
   const [fullArticles, setFullArticles] = useState([]);
   const [processedWords, setProcessedWords] = useState([]);
@@ -22,7 +24,6 @@ export default function GameBoard({
   const [hasWon, setHasWon] = useState(false);
   const [guessCounter, setGuessCounter] = useState(0);
   const [hintCounter, setHintCounter] = useState(0);
-
   const [articleWins, setArticleWins] = useState(
     new Array(fullArticles.length).fill(false)
   );
@@ -31,9 +32,7 @@ export default function GameBoard({
     const loadAndProcessArticles = async () => {
       let fetchedArticles = []; // Initialize here to use later in the logic
       fetchedArticles = await fetchMostPopular(numOfHeadlines, duration);
-
       setFullArticles(fetchedArticles);
-
       let wordIdCounter = 0;
       const wordsWithIds = fetchedArticles.flatMap((article, index) =>
         article.title.split(/\s+/).map((word) => ({
@@ -59,37 +58,32 @@ export default function GameBoard({
   }, [numOfHeadlines, duration]);
 
   const addWordToGuess = (selectedWord) => {
-    // Find the first empty position in the nested guessPlacement array
     let emptyPositionIndex = -1;
     let emptyArticleIndex = guessPlacement.findIndex(
       (articleGuesses, index) => {
         const positionIndex = articleGuesses.indexOf(null);
         if (positionIndex !== -1) {
           emptyPositionIndex = positionIndex;
-          return true; // Found an article with an empty position
+          return true;
         }
-        return false; // Continue searching
+        return false;
       }
     );
-
     if (emptyArticleIndex === -1) {
       console.log("All blanks are filled.");
-      return; // Early return if all blanks are filled
+      return;
     }
 
-    // Create a new state with the selected word added
     const newGuessPlacement = guessPlacement.map((articleGuesses, index) => {
       if (index === emptyArticleIndex) {
         const newArticleGuesses = [...articleGuesses];
-        newArticleGuesses[emptyPositionIndex] = selectedWord.word; // Assuming the word is a string
+        newArticleGuesses[emptyPositionIndex] = selectedWord.word;
         return newArticleGuesses;
       }
       return articleGuesses;
     });
 
     setGuessPlacement(newGuessPlacement);
-
-    // Now you need to mark the word as selected in availableWords and update the state
     const newAvailableWords = availableWords.map((word) => {
       if (word.id === selectedWord.id) {
         return { ...word, selected: true };
@@ -101,10 +95,8 @@ export default function GameBoard({
 
   const handleGuessClick = (articleIndex, wordIndex) => {
     const word = guessPlacement[articleIndex][wordIndex];
-
     if (selectedGuess) {
       const newGuessPlacement = [...guessPlacement];
-
       if (
         word !== null ||
         selectedGuess.articleIndex !== articleIndex ||
@@ -117,13 +109,11 @@ export default function GameBoard({
         newGuessPlacement[selectedGuess.articleIndex][selectedGuess.wordIndex] =
           word;
         newGuessPlacement[articleIndex][wordIndex] = selectedWord;
-
         setSelectedGuess(null);
       } else {
         setSelectedGuess(null);
         return;
       }
-
       setGuessPlacement(newGuessPlacement);
     } else {
       if (word !== null) {
@@ -144,53 +134,43 @@ export default function GameBoard({
     const correctHeadlines = fullArticles.map((article) =>
       article.title.split(/\s+/)
     );
-
-    // This will hold the results of each guess, whether it's correct or not.
     let newGuessResults = [];
-
-    // This will hold the win status for each article.
     let newArticleWins = fullArticles.map((article, index) => {
       const correctHeadline = correctHeadlines[index];
       const guessedHeadline = guessPlacement[index];
-
-      // Check if the guessed headline matches the correct headline.
       const isCorrect = correctHeadline.every(
         (word, wordIndex) => guessedHeadline[wordIndex] === word
       );
-
-      // Update the guess results for each word in the headline.
       const articleGuessResults = guessedHeadline.map((guess, wordIndex) =>
         guess === correctHeadline[wordIndex] ? "green" : "default"
       );
-
       newGuessResults.push(articleGuessResults);
       addToGuessCount();
-
-      // Return the win status for this article.
       return isCorrect;
     });
 
-    // Update the state with the new results.
     setGuessResults(newGuessResults);
     setArticleWins(newArticleWins);
-
-    // Check if all articles are correctly guessed.
     const hasWonAll = newArticleWins.every(Boolean);
     setHasWon(hasWonAll);
+    if (hasWonAll && user) {
+      updateUserWinCount(user.uid);
+    }
   };
 
-  // Function to update article win status
   const updateArticleWinStatus = (articleIndex, isCorrect) => {
     const updatedWins = [...articleWins];
     updatedWins[articleIndex] = isCorrect;
     setArticleWins(updatedWins);
+    if (hasWonAll && user) {
+      // Check if the user has won and is logged in
+      updateUserWinCount(user.uid); // Update the win count in Firestore
+    }
   };
 
   const resetGame = () => {
-    setGameDisplay(false); // Go back to the home screen
-    // Reset the game state here if necessary
+    setGameDisplay(false);
   };
-
   return (
     <div className="flex flex-col gap-4">
       {hasWon ? (

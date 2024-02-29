@@ -6,6 +6,8 @@ import Footer from "./components/UI/Layout/Footer";
 import { useDarkMode } from "./hooks/useDarkMode";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./config/Firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "./config/Firebase";
 import SettingsBox from "./components/UI/Modals/SettingBoxes/SettingsBox";
 import AboutBox from "./components/UI/Modals/AboutBox";
 import HowToBox from "./components/UI/Modals/HowToBox/HowToBox";
@@ -23,6 +25,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [userMenuView, setUserMenuView] = useState("");
+  const [totalWins, setTotalWins] = useState(0);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -38,19 +41,38 @@ function App() {
     return () => unsubscribe();
   }, []);
 
+  const updateUserWinCount = async (userId) => {
+    if (!userId) {
+      console.error("User ID is not available. Cannot update win count.");
+      return;
+    }
+    const userRef = doc(db, "users", userId);
+    try {
+      const userDoc = await getDoc(userRef);
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const currentWins = userData.wins || 0;
+        await updateDoc(userRef, {
+          wins: currentWins + 1,
+        });
+        console.log("Win count updated successfully for user:", userId);
+      } else {
+        console.log("User document does not exist in Firestore:", userId);
+      }
+    } catch (error) {
+      console.error("Error updating win count for user:", userId, error);
+    }
+  };
+
   const handleUserAction = (action) => {
-    // Enhancing the function to handle more scenarios
     if (isLoggedIn && (action === "login" || action === "register")) {
       console.log("Error: You are already logged in.");
-      return; // Prevent showing login/register if already logged in
+      return;
     }
-
     if (!isLoggedIn && action === "profile") {
       console.log("Error: You must be logged in to view your profile.");
-      return; // Prevent showing profile if not logged in
+      return;
     }
-
-    // This allows us to open the UserMenuBox with the correct content based on the user action
     setUserMenu(true);
     setUserMenuView(action);
   };
@@ -120,6 +142,8 @@ function App() {
           numOfHeadlines={numOfHeadlines}
           duration={duration}
           playGame={playGame}
+          updateUserWinCount={updateUserWinCount}
+          user={user} // Pass the current user state as a prop
         />
       )}
       <Footer
