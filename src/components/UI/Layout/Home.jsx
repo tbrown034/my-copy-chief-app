@@ -9,6 +9,7 @@ export default function Home({
   isLoggedIn,
   user,
   playDailyGame,
+  addDailyGametoDb,
 }) {
   const handleStart = () => {
     setShowHowTo(true);
@@ -63,6 +64,12 @@ export default function Home({
                 >
                   <i className="mr-2 fa-regular fa-play"></i> Daily Game
                 </button>
+                <button
+                  className="flex items-center justify-center p-2 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                  onClick={addDailyGametoDb}
+                >
+                  <i className="mr-2 fa-regular fa-play"></i> Add Game to Db
+                </button>
               </div>
             </div>
           ) : (
@@ -79,6 +86,12 @@ export default function Home({
                   onClick={playDailyGame}
                 >
                   <i className="mr-2 fa-regular fa-play"></i> Play Daily Game
+                </button>
+                <button
+                  className="flex items-center justify-center p-2 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                  onClick={addDailyGametoDb}
+                >
+                  <i className="mr-2 fa-regular fa-play"></i> Add Game to Db
                 </button>
               </div>
               <div className="flex justify-center gap-2">
