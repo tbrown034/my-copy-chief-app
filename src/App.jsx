@@ -9,13 +9,8 @@ import { auth, db } from "./config/Firebase";
 import {
   doc,
   getDoc,
-  orderBy,
-  limit,
-  getDocs,
+  setDoc,
   updateDoc,
-  collection,
-  addDoc,
-  query,
   serverTimestamp,
 } from "firebase/firestore";
 import { fetchMostPopular } from "./utils/apiFetch";
@@ -38,6 +33,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [isDailyGame, setIsDailyGame] = useState(false);
   const [dailyPuzzle, setDailyPuzzle] = useState(false);
+  const [hasWonDaily, setHasWonDaily] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -53,41 +49,61 @@ function App() {
   }, []);
 
   const playDailyGame = async () => {
-    const q = query(
-      collection(db, "dailyPuzzles"),
-      orderBy("createdAt", "desc"),
-      limit(1)
-    );
+    const now = new Date();
+    const edition = now.getHours() < 12 ? "early" : "late";
+    const date = now.toISOString().split("T")[0]; // Format: YYYY-MM-DD
+    const documentId = `${date}-${edition}`;
+
+    const docRef = doc(db, "dailyPuzzles", documentId);
 
     try {
-      const querySnapshot = await getDocs(q);
-      if (!querySnapshot.empty) {
-        const doc = querySnapshot.docs[0].data();
-        console.log("Playing with latest puzzle:", doc);
-        // Set the game state with the fetched puzzle
-        setDailyPuzzle(doc.articles);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        console.log("Playing with existing puzzle:", docSnap.data());
+        setDailyPuzzle(docSnap.data().articles);
         setGameDisplay(true);
         setIsDailyGame(true);
       } else {
-        console.error("No puzzles found in database.");
+        // No daily puzzle found for today, so fetch new articles and store them
+        console.log(
+          "No daily puzzle found for today. Fetching and storing new puzzle."
+        );
+        const articles = await fetchMostPopular(); // This should fetch articles as per your specification
+        if (articles.length > 0) {
+          await setDoc(docRef, {
+            articles,
+            createdAt: serverTimestamp(),
+          });
+          console.log("New daily puzzle stored in Firestore.");
+          setDailyPuzzle(articles); // Set the newly fetched articles for the game
+          setGameDisplay(true);
+          setIsDailyGame(true);
+        } else {
+          console.error("Failed to fetch articles for the daily puzzle.");
+        }
       }
     } catch (error) {
-      console.error("Error fetching latest puzzle:", error);
+      console.error("Error handling daily puzzle:", error);
     }
   };
 
   const addDailyGametoDb = async () => {
     const articles = await fetchMostPopular();
+    const now = new Date();
+    const edition = now.getHours() < 12 ? "early" : "late";
+    const date = now.toISOString().split("T")[0];
+    const documentId = `${date}-${edition}`;
+
     const puzzleData = {
       articles,
-      createdAt: serverTimestamp(), // Server timestamp for Firestore
+      createdAt: serverTimestamp(),
     };
 
     try {
-      await addDoc(collection(db, "dailyPuzzles"), puzzleData);
-      console.log("New puzzle added to database");
+      await setDoc(doc(db, "dailyPuzzles", documentId), puzzleData);
+      console.log("New daily puzzle added to database");
     } catch (error) {
-      console.error("Error adding new puzzle to database:", error);
+      console.error("Error adding new daily puzzle to database:", error);
     }
   };
 
