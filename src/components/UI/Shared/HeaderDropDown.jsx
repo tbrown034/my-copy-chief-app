@@ -10,6 +10,7 @@ export const HeaderDropDown = ({
   toggleTheme,
   isLoggedIn,
   handleUserAction,
+  playDailyGame,
 }) => {
   return (
     <div>
@@ -105,6 +106,18 @@ export const HeaderDropDown = ({
                     } group flex w-full items-center rounded-md px-4 py-2 text-sm text-gray-700`}
                   >
                     <i className="mr-2 fas fa-play"></i> Play Now
+                  </button>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    onClick={playDailyGame}
+                    className={`${
+                      active ? "bg-gray-100" : ""
+                    } group flex w-full items-center rounded-md px-4 py-2 text-sm text-gray-700`}
+                  >
+                    <i className="mr-2 fas fa-play"></i> Daily Games
                   </button>
                 )}
               </Menu.Item>

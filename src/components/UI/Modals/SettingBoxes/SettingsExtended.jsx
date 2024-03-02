@@ -8,6 +8,7 @@ const SettingsExtended = ({
   numOfHeadlines,
   playGame,
   toggleHowTo,
+  playDailyGame,
 }) => {
   const difficulties = [
     { label: "Easy", value: 1 },
@@ -158,16 +159,24 @@ const SettingsExtended = ({
         </div>
         <div className="flex justify-center gap-4">
           <button
+            onClick={playGame}
+            className="p-2 px-4 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100"
+          >
+            <i className="mr-2 fa-regular fa-play"></i> Play Now
+          </button>
+          <button
+            onClick={playDailyGame}
+            className="p-2 px-4 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100"
+          >
+            <i className="mr-2 fa-regular fa-play"></i> Daily Games
+          </button>
+        </div>
+        <div className="flex justify-center">
+          <button
             onClick={toggleHowTo}
             className="p-2 px-4 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
           >
             <i className="mr-2 fa-regular fa-arrow-left"></i> Back
-          </button>
-          <button
-            onClick={playGame}
-            className="p-2 px-4 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100"
-          >
-            <i className="mr-2 fa-regular fa-play"></i> Play
           </button>
         </div>
       </div>

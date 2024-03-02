@@ -13,6 +13,7 @@ export default function HowTo({
   playGame,
   showHowTo,
   isDarkMode,
+  playDailyGame,
 }) {
   const [isOpen, setIsOpen] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
@@ -73,19 +74,25 @@ export default function HowTo({
                     <div className="flex flex-col gap-2">
                       <div className="flex justify-center gap-4">
                         <button
-                          onClick={toggleHowTo}
-                          className="flex items-center justify-center p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
+                          onClick={playDailyGame}
+                          className="flex items-center justify-center p-2 px-6 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 "
                         >
-                          <i className="mr-2 fa-regular fa-arrow-left"></i> Back
+                          <i className="mr-2 fa-regular fa-play"></i>Daily Games
                         </button>
                         <button
                           onClick={playGame}
                           className="flex items-center justify-center p-2 px-6 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 "
                         >
-                          <i className="mr-2 fa-regular fa-play"></i> Play
+                          <i className="mr-2 fa-regular fa-play"></i> Play Now
                         </button>
                       </div>
-                      <div className="flex justify-center">
+                      <div className="flex justify-center gap-4">
+                        <button
+                          onClick={toggleHowTo}
+                          className="flex items-center justify-center p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
+                        >
+                          <i className="mr-2 fa-regular fa-arrow-left"></i> Back
+                        </button>
                         <button
                           onClick={displaySettings}
                           className="flex items-center justify-center gap-2 p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 "

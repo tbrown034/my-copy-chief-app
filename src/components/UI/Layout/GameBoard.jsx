@@ -15,6 +15,7 @@ export default function GameBoard({
   user,
   dailyPuzzle,
   isDailyGame,
+  setIsDailyGame,
 }) {
   const [fullArticles, setFullArticles] = useState([]);
   const [processedWords, setProcessedWords] = useState([]);
@@ -29,6 +30,8 @@ export default function GameBoard({
   const [articleWins, setArticleWins] = useState(
     new Array(fullArticles.length).fill(false)
   );
+  const [hasWonDaily, setHasWonDaily] = useState(false);
+  const [gameMetadata, setGameMetadata] = useState(null);
 
   useEffect(() => {
     const processArticles = (articles) => {
@@ -201,6 +204,7 @@ export default function GameBoard({
         />
       ) : (
         <div className="flex flex-col gap-8">
+          {isDailyGame && <div>Daily Game</div>}
           <GuessArea
             fullArticles={fullArticles}
             guessPlacement={guessPlacement}

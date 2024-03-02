@@ -13,6 +13,7 @@ export default function Header({
   playGame,
   isLoggedIn,
   handleUserAction,
+  playDailyGame,
 }) {
   const toggleTheme = () => {
     setDarkMode(!darkMode);
@@ -43,6 +44,7 @@ export default function Header({
           darkMode={darkMode}
           isLoggedIn={isLoggedIn}
           handleUserAction={handleUserAction}
+          playDailyGame={playDailyGame}
         />
       </div>
       <div className="items-center justify-center hidden gap-2 text-2xl md:flex">

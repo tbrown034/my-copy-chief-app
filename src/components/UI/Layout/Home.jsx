@@ -51,12 +51,12 @@ export default function Home({
                   View Profile
                 </button>
               </div>
-              <div className="flex justify-center gap-2">
+              <div className="flex justify-center gap-4">
                 <button
-                  className="flex items-center justify-center p-2 px-10 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                  className="flex items-center justify-center p-2 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
                   onClick={handleStart}
                 >
-                  <i className="mr-2 fa-regular fa-play"></i> Start
+                  <i className="mr-2 fa-regular fa-play"></i>Play Now
                 </button>
                 <button
                   className="flex items-center justify-center p-2 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
@@ -77,15 +77,9 @@ export default function Home({
               <div className="flex justify-center gap-2">
                 <button
                   className="flex items-center justify-center p-2 px-10 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
-                  onClick={handleStart}
-                >
-                  <i className="mr-2 fa-regular fa-play"></i> Start
-                </button>
-                <button
-                  className="flex items-center justify-center p-2 px-10 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
                   onClick={playDailyGame}
                 >
-                  <i className="mr-2 fa-regular fa-play"></i> Play Daily Game
+                  <i className="mr-2 fa-regular fa-play"></i>Daily Game
                 </button>
                 {/* <button
                   className="flex items-center justify-center p-2 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
@@ -94,6 +88,12 @@ export default function Home({
                   <i className="mr-2 fa-regular fa-play"></i> Add Game to Db
                 </button> */}
               </div>
+              <button
+                className="flex items-center justify-center p-2 px-10 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                onClick={handleStart}
+              >
+                <i className="mr-2 fa-regular fa-play"></i>Play Now
+              </button>
               <div className="flex justify-center gap-2">
                 <button
                   className="flex items-center justify-center p-2 px-4 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"

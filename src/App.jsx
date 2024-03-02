@@ -32,8 +32,8 @@ function App() {
   const [userMenuView, setUserMenuView] = useState("");
   const [user, setUser] = useState(null);
   const [isDailyGame, setIsDailyGame] = useState(false);
-  const [dailyPuzzle, setDailyPuzzle] = useState(false);
-  const [hasWonDaily, setHasWonDaily] = useState(false);
+  const [dailyPuzzle, setDailyPuzzle] = useState(null);
+  const [gameMetadata, setGameMetadata] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -48,10 +48,11 @@ function App() {
     return () => unsubscribe();
   }, []);
 
+  // In App component
   const playDailyGame = async () => {
     const now = new Date();
     const edition = now.getHours() < 12 ? "early" : "late";
-    const date = now.toISOString().split("T")[0]; // Format: YYYY-MM-DD
+    const date = now.toISOString().split("T")[0]; // YYYY-MM-DD
     const documentId = `${date}-${edition}`;
 
     const docRef = doc(db, "dailyPuzzles", documentId);
@@ -59,23 +60,22 @@ function App() {
     try {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        console.log("Playing with existing puzzle:", docSnap.data());
+        console.log("Playing with existing daily puzzle:", docSnap.data());
         setDailyPuzzle(docSnap.data().articles);
+        setGameMetadata({
+          edition: docSnap.data().edition,
+          createdAt: docSnap.data().createdAt.toDate().toString(), // Assuming createdAt is a Timestamp
+        });
         setGameDisplay(true);
         setIsDailyGame(true);
       } else {
-        // No daily puzzle found for today, so fetch new articles and store them
-        console.log(
-          "No daily puzzle found for today. Fetching and storing new puzzle."
-        );
-        const articles = await fetchMostPopular(); // This should fetch articles as per your specification
+        console.log("No daily puzzle found. Creating a new one.");
+        const articles = await fetchMostPopular(); // Ensure this fetches correctly
         if (articles.length > 0) {
-          await setDoc(docRef, {
-            articles,
-            createdAt: serverTimestamp(),
-          });
-          console.log("New daily puzzle stored in Firestore.");
-          setDailyPuzzle(articles); // Set the newly fetched articles for the game
+          const createdAt = serverTimestamp();
+          await setDoc(docRef, { articles, createdAt, edition });
+          setDailyPuzzle(articles);
+          setGameMetadata({ edition, createdAt: new Date().toString() });
           setGameDisplay(true);
           setIsDailyGame(true);
         } else {
@@ -83,7 +83,7 @@ function App() {
         }
       }
     } catch (error) {
-      console.error("Error handling daily puzzle:", error);
+      console.error("Error fetching or creating the daily puzzle:", error);
     }
   };
 
@@ -97,6 +97,7 @@ function App() {
     const puzzleData = {
       articles,
       createdAt: serverTimestamp(),
+      edition: edition,
     };
 
     try {
@@ -166,6 +167,7 @@ function App() {
     setGameDisplay(true);
     setShowHowTo(false);
     setShowSettings(false);
+    setIsDailyGame(false); // Ensure this is reset for non-daily games
   };
 
   const restartGame = () => {
@@ -194,6 +196,7 @@ function App() {
         toggleAbout={toggleAbout}
         isLoggedIn={isLoggedIn}
         handleUserAction={handleUserAction}
+        playDailyGame={playDailyGame}
       />
       {!gameDisplay ? (
         <Home
@@ -214,6 +217,8 @@ function App() {
           user={user} // Pass the current user state as a prop
           playDailyGame={playDailyGame}
           isDailyGame={isDailyGame}
+          setIsDailyGame={setIsDailyGame}
+          dailyPuzzle={dailyPuzzle} // Ensure this prop is correctly used within GameBoard
         />
       )}
       <Footer
@@ -248,6 +253,7 @@ function App() {
           playGame={playGame}
           showHowTo={showHowTo}
           isDarkMode={isDarkMode}
+          playDailyGame={playDailyGame}
         />
       )}
       {showUserMenu && (
