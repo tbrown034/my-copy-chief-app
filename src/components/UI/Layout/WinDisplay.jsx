@@ -1,10 +1,15 @@
+import React from "react";
 import { Scoreboard } from "../Shared/Scoreboard";
+
 const WinDisplay = ({
   fullArticles,
   guessCounter,
   hintCounter,
   articleWins,
+  isDailyGame, // Use to differentiate daily game wins
+  gameMetadata, // Access game metadata, including document ID and fetch time
 }) => {
+  // Function to extract the image URL from the article's media array
   const getImageUrl = (mediaArray) => {
     if (
       mediaArray.length > 0 &&
@@ -19,21 +24,37 @@ const WinDisplay = ({
     }
     return "";
   };
+
+  // Custom message for daily game wins, showing the document ID and creation date
+  const renderDailyWinMessage = () => (
+    <div>
+      <h2 className="text-3xl font-semibold">Daily Challenge Conquered!</h2>
+      <p className="text-lg">You've successfully completed the Daily Game:</p>
+      <p className="text-md">Game ID: {gameMetadata?.id}</p>
+      <p className="text-md">Content Fetched On: {gameMetadata?.createdAt}</p>
+    </div>
+  );
+
+  // Default win message for non-daily games
+  const renderWinMessage = () => (
+    <div>
+      <h2 className="text-3xl font-semibold">Congratulations!</h2>
+      <p className="text-lg">You've guessed all the headlines correctly!</p>
+    </div>
+  );
+
   return (
     <div className="flex flex-col gap-4 p-2">
-      <div>
-        <h2 className="text-3xl font-semibold ">Congratulations!</h2>
-        <p className="text-lg ">You've guessed all the headlines correctly!</p>
-      </div>
+      {isDailyGame ? renderDailyWinMessage() : renderWinMessage()}
       <Scoreboard
         articleWins={articleWins}
         hintCounter={hintCounter}
         guessCounter={guessCounter}
         fullArticles={fullArticles}
       />
-      <h2 className="text-3xl font-semibold ">Read the News</h2>
+      <h2 className="text-3xl font-semibold">Read the News</h2>
       {fullArticles.map((article, index) => (
-        <div className="p-4 rounded-lg shadow-lg bg-slate-300 " key={index}>
+        <div className="p-4 rounded-lg shadow-lg bg-slate-300" key={index}>
           {article.media && article.media.length > 0 && (
             <img
               src={getImageUrl(article.media)}
@@ -55,7 +76,7 @@ const WinDisplay = ({
       <p className="text-center">
         See more trending stories from{" "}
         <a
-          className="underline underline-offset-4 hover:text-sky-600 "
+          className="underline underline-offset-4 hover:text-sky-600"
           href="https://www.nytimes.com/trending/"
         >
           The New York Times

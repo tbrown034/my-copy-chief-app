@@ -15,7 +15,7 @@ export default function GameBoard({
   user,
   dailyPuzzle,
   isDailyGame,
-  setIsDailyGame,
+  gameMetadata,
 }) {
   const [fullArticles, setFullArticles] = useState([]);
   const [processedWords, setProcessedWords] = useState([]);
@@ -30,8 +30,6 @@ export default function GameBoard({
   const [articleWins, setArticleWins] = useState(
     new Array(fullArticles.length).fill(false)
   );
-  const [hasWonDaily, setHasWonDaily] = useState(false);
-  const [gameMetadata, setGameMetadata] = useState(null);
 
   useEffect(() => {
     const processArticles = (articles) => {
@@ -201,10 +199,22 @@ export default function GameBoard({
           guessCounter={guessCounter}
           hintCounter={hintCounter}
           articleWins={articleWins}
+          isDailyGame={isDailyGame}
+          gameMetadata={gameMetadata}
         />
       ) : (
         <div className="flex flex-col gap-8">
-          {isDailyGame && <div>Daily Game</div>}
+          {isDailyGame && (
+            <div className="p-4 bg-blue-100 rounded-lg">
+              <h2 className="text-2xl font-bold">
+                Daily Game: {gameMetadata?.id}
+              </h2>
+
+              <p>Content Fetched On: {gameMetadata?.createdAt}</p>
+              {/* You can format gameMetadata.createdAt more nicely using a date formatting library like date-fns if needed */}
+              {/* Additional metadata details can be added here */}
+            </div>
+          )}
           <GuessArea
             fullArticles={fullArticles}
             guessPlacement={guessPlacement}
