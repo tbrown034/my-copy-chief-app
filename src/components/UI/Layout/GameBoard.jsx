@@ -6,6 +6,27 @@ import WordChoices from "../../gameElements/WordChoices";
 import GuessArea from "../../gameElements/GuessArea";
 import { shuffleArray } from "../../../utils/shuffleArray";
 import WinDisplay from "./WinDisplay";
+// Helper function to format the game date
+function formatDate(documentId) {
+  const [year, month, day, edition] = documentId.split("-");
+  const date = new Date(`${year}-${month}-${day}`);
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  const formattedDate = new Intl.DateTimeFormat("en-US", options).format(date);
+  return `${formattedDate} (${
+    edition.charAt(0).toUpperCase() + edition.slice(1)
+  } Edition)`;
+}
+// Helper function to format the fetched content time
+function formatFetchedTime(createdAt) {
+  const date = new Date(createdAt);
+  const options = {
+    hour: "numeric",
+    minute: "2-digit",
+    timeZoneName: "short",
+  };
+  const formattedTime = new Intl.DateTimeFormat("en-US", options).format(date);
+  return formattedTime;
+}
 
 export default function GameBoard({
   setGameDisplay,
@@ -27,90 +48,69 @@ export default function GameBoard({
   const [hasWon, setHasWon] = useState(false);
   const [guessCounter, setGuessCounter] = useState(0);
   const [hintCounter, setHintCounter] = useState(0);
-  const [articleWins, setArticleWins] = useState(
-    new Array(fullArticles.length).fill(false)
-  );
+  const [articleWins, setArticleWins] = useState([]);
 
   useEffect(() => {
-    const processArticles = (articles) => {
+    const loadAndProcessArticles = async () => {
+      let articlesToProcess = dailyPuzzle;
+      if (!isDailyGame || !dailyPuzzle) {
+        try {
+          articlesToProcess = await fetchMostPopular(numOfHeadlines, duration);
+        } catch (error) {
+          console.error("Error fetching and processing articles:", error);
+        }
+      }
+
       let wordIdCounter = 0;
-      const wordsWithIds = articles.flatMap((article, index) =>
+      const wordsWithIds = articlesToProcess.flatMap((article, index) =>
         article.title.split(/\s+/).map((word) => ({
-          id: `${index}-${wordIdCounter++}`, // Increment wordIdCounter for unique IDs
-          word: word,
+          id: `${index}-${wordIdCounter++}`,
+          word,
           articleIndex: index,
           selected: false,
         }))
       );
 
       const shuffledWords = shuffleArray(wordsWithIds);
-      setFullArticles(articles);
+      setFullArticles(articlesToProcess);
       setProcessedWords(shuffledWords);
       setAvailableWords(shuffledWords);
 
-      const initialGuessPlacement = articles.map((article) =>
+      const initialGuessPlacement = articlesToProcess.map((article) =>
         Array(article.title.split(/\s+/).length).fill(null)
       );
       setGuessPlacement(initialGuessPlacement);
-      setArticleWins(new Array(articles.length).fill(false));
+      setArticleWins(new Array(articlesToProcess.length).fill(false));
     };
 
-    // Conditional logic to determine if daily puzzle should be processed
-    if (isDailyGame && dailyPuzzle) {
-      // Assume dailyPuzzle is already in the format expected by processArticles
-      processArticles(dailyPuzzle);
-    } else {
-      // Original logic for fetching and processing articles for custom games
-      const loadAndProcessArticles = async () => {
-        try {
-          const fetchedArticles = await fetchMostPopular(
-            numOfHeadlines,
-            duration
-          );
-          processArticles(fetchedArticles);
-        } catch (error) {
-          console.error("Error fetching and processing articles:", error);
-        }
-      };
-
-      loadAndProcessArticles();
-    }
-  }, [numOfHeadlines, duration, isDailyGame, dailyPuzzle]); // Include isDailyGame and dailyPuzzle in the dependency array
+    loadAndProcessArticles();
+  }, [numOfHeadlines, duration, isDailyGame, dailyPuzzle]);
 
   const addWordToGuess = (selectedWord) => {
-    let emptyPositionIndex = -1;
-    let emptyArticleIndex = guessPlacement.findIndex(
-      (articleGuesses, index) => {
-        const positionIndex = articleGuesses.indexOf(null);
-        if (positionIndex !== -1) {
-          emptyPositionIndex = positionIndex;
-          return true;
+    let newGuessPlacement = [...guessPlacement];
+    let foundSpot = false;
+    for (let i = 0; i < newGuessPlacement.length; i++) {
+      for (let j = 0; j < newGuessPlacement[i].length; j++) {
+        if (newGuessPlacement[i][j] === null) {
+          newGuessPlacement[i][j] = selectedWord.word;
+          foundSpot = true;
+          break;
         }
-        return false;
       }
-    );
-    if (emptyArticleIndex === -1) {
+      if (foundSpot) break;
+    }
+
+    if (!foundSpot) {
       console.log("All blanks are filled.");
       return;
     }
 
-    const newGuessPlacement = guessPlacement.map((articleGuesses, index) => {
-      if (index === emptyArticleIndex) {
-        const newArticleGuesses = [...articleGuesses];
-        newArticleGuesses[emptyPositionIndex] = selectedWord.word;
-        return newArticleGuesses;
-      }
-      return articleGuesses;
-    });
-
     setGuessPlacement(newGuessPlacement);
-    const newAvailableWords = availableWords.map((word) => {
-      if (word.id === selectedWord.id) {
-        return { ...word, selected: true };
-      }
-      return word;
-    });
-    setAvailableWords(newAvailableWords);
+    setAvailableWords(
+      availableWords.map((word) =>
+        word.id === selectedWord.id ? { ...word, selected: true } : word
+      )
+    );
   };
 
   const handleGuessClick = (articleIndex, wordIndex) => {
@@ -142,14 +142,6 @@ export default function GameBoard({
     }
   };
 
-  let addToGuessCount = () => {
-    setGuessCounter(guessCounter + 1);
-  };
-
-  let addToHintCounter = () => {
-    setHintCounter(hintCounter + 1);
-  };
-
   const submitGuesses = () => {
     const correctHeadlines = fullArticles.map((article) =>
       article.title.split(/\s+/)
@@ -178,19 +170,19 @@ export default function GameBoard({
     }
   };
 
-  const updateArticleWinStatus = (articleIndex, isCorrect) => {
-    const updatedWins = [...articleWins];
-    updatedWins[articleIndex] = isCorrect;
-    setArticleWins(updatedWins);
-    if (hasWonAll && user) {
-      // Check if the user has won and is logged in
-      updateUserWinCount(user.uid); // Update the win count in Firestore
-    }
+  let addToGuessCount = () => {
+    setGuessCounter(guessCounter + 1);
   };
 
-  const resetGame = () => {
-    setGameDisplay(false);
+  let addToHintCounter = () => {
+    setHintCounter(hintCounter + 1);
   };
+
+  const gameDate = gameMetadata ? formatDate(gameMetadata.id) : "";
+  const contentFetchedTime = gameMetadata
+    ? formatFetchedTime(gameMetadata.createdAt)
+    : "";
+
   return (
     <div className="flex flex-col gap-4">
       {hasWon ? (
@@ -204,15 +196,10 @@ export default function GameBoard({
         />
       ) : (
         <div className="flex flex-col gap-8">
-          {isDailyGame && (
+          {isDailyGame && gameMetadata && (
             <div className="p-4 bg-blue-100 rounded-lg">
-              <h2 className="text-2xl font-bold">
-                Daily Game: {gameMetadata?.id}
-              </h2>
-
-              <p>Content Fetched On: {gameMetadata?.createdAt}</p>
-              {/* You can format gameMetadata.createdAt more nicely using a date formatting library like date-fns if needed */}
-              {/* Additional metadata details can be added here */}
+              <h2 className="text-2xl font-bold">Daily Game: {gameDate}</h2>
+              <p>Content Fetched On: {contentFetchedTime}</p>
             </div>
           )}
           <GuessArea
@@ -229,7 +216,6 @@ export default function GameBoard({
             setGuessResults={setGuessResults}
             setArticleWins={setArticleWins}
             hasWon={hasWon}
-            onCorrectGuess={() => updateArticleWinStatus(index, true)}
             setShowAnswers={setShowAnswers}
             guessCounter={guessCounter}
             setGuessCounter={setGuessCounter}
@@ -249,10 +235,10 @@ export default function GameBoard({
 
       <div className="flex justify-center gap-2 mt-8">
         <button
-          onClick={resetGame}
+          onClick={() => setGameDisplay(false)}
           className="flex items-center justify-center p-2 px-8 text-xl bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
         >
-          <i className="mr-2 fa-regular fa-house"></i> Main Menu
+          Main Menu
         </button>
       </div>
     </div>

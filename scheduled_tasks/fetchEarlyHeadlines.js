@@ -1,26 +1,55 @@
-// fetchEarlyHeadlines.js
+// scheduled_tasks/fetchAndStoreHeadlines.js
 import fetch from "node-fetch";
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "/src/config/Firebase.jsx"; // Adjust this to the correct path of your Firebase config
+import dotenv from "dotenv";
+import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "../src/config/Firebase.js"; // Ensure this path correctly points to your Firebase config file
 
-const API_KEY = process.env.NYT_API_KEY;
-const NYT_URL = `https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=${API_KEY}`;
+dotenv.config();
+
+const API_BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? process.env.VITE_BACKEND_PRO_URL
+    : process.env.VITE_BACKEND_DEV_URL;
+
+async function fetchMostPopular(numOfArticles = 2, duration = 1) {
+  const response = await fetch(
+    `${API_BASE_URL}/articles?num=${numOfArticles}&duration=${duration}`
+  );
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+  return response.json();
+}
+
+async function storeHeadlinesInDb(articles, documentId) {
+  const docRef = doc(db, "dailyPuzzles", documentId);
+  await setDoc(docRef, { articles, createdAt: serverTimestamp() });
+}
 
 async function fetchAndStoreHeadlines() {
-  try {
-    const response = await fetch(NYT_URL);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const data = await response.json();
-    const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
-    const docRef = doc(db, "dailyPuzzles", today);
+  const now = new Date();
+  const date = now.toISOString().split("T")[0];
+  const edition = now.getHours() < 12 ? "early" : "late";
+  const documentId = `${date}-${edition}`;
 
-    // Store the fetched articles in Firestore
-    await setDoc(docRef, { articles: data.results });
-    console.log(`Headlines fetched and stored for ${today}`);
+  try {
+    const docRef = doc(db, "dailyPuzzles", documentId);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      console.log("Fetching new puzzle from backend.");
+      const data = await fetchMostPopular();
+      if (data && data.length > 0) {
+        await storeHeadlinesInDb(data, documentId);
+        console.log("New daily puzzle stored in Firestore.");
+      } else {
+        console.error("No articles were fetched from the backend.");
+      }
+    } else {
+      console.log("Puzzle already exists for this edition.");
+    }
   } catch (error) {
-    console.error("Error fetching and storing headlines:", error);
+    console.error("Error in scheduled task:", error);
   }
 }
 
