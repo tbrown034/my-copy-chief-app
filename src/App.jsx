@@ -9,9 +9,11 @@ import { auth, db } from "./config/Firebase";
 import {
   doc,
   getDoc,
-  setDoc,
+  getDocs,
   updateDoc,
-  serverTimestamp,
+  collection,
+  query,
+  orderBy,
 } from "firebase/firestore";
 import { fetchMostPopular } from "./utils/apiFetch";
 import SettingsBox from "./components/UI/Modals/SettingBoxes/SettingsBox";
@@ -49,100 +51,70 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  function parseDocumentIdToDate(documentId) {
-    // Split the ID into parts
-    const [year, month, day, edition] = documentId.split("-");
-
-    // Create a new date object
-    const date = new Date(`${year}-${month}-${day}`);
-
-    // Options to format the date
-    const options = { year: "numeric", month: "long", day: "numeric" };
-
-    // Format the date to a human-readable form
-    const formattedDate = date.toLocaleDateString("en-US", options);
-
-    // Return the formatted date string with the edition
-    return `${formattedDate} (${
-      edition.charAt(0).toUpperCase() + edition.slice(1)
-    } edition)`;
-  }
   const playDailyGame = async () => {
-    // Generate a document ID based on the current date and time of day.
-    const now = new Date();
-    const date = now.toISOString().split("T")[0];
-    const edition = now.getHours() < 12 ? "early" : "late";
-    const documentId = `${date}-${edition}`;
+    // Reference to the 'dailyPuzzles' collection
+    const puzzlesRef = collection(db, "dailyPuzzles");
 
-    // Reference to the document in the Firestore database.
-    const docRef = doc(db, "dailyPuzzles", documentId);
+    // Create a query against the collection, ordered by 'createdAt' timestamp in descending order
+    const q = query(puzzlesRef, orderBy("createdAt", "desc"));
 
     try {
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        console.log("Playing with existing daily puzzle:", docSnap.data());
-        setDailyPuzzle(docSnap.data().articles);
+      // Execute the query
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        // Access the first (and only) document in the results
+        const latestPuzzleDoc = querySnapshot.docs[0];
+        const latestPuzzleData = latestPuzzleDoc.data();
+
+        console.log("Latest daily puzzle:", latestPuzzleData);
+        // Use the latest puzzle data to set up the game
+        setDailyPuzzle(latestPuzzleData.articles);
         setGameMetadata({
-          id: documentId, // Use the document ID as part of the game's metadata.
-          createdAt: docSnap.data().createdAt.toDate().toString(),
+          id: latestPuzzleDoc.id,
+          createdAt: latestPuzzleData.createdAt.toDate().toString(),
         });
         setIsDailyGame(true);
         setGameDisplay(true);
       } else {
-        // Handle the case where no daily puzzle exists for the current date and edition.
-        console.log("No daily puzzle found. Creating a new one.");
-        const articles = await fetchMostPopular(); // Fetch articles for the new puzzle.
-        if (articles.length > 0) {
-          const createdAt = serverTimestamp();
-          await setDoc(docRef, { articles, createdAt });
-          setDailyPuzzle(articles);
-          setGameMetadata({
-            id: documentId,
-            createdAt: new Date().toString(),
-          });
-          setIsDailyGame(true);
-          setGameDisplay(true);
-          console.log("New daily puzzle created with ID:", documentId);
-        } else {
-          console.error("Failed to fetch articles for the daily puzzle.");
-        }
+        console.log("No daily puzzle found.");
+        // Handle the case where no puzzles are available
       }
     } catch (error) {
-      console.error("Error fetching or creating the daily puzzle:", error);
+      console.error("Error fetching the latest daily puzzle:", error);
     }
   };
 
-  const addDailyGametoDb = async () => {
-    try {
-      const articles = await fetchMostPopular();
-      if (!articles || articles.length === 0) {
-        throw new Error("No articles fetched");
-      }
+  // const addDailyGametoDb = async () => {
+  //   try {
+  //     const articles = await fetchMostPopular();
+  //     if (!articles || articles.length === 0) {
+  //       throw new Error("No articles fetched");
+  //     }
 
-      const now = new Date();
-      const edition = now.getHours() < 12 ? "Early" : "Late"; // Capitalize edition for readability
-      const date = now.toISOString().split("T")[0];
-      const documentId = `${date}-${edition.toLowerCase()}`; // Keep document ID lowercase
+  //     const now = new Date();
+  //     const edition = now.getHours() < 12 ? "Early" : "Late"; // Capitalize edition for readability
+  //     const date = now.toISOString().split("T")[0];
+  //     const documentId = `${date}-${edition.toLowerCase()}`; // Keep document ID lowercase
 
-      const docRef = doc(db, "dailyPuzzles", documentId);
-      const docSnap = await getDoc(docRef);
+  //     const docRef = doc(db, "dailyPuzzles", documentId);
+  //     const docSnap = await getDoc(docRef);
 
-      if (!docSnap.exists()) {
-        const puzzleData = {
-          articles,
-          createdAt: serverTimestamp(),
-          edition: edition,
-        };
+  //     if (!docSnap.exists()) {
+  //       const puzzleData = {
+  //         articles,
+  //         createdAt: serverTimestamp(),
+  //         edition: edition,
+  //       };
 
-        await setDoc(docRef, puzzleData);
-        console.log("New daily puzzle added to database");
-      } else {
-        console.log("Daily puzzle already exists for this edition");
-      }
-    } catch (error) {
-      console.error("Error in addDailyGametoDb:", error);
-    }
-  };
+  //       await setDoc(docRef, puzzleData);
+  //       console.log("New daily puzzle added to database");
+  //     } else {
+  //       console.log("Daily puzzle already exists for this edition");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error in addDailyGametoDb:", error);
+  //   }
+  // };
 
   const updateUserWinCount = async (userId) => {
     if (!userId) {
@@ -241,7 +213,6 @@ function App() {
           handleUserAction={handleUserAction}
           user={user}
           playDailyGame={playDailyGame}
-          addDailyGametoDb={addDailyGametoDb}
         />
       ) : (
         <GameBoard

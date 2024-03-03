@@ -178,7 +178,6 @@ export default function GameBoard({
     setHintCounter(hintCounter + 1);
   };
 
-  const gameDate = gameMetadata ? formatDate(gameMetadata.id) : "";
   const contentFetchedTime = gameMetadata
     ? formatFetchedTime(gameMetadata.createdAt)
     : "";
@@ -198,7 +197,9 @@ export default function GameBoard({
         <div className="flex flex-col gap-8">
           {isDailyGame && gameMetadata && (
             <div className="p-4 bg-blue-100 rounded-lg">
-              <h2 className="text-2xl font-bold">Daily Game: {gameDate}</h2>
+              <h2 className="text-2xl font-bold">
+                Daily Game: {gameMetadata?.id}
+              </h2>
               <p>Content Fetched On: {contentFetchedTime}</p>
             </div>
           )}

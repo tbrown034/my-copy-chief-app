@@ -29,8 +29,8 @@ async function storeHeadlinesInDb(articles, documentId) {
 async function fetchAndStoreHeadlines() {
   const now = new Date();
   const date = now.toISOString().split("T")[0];
-  const edition = now.getHours() < 12 ? "early" : "late";
-  const documentId = `${date}-${edition}`;
+  const edition = now.getHours() < 12 ? "Early Edition" : "Late Edition";
+  const documentId = `${date} (${edition})`;
 
   try {
     const docRef = doc(db, "dailyPuzzles", documentId);
