@@ -9,17 +9,19 @@ import { auth, db } from "./config/Firebase";
 import {
   doc,
   getDoc,
-  getDocs,
-  updateDoc,
+  serverTimestamp,
+  setDoc,
   collection,
   query,
   orderBy,
+  getDocs,
 } from "firebase/firestore";
-import { fetchMostPopular } from "./utils/apiFetch";
+
 import SettingsBox from "./components/UI/Modals/SettingBoxes/SettingsBox";
 import AboutBox from "./components/UI/Modals/AboutBox";
 import HowToBox from "./components/UI/Modals/HowToBox/HowToBox";
 import UserMenuBox from "./components/UI/Modals/UserMenuBox/UserMenuBox";
+import { fetchMostPopular } from "./utils/apiFetch";
 
 function App() {
   const [gameDisplay, setGameDisplay] = useState(false);
@@ -50,71 +52,43 @@ function App() {
     });
     return () => unsubscribe();
   }, []);
+  const fetchAndStoreHeadlines = async () => {
+    const today = new Date().toISOString().split("T")[0];
+    const documentId = today;
+    const docRef = doc(db, "dailyPuzzles", documentId);
 
-  const playDailyGame = async () => {
-    // Reference to the 'dailyPuzzles' collection
-    const puzzlesRef = collection(db, "dailyPuzzles");
-
-    // Create a query against the collection, ordered by 'createdAt' timestamp in descending order
-    const q = query(puzzlesRef, orderBy("createdAt", "desc"));
-
-    try {
-      // Execute the query
-      const querySnapshot = await getDocs(q);
-      if (!querySnapshot.empty) {
-        // Access the first (and only) document in the results
-        const latestPuzzleDoc = querySnapshot.docs[0];
-        const latestPuzzleData = latestPuzzleDoc.data();
-
-        console.log("Latest daily puzzle:", latestPuzzleData);
-        // Use the latest puzzle data to set up the game
-        setDailyPuzzle(latestPuzzleData.articles);
-        setGameMetadata({
-          id: latestPuzzleDoc.id,
-          createdAt: latestPuzzleData.createdAt.toDate().toString(),
-        });
-        setIsDailyGame(true);
-        setGameDisplay(true);
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) {
+      const articles = await fetchMostPopular();
+      if (articles.length > 0) {
+        await setDoc(docRef, { articles, createdAt: serverTimestamp() });
+        console.log("New daily puzzle stored in Firestore.");
+        return articles;
       } else {
-        console.log("No daily puzzle found.");
-        // Handle the case where no puzzles are available
+        console.error("Failed to fetch articles for the daily puzzle.");
+        return [];
       }
-    } catch (error) {
-      console.error("Error fetching the latest daily puzzle:", error);
+    } else {
+      console.log("Using existing daily puzzle from Firestore.");
+      return docSnap.data().articles;
     }
   };
 
-  // const addDailyGametoDb = async () => {
-  //   try {
-  //     const articles = await fetchMostPopular();
-  //     if (!articles || articles.length === 0) {
-  //       throw new Error("No articles fetched");
-  //     }
-
-  //     const now = new Date();
-  //     const edition = now.getHours() < 12 ? "Early" : "Late"; // Capitalize edition for readability
-  //     const date = now.toISOString().split("T")[0];
-  //     const documentId = `${date}-${edition.toLowerCase()}`; // Keep document ID lowercase
-
-  //     const docRef = doc(db, "dailyPuzzles", documentId);
-  //     const docSnap = await getDoc(docRef);
-
-  //     if (!docSnap.exists()) {
-  //       const puzzleData = {
-  //         articles,
-  //         createdAt: serverTimestamp(),
-  //         edition: edition,
-  //       };
-
-  //       await setDoc(docRef, puzzleData);
-  //       console.log("New daily puzzle added to database");
-  //     } else {
-  //       console.log("Daily puzzle already exists for this edition");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error in addDailyGametoDb:", error);
-  //   }
-  // };
+  const playDailyGame = async () => {
+    try {
+      const articles = await fetchAndStoreHeadlines();
+      if (articles.length > 0) {
+        setDailyPuzzle(articles);
+        setGameMetadata({ id: new Date().toISOString().split("T")[0] }); // Example metadata
+        setIsDailyGame(true);
+        setGameDisplay(true);
+      } else {
+        console.log("No articles available for the daily puzzle.");
+      }
+    } catch (error) {
+      console.error("Error playing the daily game:", error);
+    }
+  };
 
   const updateUserWinCount = async (userId) => {
     if (!userId) {

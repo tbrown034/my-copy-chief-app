@@ -6,27 +6,6 @@ import WordChoices from "../../gameElements/WordChoices";
 import GuessArea from "../../gameElements/GuessArea";
 import { shuffleArray } from "../../../utils/shuffleArray";
 import WinDisplay from "./WinDisplay";
-// Helper function to format the game date
-function formatDate(documentId) {
-  const [year, month, day, edition] = documentId.split("-");
-  const date = new Date(`${year}-${month}-${day}`);
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  const formattedDate = new Intl.DateTimeFormat("en-US", options).format(date);
-  return `${formattedDate} (${
-    edition.charAt(0).toUpperCase() + edition.slice(1)
-  } Edition)`;
-}
-// Helper function to format the fetched content time
-function formatFetchedTime(createdAt) {
-  const date = new Date(createdAt);
-  const options = {
-    hour: "numeric",
-    minute: "2-digit",
-    timeZoneName: "short",
-  };
-  const formattedTime = new Intl.DateTimeFormat("en-US", options).format(date);
-  return formattedTime;
-}
 
 export default function GameBoard({
   setGameDisplay,
@@ -178,10 +157,6 @@ export default function GameBoard({
     setHintCounter(hintCounter + 1);
   };
 
-  const contentFetchedTime = gameMetadata
-    ? formatFetchedTime(gameMetadata.createdAt)
-    : "";
-
   return (
     <div className="flex flex-col gap-4">
       {hasWon ? (
@@ -200,7 +175,7 @@ export default function GameBoard({
               <h2 className="text-2xl font-bold">
                 Daily Game: {gameMetadata?.id}
               </h2>
-              <p>Content Fetched On: {contentFetchedTime}</p>
+              {/* <p>Content Fetched On: {contentFetchedTime}</p> */}
             </div>
           )}
           <GuessArea
