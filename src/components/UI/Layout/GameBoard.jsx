@@ -175,7 +175,7 @@ export default function GameBoard({
               <h2 className="text-2xl font-bold">
                 Daily Game: {gameMetadata?.id}
               </h2>
-              {/* <p>Content Fetched On: {contentFetchedTime}</p> */}
+              <p>Content Fetched On: {gameMetadata.createdAt}</p>
             </div>
           )}
           <GuessArea

@@ -6,16 +6,7 @@ import Footer from "./components/UI/Layout/Footer";
 import { useDarkMode } from "./hooks/useDarkMode";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db } from "./config/Firebase";
-import {
-  doc,
-  getDoc,
-  serverTimestamp,
-  setDoc,
-  collection,
-  query,
-  orderBy,
-  getDocs,
-} from "firebase/firestore";
+import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 
 import SettingsBox from "./components/UI/Modals/SettingBoxes/SettingsBox";
 import AboutBox from "./components/UI/Modals/AboutBox";
@@ -52,16 +43,38 @@ function App() {
     });
     return () => unsubscribe();
   }, []);
+
   const fetchAndStoreHeadlines = async () => {
-    const today = new Date().toISOString().split("T")[0];
-    const documentId = today;
+    const today = new Date();
+    const documentId = formatDate(today); // "April 7, 2024"
+
     const docRef = doc(db, "dailyPuzzles", documentId);
 
     const docSnap = await getDoc(docRef);
     if (!docSnap.exists()) {
       const articles = await fetchMostPopular();
       if (articles.length > 0) {
-        await setDoc(docRef, { articles, createdAt: serverTimestamp() });
+        // Retrieve the latest edition number and increment
+        const editionRef = doc(db, "edition");
+        const editionSnap = await getDoc(editionRef);
+        let nextEdition = 1;
+        if (editionSnap.exists()) {
+          nextEdition = editionSnap.data().number + 1;
+        }
+
+        // Set the puzzle creation timestamp
+        const creationTime = formatTime(today); // "8:31 p.m."
+
+        await setDoc(docRef, {
+          articles,
+          createdAt: serverTimestamp(),
+          edition: `No. ${nextEdition}`,
+          timestamp: `Puzzle created at ${creationTime}`,
+        });
+
+        // Update the edition number in the database
+        await setDoc(editionRef, { number: nextEdition });
+
         console.log("New daily puzzle stored in Firestore.");
         return articles;
       } else {
@@ -74,12 +87,39 @@ function App() {
     }
   };
 
+  const formatDate = (date) => {
+    // Options for US date format with Eastern Timezone
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "America/New_York",
+    };
+
+    return new Intl.DateTimeFormat("en-US", options).format(date);
+  };
+
+  const formatTime = (date) => {
+    // Options for 12-hour time format with Eastern Timezone
+    const options = {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+      timeZone: "America/New_York",
+    };
+
+    return new Intl.DateTimeFormat("en-US", options).format(date);
+  };
+
   const playDailyGame = async () => {
     try {
       const articles = await fetchAndStoreHeadlines();
       if (articles.length > 0) {
         setDailyPuzzle(articles);
-        setGameMetadata({ id: new Date().toISOString().split("T")[0] }); // Example metadata
+        setGameMetadata({
+          id: formatDate(new Date()), // Use formatDate
+          createdAt: new Date().toISOString(),
+        });
         setIsDailyGame(true);
         setGameDisplay(true);
       } else {
