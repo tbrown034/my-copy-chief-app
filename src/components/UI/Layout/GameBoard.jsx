@@ -1,5 +1,3 @@
-//game.jsx
-
 import { useState, useEffect } from "react";
 import { fetchMostPopular } from "../../../utils/apiFetch";
 import WordChoices from "../../gameElements/WordChoices";
@@ -7,6 +5,10 @@ import GuessArea from "../../gameElements/GuessArea";
 import { shuffleArray } from "../../../utils/shuffleArray";
 import WinDisplay from "./WinDisplay";
 
+/**
+ * GameBoard component - renders the main game area, including word choices and the guess area.
+ * Handles logic for playing the game, submitting guesses, and playing previous editions.
+ */
 export default function GameBoard({
   setGameDisplay,
   numOfHeadlines,
@@ -16,7 +18,9 @@ export default function GameBoard({
   dailyPuzzle,
   isDailyGame,
   gameMetadata,
+  formatTime,
 }) {
+  // State hooks to manage various aspects of the game.
   const [fullArticles, setFullArticles] = useState([]);
   const [processedWords, setProcessedWords] = useState([]);
   const [showAnswers, setShowAnswers] = useState(false);
@@ -29,17 +33,21 @@ export default function GameBoard({
   const [hintCounter, setHintCounter] = useState(0);
   const [articleWins, setArticleWins] = useState([]);
 
+  // Effect hook to load and process articles when component mounts or certain states change.
   useEffect(() => {
     const loadAndProcessArticles = async () => {
+      console.log("Loading and processing articles for the game...");
       let articlesToProcess = dailyPuzzle;
       if (!isDailyGame || !dailyPuzzle) {
         try {
           articlesToProcess = await fetchMostPopular(numOfHeadlines, duration);
+          console.log(`Fetched ${articlesToProcess.length} articles.`);
         } catch (error) {
           console.error("Error fetching and processing articles:", error);
         }
       }
 
+      // Process each word in the articles for the game logic.
       let wordIdCounter = 0;
       const wordsWithIds = articlesToProcess.flatMap((article, index) =>
         article.title.split(/\s+/).map((word) => ({
@@ -50,11 +58,14 @@ export default function GameBoard({
         }))
       );
 
+      // Shuffle the words to create the word choices for the game.
       const shuffledWords = shuffleArray(wordsWithIds);
+      console.log("Shuffled words for the game board.");
       setFullArticles(articlesToProcess);
       setProcessedWords(shuffledWords);
       setAvailableWords(shuffledWords);
 
+      // Initialize guess placement for each article title.
       const initialGuessPlacement = articlesToProcess.map((article) =>
         Array(article.title.split(/\s+/).length).fill(null)
       );
@@ -157,6 +168,37 @@ export default function GameBoard({
     setHintCounter(hintCounter + 1);
   };
 
+  const playPreviousEdition = async () => {
+    // Assuming gameMetadata contains the current edition number
+    const prevEdition = gameMetadata.edition - 1;
+    if (prevEdition < 1) {
+      console.log("No previous edition available.");
+      return;
+    }
+
+    // Fetch the puzzle for the previous edition
+    const puzzlesRef = collection(db, "dailyPuzzles");
+    const prevEditionQuery = query(
+      puzzlesRef,
+      where("metadata.edition", "==", prevEdition)
+    );
+    const querySnapshot = await getDocs(prevEditionQuery);
+
+    if (!querySnapshot.empty) {
+      const docData = querySnapshot.docs[0].data();
+      setDailyPuzzle(docData.articles); // Assuming articles is stored directly
+      setGameMetadata({
+        id: docData.id, // Assuming id or date is stored
+        createdAt: docData.createdAt,
+        edition: docData.metadata.edition,
+      });
+      setIsDailyGame(true);
+      setGameDisplay(true);
+    } else {
+      console.log("Failed to fetch the previous edition.");
+    }
+  };
+
   return (
     <div className="flex flex-col gap-4">
       {hasWon ? (
@@ -175,7 +217,11 @@ export default function GameBoard({
               <h2 className="text-2xl font-bold">
                 Daily Game: {gameMetadata?.id}
               </h2>
-              <p>Content Fetched On: {gameMetadata.createdAt}</p>
+              <p>
+                Content Fetched On:{" "}
+                {formatTime(new Date(gameMetadata.createdAt))} EST
+              </p>
+              <p>Edition: {gameMetadata.edition}</p>
             </div>
           )}
           <GuessArea

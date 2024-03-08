@@ -6,7 +6,18 @@ import Footer from "./components/UI/Layout/Footer";
 import { useDarkMode } from "./hooks/useDarkMode";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db } from "./config/Firebase";
-import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  serverTimestamp,
+  setDoc,
+  query,
+  orderBy,
+  limit,
+  getDocs,
+  collection,
+  updateDoc,
+} from "firebase/firestore";
 
 import SettingsBox from "./components/UI/Modals/SettingBoxes/SettingsBox";
 import AboutBox from "./components/UI/Modals/AboutBox";
@@ -44,47 +55,21 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  const fetchAndStoreHeadlines = async () => {
-    const today = new Date();
-    const documentId = formatDate(today); // "April 7, 2024"
-
-    const docRef = doc(db, "dailyPuzzles", documentId);
-
-    const docSnap = await getDoc(docRef);
-    if (!docSnap.exists()) {
-      const articles = await fetchMostPopular();
-      if (articles.length > 0) {
-        // Retrieve the latest edition number and increment
-        const editionRef = doc(db, "edition");
-        const editionSnap = await getDoc(editionRef);
-        let nextEdition = 1;
-        if (editionSnap.exists()) {
-          nextEdition = editionSnap.data().number + 1;
-        }
-
-        // Set the puzzle creation timestamp
-        const creationTime = formatTime(today); // "8:31 p.m."
-
-        await setDoc(docRef, {
-          articles,
-          createdAt: serverTimestamp(),
-          edition: `No. ${nextEdition}`,
-          timestamp: `Puzzle created at ${creationTime}`,
-        });
-
-        // Update the edition number in the database
-        await setDoc(editionRef, { number: nextEdition });
-
-        console.log("New daily puzzle stored in Firestore.");
-        return articles;
-      } else {
-        console.error("Failed to fetch articles for the daily puzzle.");
-        return [];
+  const calculateNextEditionNumber = async () => {
+    const puzzlesRef = collection(db, "dailyPuzzles");
+    const lastPuzzleQuery = query(
+      puzzlesRef,
+      orderBy("createdAt", "desc"),
+      limit(1)
+    );
+    const querySnapshot = await getDocs(lastPuzzleQuery);
+    let nextEditionNumber = 1; // Default to 1 if no puzzles are found
+    querySnapshot.forEach((doc) => {
+      if (doc.exists() && doc.data().metadata && doc.data().metadata.edition) {
+        nextEditionNumber = doc.data().metadata.edition + 1;
       }
-    } else {
-      console.log("Using existing daily puzzle from Firestore.");
-      return docSnap.data().articles;
-    }
+    });
+    return nextEditionNumber;
   };
 
   const formatDate = (date) => {
@@ -111,15 +96,68 @@ function App() {
     return new Intl.DateTimeFormat("en-US", options).format(date);
   };
 
+  // Function to get a Firestore document reference for a puzzle on a specific date.
+  const getPuzzleDateRef = (date) => doc(db, "dailyPuzzles", formatDate(date));
+
+  /**
+   * Fetches and stores the daily headlines.
+   * If today's puzzle doesn't exist, it fetches new headlines and stores them.
+   * If it fails to fetch new headlines, it throws an error.
+   */
+  const fetchAndStoreHeadlines = async () => {
+    const today = new Date();
+    const docRef = getPuzzleDateRef(today);
+
+    // Attempt to get today's puzzle from Firestore.
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      // Log the use of existing puzzle data.
+      console.log("Using existing daily puzzle from Firestore.");
+      return docSnap.data().articles; // Use the existing articles array.
+    }
+
+    // Fetch new headlines as today's puzzle does not exist.
+    const articles = await fetchMostPopular(); // This function must always return an array.
+    if (articles.length === 0) {
+      // Log the error when no articles are fetched.
+      console.error("Failed to fetch articles for the daily puzzle.");
+      throw new Error("No articles fetched");
+    }
+
+    // Calculate the next edition number for the new puzzle.
+    const nextEdition = await calculateNextEditionNumber();
+
+    // Store the new puzzle data in Firestore.
+    await setDoc(docRef, {
+      articles,
+      createdAt: serverTimestamp(),
+      metadata: {
+        edition: nextEdition,
+        winCount: 0,
+      },
+    });
+
+    // Log the creation of a new puzzle.
+    console.log("New daily puzzle created with edition:", nextEdition);
+    return articles; // Return the newly fetched articles.
+  };
+
+  /**
+   * Sets up and starts the daily game by fetching headlines and setting up game metadata.
+   * It also handles any errors during the game setup.
+   */
   const playDailyGame = async () => {
     try {
       const articles = await fetchAndStoreHeadlines();
-      if (articles.length > 0) {
-        setDailyPuzzle(articles);
+      if (articles && articles.length > 0) {
+        const today = new Date();
+        const currentEdition = await getCurrentEdition(today);
         setGameMetadata({
-          id: formatDate(new Date()), // Use formatDate
-          createdAt: new Date().toISOString(),
+          id: formatDate(today),
+          createdAt: today.toISOString(),
+          edition: currentEdition, // Set the edition here
         });
+        setDailyPuzzle(articles);
         setIsDailyGame(true);
         setGameDisplay(true);
       } else {
@@ -127,6 +165,27 @@ function App() {
       }
     } catch (error) {
       console.error("Error playing the daily game:", error);
+    }
+  };
+
+  /**
+   * Retrieves the current edition number of the daily puzzle.
+   * Defaults to 1 if the puzzle data is not found.
+   */
+  const getCurrentEdition = async (date) => {
+    const docRef = getPuzzleDateRef(date);
+    const docSnap = await getDoc(docRef);
+    if (
+      docSnap.exists() &&
+      docSnap.data().metadata &&
+      docSnap.data().metadata.edition
+    ) {
+      return docSnap.data().metadata.edition; // Return the current edition number.
+    } else {
+      console.error(
+        "No metadata found for the current edition, defaulting to 1."
+      );
+      return 1; // Default to edition 1 if no metadata is found.
     }
   };
 
@@ -241,6 +300,7 @@ function App() {
           setIsDailyGame={setIsDailyGame}
           dailyPuzzle={dailyPuzzle} // Ensure this prop is correctly used within GameBoard
           gameMetadata={gameMetadata}
+          formatTime={formatTime}
         />
       )}
       <Footer
