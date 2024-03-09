@@ -9,42 +9,42 @@ const HowToExamples = () => {
         <p className=" opacity-55">Guess Area</p>
         <div className="flex justify-around gap-2 p-2 text-sm">
           <div className="flex gap-2 ">
-            <div className="flex items-center justify-center h-10 p-2 font-bold border-2 border-gray-400 rounded-lg min-w-10 ">
+            <div className="flex items-center justify-center p-1 font-bold border-2 border-gray-400 rounded-lg ">
               Dewey
             </div>
-            <div className="flex items-center justify-center h-10 p-2 font-bold bg-green-500 border-2 border-gray-400 rounded-lg dark:bg-green-600 min-w-10 ">
+            <div className="flex items-center justify-center p-1 font-bold bg-green-500 border-2 border-gray-400 rounded-lg dark:bg-green-600 ">
               Defeats
             </div>
-            <div className="flex items-center justify-center h-10 p-2 font-bold border-2 border-gray-400 rounded-lg min-w-10 ">
+            <div className="flex items-center justify-center p-1 font-bold border-2 border-gray-400 rounded-lg ">
               Truman
             </div>
           </div>
           <div className="flex gap-2 text-sm ">
-            <div className="flex items-center justify-center h-10 p-2 font-bold bg-red-500 border-2 border-gray-400 rounded-lg min-w-10">
+            <div className="flex items-center justify-center p-1 font-bold bg-red-500 border-2 border-gray-400 rounded-lg min-w-10">
               X
             </div>
           </div>
         </div>
-        <div className="flex justify-around gap-2 p-2 text-sm">
+        <div className="flex justify-around gap-2 p-1 text-sm">
           <div className="flex gap-2 ">
-            <div className="flex items-center justify-center h-10 p-2 font-bold bg-green-500 border-2 border-gray-400 rounded-lg min-w-10 dark:bg-green-600">
+            <div className="flex items-center justify-center p-1 font-bold bg-green-500 border-2 border-gray-400 rounded-lg min-w-10 dark:bg-green-600">
               Truman
             </div>
-            <div className="flex flex-wrap items-center justify-center h-10 p-2 font-bold bg-green-500 border-2 border-gray-400 rounded-lg min-w-10 dark:bg-green-600">
+            <div className="flex flex-wrap items-center justify-center p-1 font-bold bg-green-500 border-2 border-gray-400 rounded-lg min-w-10 dark:bg-green-600">
               Defeats
             </div>
-            <div className="flex flex-wrap items-center justify-center h-10 p-2 font-bold bg-green-500 border-2 border-gray-400 rounded-lg min-w-10 dark:bg-green-600">
+            <div className="flex flex-wrap items-center justify-center p-1 font-bold bg-green-500 border-2 border-gray-400 rounded-lg min-w-10 dark:bg-green-600">
               Dewey
             </div>
           </div>
           <div className="flex gap-2 text-sm ">
-            <div className="flex flex-wrap items-center justify-center h-10 p-2 font-bold bg-green-500 border-2 border-gray-400 rounded-lg min-w-10 dark:bg-green-600">
+            <div className="flex flex-wrap items-center justify-center p-1 font-bold bg-green-500 border-2 border-gray-400 rounded-lg min-w-10 dark:bg-green-600">
               ✓
             </div>
           </div>
         </div>
       </div>
-      <p className="mt-4 opacity-55">Word Choices</p>
+      <p className=" opacity-55">Word Choices</p>
       <div className="">
         <WordExample />
       </div>

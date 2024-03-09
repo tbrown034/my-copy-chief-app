@@ -106,6 +106,7 @@ function App() {
    */
   const fetchAndStoreHeadlines = async () => {
     const today = new Date();
+
     const docRef = getPuzzleDateRef(today);
 
     // Attempt to get today's puzzle from Firestore.
@@ -160,6 +161,7 @@ function App() {
         setDailyPuzzle(articles);
         setIsDailyGame(true);
         setGameDisplay(true);
+        setShowHowTo(true);
       } else {
         console.log("No articles available for the daily puzzle.");
       }
@@ -168,10 +170,6 @@ function App() {
     }
   };
 
-  /**
-   * Retrieves the current edition number of the daily puzzle.
-   * Defaults to 1 if the puzzle data is not found.
-   */
   const getCurrentEdition = async (date) => {
     const docRef = getPuzzleDateRef(date);
     const docSnap = await getDoc(docRef);
@@ -256,6 +254,18 @@ function App() {
     setTimeout(() => setGameDisplay(true), 0);
   };
 
+  const toggleHowToAndSettings = () => {
+    setShowHowTo(false); // Close the HowTo box
+    setShowSettings(true); // Open the Settings box
+  };
+
+  const showHomeScreen = () => {
+    setGameDisplay(false); // Hide the game board
+    setShowHowTo(false); // Ensure the HowToBox is closed
+    setShowSettings(false); // Ensure the SettingsBox is closed
+    // Add any other state resets you need here to ensure the home screen is shown
+  };
+
   return (
     <div
       className={`flex flex-col min-h-screen justify-between gap-4 p-4 ${
@@ -311,6 +321,8 @@ function App() {
       {showHowTo && (
         <HowToBox
           setDuration={setDuration}
+          showHomeScreen={showHomeScreen}
+          toggleHowToAndSettings={toggleHowToAndSettings}
           duration={duration}
           toggleHowTo={toggleHowTo}
           handleSetNumOfHeadlines={handleSetNumOfHeadlines}
@@ -319,6 +331,7 @@ function App() {
           handleDurationChange={handleDurationChange}
           toggleAbout={toggleAbout}
           playGame={playGame}
+          setShowHowTo={setShowHowTo}
           showHowTo={showHowTo}
           isDarkMode={isDarkMode}
           handleDifficultyChange={handleDifficultyChange}

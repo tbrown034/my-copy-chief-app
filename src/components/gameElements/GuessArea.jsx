@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import Article from "../UI/Shared/Article";
 import ConfirmSolveBox from "../UI/Modals/ConfirmSolveBox";
 import Hints from "../UI/Shared/HInts";
-import { Scoreboard } from "../UI/Shared/Scoreboard";
 
 const GuessArea = ({
   fullArticles,
@@ -16,9 +15,7 @@ const GuessArea = ({
   guessResults,
   setGuessResults,
   articleWins,
-  guessCounter,
   addToHintCounter,
-  hintCounter,
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -172,12 +169,6 @@ const GuessArea = ({
             <i className="mr-2 fa-regular fa-check"></i> Enter Guess
           </button>
         </div>
-        <Scoreboard
-          articleWins={articleWins}
-          hintCounter={hintCounter}
-          guessCounter={guessCounter}
-          fullArticles={fullArticles}
-        />
       </div>
     </>
   );

@@ -211,9 +211,9 @@ export default function GameBoard({
           gameMetadata={gameMetadata}
         />
       ) : (
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-4">
           {isDailyGame && gameMetadata && (
-            <div className="p-4 bg-blue-100 rounded-lg">
+            <div className="rounded-lg ">
               <h2 className="text-2xl font-bold">
                 Daily Game: {gameMetadata?.id}
               </h2>
@@ -255,7 +255,7 @@ export default function GameBoard({
         </div>
       )}
 
-      <div className="flex justify-center gap-2 mt-8">
+      <div className="flex justify-center gap-2 mt-2">
         <button
           onClick={() => setGameDisplay(false)}
           className="flex items-center justify-center p-2 px-8 text-xl bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"

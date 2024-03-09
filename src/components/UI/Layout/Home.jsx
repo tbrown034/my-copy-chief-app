@@ -4,17 +4,11 @@ import { auth } from "../../../config/Firebase";
 import { signOut } from "firebase/auth";
 
 export default function Home({
-  setShowHowTo,
   handleUserAction,
   isLoggedIn,
   user,
   playDailyGame,
-  addDailyGametoDb,
 }) {
-  const handleStart = () => {
-    setShowHowTo(true);
-  };
-
   const displayName = user?.displayName || user?.email || "there";
 
   return (
@@ -27,85 +21,60 @@ export default function Home({
           {isLoggedIn ? (
             <div className="flex flex-col items-center gap-8 text-center">
               <div className="flex flex-col gap-4">
-                <p className="text-lg underline ring-offset-8">
-                  Hello, {displayName}!
-                </p>
-                <p
-                  onClick={() => {
-                    signOut(auth)
-                      .then(() => {
-                        console.log("Signed out successfully");
-                      })
-                      .catch((error) => {
-                        console.error("Sign out error", error);
-                      });
-                  }}
-                  className="text-sm text-gray-500 cursor-pointer"
-                >
-                  (Log out)
-                </p>
                 <button
-                  className="flex items-center justify-center p-2 px-4 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
                   onClick={() => handleUserAction("profile")}
+                  className="text-lg underline-offset-4 hover:underline ring-offset-8"
                 >
-                  View Profile
+                  Hello, {displayName}!
                 </button>
+                <div className="flex justify-center gap-4">
+                  <button
+                    onClick={() => {
+                      signOut(auth)
+                        .then(() => {
+                          console.log("Signed out successfully");
+                        })
+                        .catch((error) => {
+                          console.error("Sign out error", error);
+                        });
+                    }}
+                    className="text-sm text-gray-500 hover:underline underline-offset-4"
+                  >
+                    (Log out)
+                  </button>
+                </div>
               </div>
               <div className="flex justify-center gap-4">
                 <button
-                  className="flex items-center justify-center p-2 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
-                  onClick={handleStart}
-                >
-                  <i className="mr-2 fa-regular fa-play"></i>Play Now
-                </button>
-                <button
-                  className="flex items-center justify-center p-2 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                  className="flex items-center justify-center p-2 px-10 text-white bg-black shadow-sm rounded-3xl hover:bg-gray-700 active:bg-gray-500 dark:text-black dark:bg-white dark:hover:bg-gray-200 dark:active:bg-gray-400 "
                   onClick={playDailyGame}
                 >
-                  <i className="mr-2 fa-regular fa-play"></i> Daily Game
+                  Play
                 </button>
-                {/* <button
-                  className="flex items-center justify-center p-2 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
-                  onClick={addDailyGametoDb}
-                >
-                  <i className="mr-2 fa-regular fa-play"></i> Add Game to Db
-                </button> */}
               </div>
             </div>
           ) : (
             <div className="flex flex-col items-center gap-8">
               <div className="flex justify-center gap-2">
                 <button
-                  className="flex items-center justify-center p-2 px-10 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                  className="flex items-center justify-center p-2 px-16 text-lg text-white bg-black shadow-sm rounded-3xl hover:bg-gray-700 active:bg-gray-500 dark:text-black dark:bg-white dark:hover:bg-gray-200 dark:active:bg-gray-400"
                   onClick={playDailyGame}
                 >
-                  <i className="mr-2 fa-regular fa-play"></i>Daily Game
+                  Play
                 </button>
-                {/* <button
-                  className="flex items-center justify-center p-2 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
-                  onClick={addDailyGametoDb}
-                >
-                  <i className="mr-2 fa-regular fa-play"></i> Add Game to Db
-                </button> */}
               </div>
-              <button
-                className="flex items-center justify-center p-2 px-10 text-xl bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
-                onClick={handleStart}
-              >
-                <i className="mr-2 fa-regular fa-play"></i>Play Now
-              </button>
               <div className="flex justify-center gap-2">
                 <button
-                  className="flex items-center justify-center p-2 px-4 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                  className="flex items-center justify-center p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
                   onClick={() => handleUserAction("login")}
                 >
-                  <i className="mr-2 fas fa-sign-in-alt"></i> Log In
+                  Log In
                 </button>
                 <button
-                  className="flex items-center justify-center p-2 px-4 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
+                  className="flex items-center justify-center p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 dark:border-white dark:hover:bg-gray-700"
                   onClick={() => handleUserAction("register")}
                 >
-                  <i className="mr-2 fas fa-user-plus"></i> Register
+                  Register
                 </button>
               </div>
             </div>

@@ -56,7 +56,7 @@ const SettingsBox = ({
               <Dialog.Panel className="flex flex-col gap-4 p-4 overflow-hidden text-left transition-all transform bg-white shadow-xl rounded-2xl">
                 <div className="flex flex-col gap-4 pt-2 pl-2 ">
                   <p className="text-2xl font-bold underline underline-offset-8 ">
-                    Settings
+                    Custom Game Settings
                   </p>
                   <ul className="flex flex-col gap-4 list-disc list-inside ">
                     <li>
@@ -183,11 +183,11 @@ const SettingsBox = ({
                       onClick={toggleSettings}
                       className="p-2 px-4 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
                     >
-                      <i className="mr-2 fa-regular fa-arrow-left"></i> Back
+                      Back
                     </button>
                     <button
                       onClick={playGame}
-                      className="p-2 px-4 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100"
+                      className="p-2 px-4 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
                     >
                       <i className="mr-2 fa-regular fa-play"></i> Play
                     </button>

@@ -46,15 +46,10 @@ const WinDisplay = ({
   return (
     <div className="flex flex-col gap-4 p-2">
       {isDailyGame ? renderDailyWinMessage() : renderWinMessage()}
-      <Scoreboard
-        articleWins={articleWins}
-        hintCounter={hintCounter}
-        guessCounter={guessCounter}
-        fullArticles={fullArticles}
-      />
+
       <h2 className="text-3xl font-semibold">Read the News</h2>
       {fullArticles.map((article, index) => (
-        <div className="p-4 rounded-lg shadow-lg bg-slate-300" key={index}>
+        <div className="" key={index}>
           {article.media && article.media.length > 0 && (
             <img
               src={getImageUrl(article.media)}
@@ -73,6 +68,12 @@ const WinDisplay = ({
           <p className="mt-2 text-gray-700">{article.abstract}</p>
         </div>
       ))}
+      <Scoreboard
+        articleWins={articleWins}
+        hintCounter={hintCounter}
+        guessCounter={guessCounter}
+        fullArticles={fullArticles}
+      />
       <p className="text-center">
         See more trending stories from{" "}
         <a

@@ -2,18 +2,14 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import HowToBullets from "./HowToBullets";
 import HowToExamples from "./HowToExamples";
-import SettingsExtended from "../SettingBoxes/SettingsExtended";
 
 export default function HowTo({
   toggleHowTo,
   setNumOfHeadlines,
   setDuration,
-  numOfHeadlines,
-  duration,
-  playGame,
-  showHowTo,
-  isDarkMode,
-  playDailyGame,
+  setShowHowTo,
+  toggleHowToAndSettings,
+  showHomeScreen,
 }) {
   const [isOpen, setIsOpen] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
@@ -27,8 +23,12 @@ export default function HowTo({
     setDuration(value); // Apply the selected duration
   }
 
-  function displaySettings() {
-    setShowSettings((prev) => !prev);
+  function closeHowTo() {
+    setShowHowTo((prev) => !prev);
+  }
+
+  function backTohome() {
+    setShowHowTo((prev) => !prev);
   }
 
   return (
@@ -71,55 +71,30 @@ export default function HowTo({
                     Get Started
                   </p>
                   {!showSettings && (
-                    <div className="flex flex-col gap-2">
-                      <div className="flex justify-center gap-4">
+                    <div className="flex flex-col gap-4">
+                      <div className="flex justify-center">
                         <button
-                          onClick={playDailyGame}
-                          className="flex items-center justify-center p-2 px-6 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 "
+                          onClick={closeHowTo}
+                          className="flex items-center justify-center p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 "
                         >
-                          <i className="mr-2 fa-regular fa-play"></i>Daily Games
-                        </button>
-                        <button
-                          onClick={playGame}
-                          className="flex items-center justify-center p-2 px-6 bg-transparent border-2 border-black shadow-sm rounded-xl hover:bg-gray-100 "
-                        >
-                          <i className="mr-2 fa-regular fa-play"></i> Play Now
+                          Continue
                         </button>
                       </div>
                       <div className="flex justify-center gap-4">
                         <button
-                          onClick={toggleHowTo}
-                          className="flex items-center justify-center p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
+                          onClick={showHomeScreen} // Call the function on click
+                          className="flex items-center justify-center p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
                         >
-                          <i className="mr-2 fa-regular fa-arrow-left"></i> Back
+                          Back To Home
                         </button>
                         <button
-                          onClick={displaySettings}
-                          className="flex items-center justify-center gap-2 p-2 px-6 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100 "
+                          onClick={() => toggleHowToAndSettings()} // Use the passed function on click
+                          className="flex items-center justify-center p-2 bg-transparent border border-black shadow-sm rounded-xl hover:bg-gray-100"
                         >
-                          <span>Settings</span>{" "}
-                          {showSettings ? (
-                            <i className="fa-regular fa-angle-up"></i>
-                          ) : (
-                            <i className="fa-regular fa-angle-down"></i>
-                          )}
+                          Custom Game
                         </button>
                       </div>
                     </div>
-                  )}
-
-                  {showSettings && (
-                    <SettingsExtended
-                      handleDifficultyChange={handleDifficultyChange}
-                      handleDurationChange={handleDurationChange}
-                      setDuration={setDuration}
-                      duration={duration}
-                      numOfHeadlines={numOfHeadlines}
-                      playGame={playGame}
-                      showHowTo={showHowTo}
-                      isDarkMode={isDarkMode}
-                      toggleHowTo={toggleHowTo}
-                    />
                   )}
                 </Dialog.Panel>
               </Transition.Child>

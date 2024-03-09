@@ -5,7 +5,7 @@ export const Scoreboard = ({
   fullArticles,
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center gap-2 p-4 px-8 bg-white border-2 border-black dark:border-white rounded-xl dark:bg-black">
+    <div className="flex flex-col items-center justify-center gap-2 p-2 bg-white border-2 border-black dark:border-white rounded-xl dark:bg-black">
       <h3 className="text-2xl font-bold text-center text-gray-800 dark:text-white">
         Scoreboard
       </h3>
