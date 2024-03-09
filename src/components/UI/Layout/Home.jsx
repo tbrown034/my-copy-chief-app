@@ -11,7 +11,7 @@ export default function Home({
   const displayName = user?.displayName || user?.email || "there";
   return (
     <>
-      <div className="flex flex-col items-center gap-2 p-2 text-center">
+      <div className="flex flex-col items-center gap-8 p-2 text-center">
         <div className="flex flex-col gap-2">
           <i className="text-6xl fa-regular fa-newspaper"></i>{" "}
           <h1 className="text-5xl font-bold">CopyChief</h1>{" "}

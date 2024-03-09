@@ -221,7 +221,7 @@ export default function GameBoard({
                 Content Fetched On:{" "}
                 {formatTime(new Date(gameMetadata.createdAt))} EST
               </p>
-              <p>Edition: {gameMetadata.edition}</p>
+              {/* <p>Edition: {gameMetadata.edition}</p> */}
             </div>
           )}
           <GuessArea
